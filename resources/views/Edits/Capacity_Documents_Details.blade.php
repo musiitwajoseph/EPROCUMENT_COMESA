@@ -343,9 +343,9 @@
 
                 </form>
 				
-				<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
 
-<script type="text/javascript">
+		<script type="text/javascript">
 
 
 			$(document).ready(function(){
@@ -448,7 +448,7 @@
 					});
 				});
 		
-</script>
+		</script>
            
 
 				

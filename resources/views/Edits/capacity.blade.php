@@ -106,7 +106,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="dashboard.html">Gebo Admin</a>
+							<a class="brand pull-left" href="{{route('supplier-registration')}}">Gebo Admin</a>
 							<ul class="nav navbar-nav" id="mobile-nav">
 								<li class="dropdown">
 									<a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="glyphicon glyphicon-list-alt"></span> Forms <b class="caret"></b></a>

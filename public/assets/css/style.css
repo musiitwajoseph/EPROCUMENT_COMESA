@@ -900,3 +900,8 @@
 			
 			display: none !important;
 		}
+
+		.requiredbtn{
+			padding-top: 4rem;
+			padding-right: 25rem;
+		}

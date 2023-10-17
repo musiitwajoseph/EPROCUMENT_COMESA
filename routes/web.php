@@ -56,8 +56,9 @@ Route::get('UpdatedFinancialBusiness',[COMESA_CONTROLLER::class, 'redirectedFina
 Route::post('LoadFinancialUpdatedInformation',[COMESA_CONTROLLER::class,'LoadFinancialUpdatedData']);
 // =====================================
 
-Route::get('edit-capacity-documents',[COMESA_CONTROLLER::class,'Updated_Capacity_Documents']);
+// Route::get('edit-capacity-documents',[COMESA_CONTROLLER::class,'Updated_Capacity_Documents']);
 
 
 
 Route::get('edit-required-documents',[COMESA_CONTROLLER::class,'Update_Required_Documents']);
+Route::post('update-required-document-data',[COMESA_CONTROLLER::class, 'updateRequiredDetailsData']);

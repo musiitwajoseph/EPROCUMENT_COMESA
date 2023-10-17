@@ -386,7 +386,12 @@ class COMESA_CONTROLLER extends Controller
 
         $country_code = $data->country;
         $country = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+
+        // $user_id = $saved_user_id;
+        // $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
         
+        // return $category;
         $details .= '<tr>';
         $details .= '<td colspan="3" "><h3>1.Business Details</h3></td>';
         $details .= '<td>'.'<a href="edit-business-details/'.$saved_user_id.'" class="btn btn-primary">Edit Business Details</a>' .'</td>';
@@ -497,7 +502,8 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';
         $details .= '<td colspan="3"><h3>3.Capacity Levels</h3></td>';
-        $details .= '<td><a href="#" class="btn btn-primary">Edit Capacity Levels</a></t>';
+        $details .= '<td><a href="edit-capacity-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Capacity Levels</a></t>';
+        
         $details .= '</tr>'; 
 
         $details .= '<tr>';
@@ -1217,12 +1223,64 @@ class COMESA_CONTROLLER extends Controller
 
         public function Update_Required_Documents(){
 
+             $md_master_code_id = 1032;
+
             $Documents = DB::table("master_data")
             ->select('md_id','md_name')
-            ->where('md_master_code_id',1032)
+            ->where('md_master_code_id',$md_master_code_id)
             ->get();
-
             
-            return view('Edits.Required_Documents',compact(['Documents']));
+            return view('Edits.Required_Documents',compact(['Documents','md_master_code_id']));
+        }
+
+
+        public function updateRequiredDetailsData(Request $request){
+
+            $input = $request->all();
+            $md_master_code_id = $input['md_master_code_id'];
+
+            // $post = SupplierRegistrationDetailsModel::find($request->user_id);
+
+            $Total_Documents = $request->Total_Documents;
+
+            for($i=1; $i<=$Total_Documents; $i++){
+                if($request->file('attachment'.$i)){
+                    $PostData = new Document();
+                    $file = $request->{'attachment'.$i};
+                    $filename = preg_replace("/[^A-Za-z0-9\_\-\.]/i", '_', $doc_list[$i-1]).'__'.date('YmdHis').'.'.$file->getClientOriginalExtension();
+                    $file->move('All_Documents',$filename);
+                    $PostData->Attachments = $filename;
+                    $PostData->References = $ref;
+                    $PostData->save();
+                }
+            }
+
+
+            // $input = $request->all();
+            // $md_master_code_id = $input['md_master_code_id'];
+
+            return "Data has been added on !!!";
+    
+            // $post = SupplierRegistrationDetailsModel::find($request->user_id);
+    
+    
+            // $post->Annual_turnover = $request->Annual_turnover;
+            // $post->Current_assets = $request->Current_assets;
+            // $post->Current_liabilities = $request->Current_liabilities;
+            // $post->Current_ratio = $request->Current_ratio;
+            // $post->Relevant_specialisation = $request->Relevant_specialisation;
+            // $post->maximum_of_10_Projects_contracts = $request->maximum_of_10_Projects_contracts;
+            // $post->No_of_years_in_business = $request->No_of_years_in_business;
+            // $post->Number_of_employees = $request->Number_of_employees;
+            // $post->Other_employees = $request->Other_employees;
+    
+            
+            //     $save = $post->save();  
+    
+            //     return response()->json([
+            //         "status"=>"True",
+            //         "user_id"=>$user_id,
+            //         "message"=>"Capacity Information has updated successfully",
+            //     ]);
         }
 }
