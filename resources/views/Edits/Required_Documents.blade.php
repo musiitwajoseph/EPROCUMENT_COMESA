@@ -267,6 +267,12 @@
 
 							<input type="hidden" name="md_master_code_id" id="md_master_code_id" value={{$md_master_code_id}}>
 
+							@foreach ($Accessed_user as $item)
+								
+							
+							<input type="hidden" name="user_id" id="user_id" value={{$item->id}}>
+							@endforeach
+
 						<div class="formSep form-group">
 							<?php $counter = 1; ?>
 							@foreach ($Documents as $document)
@@ -310,6 +316,7 @@
 						$('#update_required_document_information').html('Updating...');
 
 						var md_master_code_id = $('#md_master_code_id').val();
+						var user_id = $('#user_id').val();
 
 							// Attachment Documents 
 							var form_data = new FormData();
@@ -317,7 +324,9 @@
 							var errors = new Array();
 
 							var Total_Documents = $('#Total_Documents').val();
+							var user_id = $('#user_id').val();
 
+							
 
 							for(var i=1; i<=Total_Documents; i++){
 								if(!$('#attachment'+i).val()){
@@ -326,6 +335,7 @@
 									form_data.append('attachment'+i, $('#attachment'+i).prop('files')[0]);
 								}
 								form_data.append('md_master_code_id', md_master_code_id);
+								form_data.append('user_id', user_id);
 							}
 
 						$.ajax({
@@ -341,7 +351,7 @@
 									alert(data)
 								if(data.status){	
 									alert(data.message);
-									location.replace('/update-required-document-data')
+									location.replace('/UpdatedFinancialBusiness/'+data.user_id)
 								}else{										
 									$('#firstForm').show();
 									$('#otpForm').hide();

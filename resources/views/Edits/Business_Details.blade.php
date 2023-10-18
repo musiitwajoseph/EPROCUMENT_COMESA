@@ -152,10 +152,11 @@
                                 <div class="col-md-3">								
                                 <label for="" class="boldTitle padMarg">Country :</label>  
                                 <select name="country" id="country"  class="input-sm form-control">		
+                                    <option data-countryCode="GB" value={{$User_country}}>{{$user_country_name}}</option>
                                     
                                     @foreach ($countrylist as $country)
-
-                                    <option data-countryCode="GB" value={{$country->PhoneCode}} >{{$country->Name}}</option>
+                                    
+                                    <option data-countryCode="GB" value={{$country->PhoneCode}}>{{$country->Name}}</option>
                                     @endforeach
 
                                 </select>
@@ -165,9 +166,9 @@
                                 <div class="col-md-3">
                                     <label for="" class="boldTitle padMarg">Category :</label>
                                     <select name="Category" id="Category"  class="input-sm form-control">
-                                        <option value="">Select Category</option>
+                                        <option value={{$db_category}}>{{$user_selected_category}}</option>
                                         @foreach ($categories as $item)
-                                            <option value="{{$item->md_id}}">{{$item->md_name}}</option>
+                                            <option value={{$item->md_id}}>{{$item->md_name}}</option>
                                         @endforeach
 
                                     </select>	
@@ -176,14 +177,12 @@
                                 <div class="col-md-3">
                                     <label for="" class="boldTitle padMarg">Sub-category :</label>
                                     <select name="SubCategory" id="SubCategory"  class="input-sm form-control">
-                                        <option value="Cereals">Foods</option>
+                                        <option value={{$db_sub_category}}>{{$user_selected_sub_category}}</option>
                                     </select>
                                         
                                 </div>
 
                                 @foreach ($Accessed_user as $item)
-                                    
-                               
                                 <div class="col-md-3">
                                     <label for="" class="boldTitle padMarg">Business Name :</label>
                                     <input type="text" name="BusinessName" id="BusinessName"  class="input-sm form-control" value="{{$item->BusinessName}}" required>
@@ -195,8 +194,9 @@
                                         <div class="col-md-3 mt-3 pt-4">
                                             <label for="" class="boldTitle padMarg" class="padMarg">Type of Business :</label>
                                             <select type="text" name="Type_of_Business" id="Type_of_Business" class="input-sm form-control">
+                                                <option value={{$db_type_of_business}}>{{$user_selected_type_of_business}}</option>
                                                 @foreach ($Type_of_Business as $item)
-                                            <option value="{{$item->md_id}}">{{$item->md_name}}</option>
+                                                 <option value="{{$item->md_id}}">{{$item->md_name}}</option>
                                             @endforeach
 
 
@@ -206,7 +206,7 @@
                                         <div class="col-md-3 mt-3 pt-4">
                                             <label for="" class="boldTitle padMarg" class="padMarg">Nature of Business :</label>
                                             <select type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control">
-                                                <option value="Zambia">Cereals</option>
+                                                <option value="Cereals">Cereals</option>
                                                 <option value="saab">Cosmetics</option>
                                                 <option value="mercedes">Mercedes</option>
                                                 <option value="audi">Audi</option>
@@ -549,7 +549,7 @@
 
 									if(data.status){
                                         alert(data.message);
-										location.replace('/UpdatedBusiness')
+										location.replace('/UpdatedBusiness/'+data.user_id)
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();

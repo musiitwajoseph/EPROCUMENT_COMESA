@@ -1,0 +1,12 @@
+1.maximum number of projects tabular format
+
+1.Links should have labels ---- done
+2.name in the self declaration rule: --- done
+3.rule and regulations list --done
+======================================
+check if all data is saving 
+	-supplier registration	
+	-All updates that are saving 
+check if all data is retrieved
+	-After suppplier registration	
+	-After all updates

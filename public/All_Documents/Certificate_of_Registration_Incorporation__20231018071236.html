@@ -1,0 +1,117 @@
+
+$table->id();
+$table->text('country')->default('null');
+$table->text('BusinessName')->default('null');
+$table->text('Certificate_of_Registration')->default('null');
+$table->text('Tax_Compliance_no')->default('null');
+$table->text('Tax_compliance_certificate_expiration')->default('null');
+$table->text('physical_address')->default('null');
+$table->text('company_email')->default('null');
+$table->text('contact_person')->default('null');
+$table->text('company_telephone')->default('null');
+$table->text('contact_person_telephone')->default('null');
+$table->text('Account_name')->default('null');
+$table->text('Bank_name')->default('null');
+$table->text('Bank_Account')->default('null');
+$table->text('Bank_Branch')->default('null');
+$table->text('Branch_code')->default('null');
+$table->text('Account_currency')->default('null');
+$table->text('company_financial_contact')->default('null');
+$table->text('contact_person_email')->default('null');
+$table->text('contact_person_phone_number')->default('null');
+$table->text('No_of_years_in_business')->default('null');
+$table->text('Number_of_employees')->default('null');
+
+//  $table->text('certificate_of_Registration_Incorporation')->default('null');
+//  $table->text('certificate_of_Registration_Incorporation_Attach')->default('null');
+//  $table->text('KRA_PIN_certificate')->default('null');
+//  $table->text('KRA_PIN_certificate_Attach')->default('null');
+//  $table->text('Tax_Compliance_certificate')->default('null');
+//  $table->text('Tax_Compliance_certificate_Attach')->default('null');
+//  $table->text('Article_of_Association')->default('null');
+//  $table->text('Article_of_Association_Attach')->default('null');
+//  $table->text('Bank_Refrence_letter')->default('null');
+//  $table->text('Bank_Refrence_letter_Attach')->default('null');
+//  $table->text('Audited_financial_reports')->default('null');
+//  $table->text('Audited_financial_reports_Attach')->default('null');
+//  $table->text('Recommendation_letters_from_current_clients')->default('null');
+//  $table->text('Recommendation_letters_from_current_clients_Attach')->default('null');
+//  $table->text('LPOs_offering_similar_services')->default('null');
+//  $table->text('LPOs_offering_similar_services_Attach')->default('null');
+//  $table->text('Single_Business_Permit')->default('null');
+//  $table->text('Single_Business_Permit_Attach')->default('null');
+//  $table->text('Manufacturers_authorization_letter')->default('null');
+//  $table->text('Manufacturers_authorization_letter_Attach')->default('null');
+//  $table->text('Practicing_certification')->default('null');
+//  $table->text('Practicing_certification_Attach')->default('null');
+
+$table->timestamps();
+
+
+=======================CONTROLLERS=================================
+
+
+'BusinessName'=>'required',
+'Certificate_of_Registration'=>'required',
+'Tax_compliance_certificate_expiration'=>'required',
+'Revenue_Authority_Taxpayers_Identification_Number'=>'required',
+'company_email'=>'required',
+'physical_address'=>'required',
+'National_Pension_Authority'=>'required',
+'NAPSA_Compliance_Status_certificate'=>'required',
+'contact_person'=>'required',
+'company_telephone'=>'required',
+'contact_person_telephone'=>'required',
+'Bank_name'=>'required',
+'Bank_Account'=>'required',
+'Bank_Branch'=>'required',
+'Branch_code'=>'required',
+'Account_currency'=>'required',
+'company_financial_contact'=>'required',
+'contact_person_email'=>'required',
+'contact_person_phone_number'=>'required',
+'Annual_turnover'=>'required',
+'Current_assets'=>'required',
+'Current_liabilities'=>'required',
+'Current_ratio'=>'required',
+'Relevant_specialisation'=>'required',
+'maximum_of_10_Projects_contracts'=>'required',
+'No_of_years_in_business'=>'required',
+'Number_of_employees'=>'required',
+'Other_employees'=>'required',
+
+
+// Attachments  Documents Header
+
+//  'certificate_of_Registration_Incorporation'=>'required',
+//  'Revenue_Authority_TPIN_Certificate'=>'required',
+//  'Tax_Compliance_certificate'=>'required',
+//  'Article_of_Association'=>'required',
+//  'Company_profile'=>'required',
+//  'Bank_Refrence_letter'=>'required',
+//  'Audited_financial_reports'=>'required',
+//  'Recommendation_letters_from_current_clients'=>'required',
+//  'LPOs_offering_similar_services'=>'required',
+//  'A_balance_sheet_account'=>'required',
+//  'Labour_office_Registration_No'=>'required',
+//  'Labour_Office_Compliance_Status_certificate'=>'required',
+//  'Certificate_of_completion_delivery'=>'required',
+
+// Attachments  Documents
+
+// 'certificate_of_Registration_Incorporation_Attach'=>'required|mimes:pdf,zip',
+// 'Revenue_Authority_TPIN_Certificate_Attach'=>'required|mimes:pdf,zip',
+// 'Tax_Compliance_certificate_Attach'=>'required|mimes:pdf,zip',
+// 'Article_of_Association_Attach'=>'required|mimes:pdf,zip',
+// 'Company_profile_Attach'=>'required|mimes:pdf,zip',
+// 'Bank_Refrence_letter_Attach'=>'required|mimes:pdf,zip',
+// 'Audited_financial_reports_Attach'=>'required|mimes:pdf,zip',
+// 'Single_Business_Permit_Attach'=>'mimes:pdf,zip',
+// 'Manufacturers_authorization_letter_Attach'=>'mimes:pdf,zip',
+// 'Practicing_certification_Attach'=>'mimes:pdf,zip',
+// 'Recommendation_letters_from_current_clients_Attach'=>'required|mimes:pdf,zip',
+// 'LPOs_offering_similar_services_Attach'=>'required|mimes:pdf,zip',
+// 'A_balance_sheet_account_Attach'=>'required|mimes:pdf,zip',
+// 'Labour_office_Registration_No_Attach'=>'required|mimes:pdf,zip',
+// 'Labour_Office_Compliance_Status_certificate_Attach'=>'required|mimes:pdf,zip',
+// 'Certificate_of_completion_delivery_Attach'=>'required|mimes:pdf,zip',

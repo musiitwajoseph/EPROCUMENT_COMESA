@@ -319,14 +319,14 @@
 										<div class="mt-4 pt-4 padMarg">
 										<div class="col-md-6">
 											<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3)  :</label>
-											<textarea name="Relevant_specialisation" value={{$item->Relevant_specialisation}} id="Relevant_specialisation " class="input-sm form-control" cols="30" rows="10" required></textarea>
+											<textarea  name="Relevant_specialisation" id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea>
 										</div>
 										@endforeach
 
 										<div class="col-md-6">
 											<label for="" class="boldTitle padMarg">b)	A maximum of 10 Projects/contracts (For each, state: Country projects executed, Overall contract value (US$); Proportion carried out by legal entity; Number of personnel provided; Name of client; and Origin of funding)</label>
 						
-											<textarea name="maximum_of_10_Projects_contracts" value={{$item->maximum_of_10_Projects_contracts}} id="maximum_of_10_Projects_contracts" class="input-sm form-control" cols="30" rows="10" required></textarea>
+											<textarea name="maximum_of_10_Projects_contracts" id="maximum_of_10_Projects_contracts" class="input-sm form-control" cols="30" rows="10" value={{$item->maximum_of_10_Projects_contracts}} required></textarea>
 										</div>
 									</div>
 								<div class="formSep form-group">	
@@ -360,7 +360,7 @@
 							var Current_assets = $('#Current_assets').val();
 							var Current_liabilities = $('#Current_liabilities').val();
 							var Current_ratio = $('#Current_ratio').val();
-							var Relevant_specialisation  = $('#Relevant_specialisation ').val();
+							var Relevant_specialisation  = $('#Relevant_specialisation').val();
 							var maximum_of_10_Projects_contracts  = $('#maximum_of_10_Projects_contracts').val();
 							var No_of_years_in_business  = $('#No_of_years_in_business').val();
 							var Number_of_employees  = $('#Number_of_employees ').val();
@@ -433,7 +433,7 @@
 
 								if(data.status){	
 									alert(data.message);
-									location.replace('/UpdatedFinancialBusiness')
+									location.replace('/UpdatedFinancialBusiness/'+data.user_id)
 								}else{										
 									$('#firstForm').show();
 									$('#otpForm').hide();

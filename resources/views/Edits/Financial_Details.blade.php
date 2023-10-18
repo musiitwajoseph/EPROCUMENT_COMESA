@@ -204,6 +204,15 @@
                         </div>
 						@endforeach
 
+
+                              @foreach ($Accessed_user as $item)
+                                <div class="col-md-3">
+                                    <label for="" class="boldTitle padMarg">Bank Account number :</label>
+                                    <input type="text" name="Bank_Account" id="Bank_Account" value="{{$item->Bank_Account}}" class="input-sm form-control" required>
+                                </div>
+								@endforeach
+
+
 								@foreach ($Accessed_user as $item)
                                 <div class="col-md-3">
                                     <label for="" class="boldTitle padMarg">Bank name :</label>
@@ -211,13 +220,6 @@
                                 </div>
 								@endforeach
 
-
-								@foreach ($Accessed_user as $item)
-                                <div class="col-md-3">
-                                    <label for="" class="boldTitle padMarg">Bank Account number :</label>
-                                    <input type="text" name="Bank_Account" id="Bank_Account" value="{{$item->Bank_Account}}" class="input-sm form-control" required>
-                                </div>
-								@endforeach
 
 
 								@foreach ($Accessed_user as $item)
@@ -383,7 +385,7 @@
 
 								if(data.status){	
 									alert(data.message);
-									location.replace('/UpdatedFinancialBusiness')
+									location.replace('/UpdatedFinancialBusiness/'+data.user_id)
 								}else{										
 									$('#firstForm').show();
 									$('#otpForm').hide();

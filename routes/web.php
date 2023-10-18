@@ -49,16 +49,22 @@ Route::post('update-capacity-supplier-data',[COMESA_CONTROLLER::class, 'updateCa
 
 
 
-Route::get('UpdatedBusiness',[COMESA_CONTROLLER::class, 'redirectedPage']);
+Route::get('UpdatedBusiness/{id}',[COMESA_CONTROLLER::class, 'redirectedPage']);
 Route::post('LoadUpdatedInformation',[COMESA_CONTROLLER::class,'LoadUpdatedData']);
 
-Route::get('UpdatedFinancialBusiness',[COMESA_CONTROLLER::class, 'redirectedFinancialPage']);
+Route::get('UpdatedFinancialBusiness/{id}',[COMESA_CONTROLLER::class, 'redirectedFinancialPage']);
 Route::post('LoadFinancialUpdatedInformation',[COMESA_CONTROLLER::class,'LoadFinancialUpdatedData']);
 // =====================================
 
-// Route::get('edit-capacity-documents',[COMESA_CONTROLLER::class,'Updated_Capacity_Documents']);
-
-
-
-Route::get('edit-required-documents',[COMESA_CONTROLLER::class,'Update_Required_Documents']);
+Route::get('edit-required-documents/{id}',[COMESA_CONTROLLER::class,'Update_Required_Documents']);
 Route::post('update-required-document-data',[COMESA_CONTROLLER::class, 'updateRequiredDetailsData']);
+
+
+// Download Store pdf Attachments from suppliers
+
+Route::get('/download/{file}',[COMESA_CONTROLLER::class,'download']);
+Route::get('/download/{file}',[COMESA_CONTROLLER::class,'download']);
+
+// Submitting form 
+
+Route::post('update-and-submit',[COMESA_CONTROLLER::class,'SupplierFormSubmission']);

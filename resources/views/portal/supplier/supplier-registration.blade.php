@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Gebo Admin v3.1</title>
+        <title>COMESA E::Procurement</title>
 
         <!-- Bootstrap framework -->
             <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -39,6 +39,9 @@
         <!-- favicon -->
             <link rel="shortcut icon" href="/assets/favicon.ico" />
 
+			
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/swal.min.js"></script>
 
 			<meta name="csrf-token" content="{{ csrf_token() }}"/>
 
@@ -365,7 +368,7 @@
 												<div class="col-md-3 mt-3 pt-4">
 													<label for="" class="boldTitle padMarg" class="padMarg">Nature of Business :</label>
 													<select type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control">
-														<option value="Zambia">Cereals</option>
+														<option value="Cereals">Cereals</option>
 														<option value="saab">Cosmetics</option>
 														<option value="mercedes">Mercedes</option>
 														<option value="audi">Audi</option>
@@ -405,12 +408,12 @@
 		
 										<div class="padMarg">
 											<div class="col-md-3 mt-3 pt-4">
-												<label for="" class="boldTitle"  id="National_Pension_Authority_label">National Pension Authority (NPSA) Registration No : </label>
+												<label for="" class="boldTitle"  id="National_Pension_Authority_Registration_Number_label">National Pension Authority (NPSA) Registration No : </label>
 												<input type="text" name="National_Pension_Authority" id="National_Pension_Authority" class="input-sm form-control" required>
 											</div>
 		
 											<div class="col-md-6 mt-3 pt-4">
-												<label for="" class="boldTitle padMarg" style="text-align: left" id="NAPSA_Compliance_Status_certificate _label">NAPSA Compliance Status certificate  :</label>
+												<label for="" class="boldTitle padMarg" style="text-align: left" id="NAPSA_Compliance_Status_certificate_label">NAPSA Compliance Status certificate  :</label>
 												<input type="text" name="NAPSA_Compliance_Status_certificate" id="NAPSA_Compliance_Status_certificate" class="input-sm form-control" required>
 											</div>
 		
@@ -570,8 +573,8 @@
 									<div class="formSep form-group">
 										<div class="mt-4 pt-4 padMarg">
 										<div class="col-md-6">
-											<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3)  :</label>
-											<textarea name="Relevant_specialisation " id="Relevant_specialisation " class="input-sm form-control" cols="30" rows="10" required></textarea>
+											<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3) :</label>
+											<textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea>
 										</div>
 
 										<div class="col-md-6">
@@ -582,9 +585,6 @@
 									</div>
 
 								<div class="formSep form-group">
-										
-										
-										
 
 									
 							</div>
@@ -592,7 +592,7 @@
 						</div>
 
 							<div class="tab-pane" id="tab6">
-							<h2 class="heading padMarg" >style="font-weight: bold"4.Required Documents </h2>
+							<h2 class="heading padMarg" style="font-weight: bold"4>.Required Documents </h2>
 
 						<div class="formSep form-group">
 							<?php $counter = 1; ?>
@@ -620,7 +620,7 @@
 						</div>
 
 						<div id="nextText_000" class="pull-right">
-							<button type="button" id="Supplier_Registration_Details" class="btn btn-primary">
+							<button type="button" id="Supplier_Registration_Details_" class="btn btn-primary">
 								Save and Complete <i class="glyphicon glyphicon-chevron-right"></i>
 							</button>
 						</div>
@@ -658,37 +658,42 @@
 													</a>
 												</div>
 												<div class="panel-collapse collapse" id="collapseOne">
-													<div class="panel-body" style="font-weight: bold;font-size: 1em;">
-														<p>a)	I/We are nationals of  ……………………………………………………. (state nation) therefore eligible and that I/We have legal capacity to enter into contract and have sufficient experience to undertake this assignment;</p>
-														<br>
-														<p>b)	The information given above is true and further state that I/We also understand that payment of any required fees does not guarantee inclusion into the supplier database;</p>
-														<br>
-														<p>c)	I/We are not insolvent/in receivership, bankrupt or wound up, business activities not suspended/not subject to legal proceedings. I/We/ have not been convicted of offences concerning professional conduct by a judgment which have the force of res judicata; (i.e. against which no appeal is possible);</p>
-														<br>
-														<p>d)	I/We have not been the subject of a judgment which has the force of res judicata for fraud, corruption, involvement in a criminal organisation or any other illegal activity detrimental to the COMESA Secretariat's financial interests; or are not being currently subject to an administrative penalty;</p>
-														<br>
-														<p>e)	if the legal, technical, financial position, or the contractual capacity of the firm changes, we commit ourselves to inform you and acknowledge your sole right to review the pre-qualification made;</p>
-														<br>
-														<p>f)	I/We understand that I/We shall be disqualified should the information submitted here for purpose of seeking qualification be materially inaccurate or materially incomplete;</p>
-														<br>
-														<p>g)	I/We give COMESA the authority to seek any other references concerning my/Our Company from whatever sources deemed relevant; </p>
-														<br>
-														<p>h)	if pre-qualified, I/we undertake to participate in submission of a tender or quotation when called upon to do so; </p>
-														<br>
-														<p>i)	I/We have fulfilled obligations related to the payments of social security contributions and the payment of taxes in accordance with the legal provisions of the country in which I am/we are established or with those countries where the contract is to be performed;</p>
-														<br>
-														<p>j)	I/We are aware that, for the purposes of safeguarding the COMESA’s financial interests, our personal data may be transferred to internal audit services, of COMESA.</p>
-														<br>
-														<p>k)	I/We undertake, if required, to provide the proof usual under the law of the country in which we are effectively established that we do not fall into any of the exclusion situations. The date on the evidence or documents provided will be no earlier than 1 year before the date of submission of the tender and, in addition, we will provide a statement that our situation has not altered in the period which has elapsed since the evidence in question was drawn up.</p>
-														<br>
-														<p>l)	I/We also undertake, if required, to provide evidence of our financial and economic standing and our technical and professional capacity according to the requirements of this call for Prequalification.</p>
-														<br>
-				
+													<div class="panel-body" style="font-size: 1em;">
+
+
+														<ol type="a">
+										
+														<p><li>	I/We are nationals of  <span id="db_country"> </span>  therefore eligible and that I/We have legal capacity to enter into contract and have sufficient experience to undertake this assignment;</li></p>
 														
-															<input type="checkbox" id="Acceept" name="Acceept" value="Acceept" >
-															<label for="AcceeptRules" style="font-weight: bold;color: #337ab7;"> Read and accept the above rules and regulations before you submit your Application </label><br>
+														<p><li>	The information given above is true and further state that I/We also understand that payment of any required fees does not guarantee inclusion into the supplier database;</li></p>
+														
+														<p><li>	I/We are not insolvent/in receivership, bankrupt or wound up, business activities not suspended/not subject to legal proceedings. I/We/ have not been convicted of offences concerning professional conduct by a judgment which have the force of res judicata; (i.e. against which no appeal is possible);</li></p>
+														
+														<p><li>	I/We have not been the subject of a judgment which has the force of res judicata for fraud, corruption, involvement in a criminal organisation or any other illegal activity detrimental to the COMESA Secretariat's financial interests; or are not being currently subject to an administrative penalty;</li></p>
+														
+														<p><li>	if the legal, technical, financial position, or the contractual capacity of the firm changes, we commit ourselves to inform you and acknowledge your sole right to review the pre-qualification made;</li></p>
+														
+														<p><li>	I/We understand that I/We shall be disqualified should the information submitted here for purpose of seeking qualification be materially inaccurate or materially incomplete;</li></p>
+														
+														<p><li>	I/We give COMESA the authority to seek any other references concerning my/Our Company from whatever sources deemed relevant; </li></p>
+														
+														<p><li>	if pre-qualified, I/we undertake to participate in submission of a tender or quotation when called upon to do so;</li></p>
+														
+														<p><li>	I/We have fulfilled obligations related to the payments of social security contributions and the payment of taxes in accordance with the legal provisions of the country in which I am/we are established or with those countries where the contract is to be performed;</li></p>
+														
+														<p><li>	I/We are aware that, for the purposes of safeguarding the COMESA’s financial interests, our personal data may be transferred to internal audit services, of COMESA</li></p>
+														
+														<p><li>	I/We undertake, if required, to provide the proof usual under the law of the country in which we are effectively established that we do not fall into any of the exclusion situations. The date on the evidence or documents provided will be no earlier than 1 year before the date of submission of the tender and, in addition, we will provide a statement that our situation has not altered in the period which has elapsed since the evidence in question was drawn up.</li></p>
+														
+														<p><li>	I/We also undertake, if required, to provide evidence of our financial and economic standing and our technical and professional capacity according to the requirements of this call for Prequalification</li></p>
+														<br>
 				
+															
+															
+															<p ><input type="checkbox" id="Acceept_rules_and_regulations" name="Acceept_rules_and_regulations"  required> &nbsp; Read and accept the above rules and regulations before you submit your Application</p>
+															
 				
+														</ol>
 													</div>
 												</div>
 											</div>
@@ -704,17 +709,37 @@
 							<button type="button" class="btn btn-primary">
 								<i class="glyphicon glyphicon-chevron-left"></i> Back 
 							</button>
+
+							<button type="button" class="btn btn-primary pull-right" id="final_submission"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
 						</div>
+						
+						{{-- <button class="finish"></button> --}}
 					</fieldset>
 
 					
-                    <button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
-                </form>
+					<input type="hidden" value="" id="unique_id_db">
+					<input type="hidden" name="" class="finish">
+				</form>
 				
-				<script src="/assets/js/jquery.min.js"></script>
 
 				
 				<script type="text/javascript">
+
+				$(document).ready(function(){
+						$('#final_submission').click(function(){
+
+							var check = false;
+							if($('#Acceept_rules_and_regulations').prop('checked') == true ){
+								check = $('#Acceept_rules_and_regulations').val();
+							}
+
+							if(check == 0){
+								alert("You have to accept the rules and regulations before you submit");
+								// return ;
+							}
+
+						});
+					});
 
 					$(document).ready(function(){
 						$('#validateEmail').click(function(){
@@ -851,9 +876,9 @@
 					// Collect Supplier Details:
 
 					$(document).ready(function(){
-						$('#Supplier_Registration_Details').click(function(){
+						$('#Supplier_Registration_Details_').click(function(){
 
-							$('#Supplier_Registration_Details').html('Loading...');
+							//$('#Supplier_Registration_Details').html('Loading...');
 
 							var country = $('#country').val();
 							var Category = $('#Category').val();
@@ -905,167 +930,133 @@
 									form_data.append('attachment'+i, $('#attachment'+i).prop('files')[0]);
 								}
 							}
-
 							
 							if( Category  == "" ){
-								alert("Category Field is required");
-								window.location.href = "supplier-registration";
+								errors.push("Category Field is required");
 							}
-							else if(SubCategory == ""){
-									alert("Sub category Field is required");
-								window.location.href = "supplier-registration";
-								}
+							if(SubCategory == ""){
+								errors.push("Sub category Field is required");								
+							}
 
-								else if(Type_of_Business == ""){
-									alert("Type of Business Field is required");
-								window.location.href = "supplier-registration";
-								}
+							if(Type_of_Business == ""){
+								errors.push("Type of Business Field is required");								
+							}
 
-								else if(Nature_of_Business == ""){
-									alert("Nature of Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(BusinessName == ""){
-									alert("Business Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Certificate_of_Registration == ""){
-									alert("Ceritificate of Registration Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Tax_compliance_certificate_expiration == ""){
-									alert("Tax compliance Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Revenue_Authority_Taxpayers_Identification_Number == ""){
-									alert("Revenue Authority Taxpayers Identification Number Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(company_email == ""){
-									alert("Company Email Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(physical_address == ""){
-									alert("Physical Address Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-
-								else if(National_Pension_Authority == ""){
-									alert("National Pension Authority Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(NAPSA_Compliance_Status_certificate == ""){
-									alert("NAPSA Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(contact_person == ""){
-									alert("Contact Person Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-
-								else if(company_telephone == ""){
-									alert("Company Telephone Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(contact_person_telephone == ""){
-									alert("Contact Person Telephone Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Account_name == ""){
-									alert("Account Name Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Bank_name == ""){
-									alert("Bank Name Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Bank_Account == ""){
-									alert("Bank Account Field is required");
-								window.location.href = "supplier-registration";
-								}
-
-								else if(Bank_Branch == ""){
-									alert("Bank Branch Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Branch_code == ""){
-									alert("Branch Code Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Account_currency == ""){
-									alert("Account Currency Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(company_financial_contact == ""){
-									alert("Company Financial Contact Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(contact_person_email == ""){
-									alert("Contact person Email Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(contact_person_phone_number == ""){
-									alert("contact person phone number Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Annual_turnover == ""){
-									alert("Annual Turnover Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Current_assets == ""){
-									alert("Current Assets Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Current_liabilities == ""){
-									alert("Current liabilities Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Current_ratio == ""){
-									alert("Current Ratio Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Relevant_specialisation == ""){
-									alert("Relevant Specialisation Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(maximum_of_10_Projects_contracts == ""){
-									alert("Maximum of 10 projects Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(No_of_years_in_business == ""){
-									alert("Number of years Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Number_of_employees == ""){
-									alert("Number of Employees Field is required");
-								window.location.href = "supplier-registration";
-								}
-								else if(Other_employees == ""){
-									alert("Other Employess Field is required");
-								window.location.href = "supplier-registration";
-								}
-								
+							if(Nature_of_Business == ""){
+								errors.push("Nature of Field is required");
 							
-								if(errors.length){
-								alert(errors.join('\n'));
-								window.location.href = "supplier-registration";
-								$('#Supplier_Registration_Details').prop('disabled','false');
+							}
+
+							if(BusinessName == ""){
+								errors.push("Business Field is required");								
+							}
+
+							if(Certificate_of_Registration == ""){
+								errors.push("Ceritificate of Registration Field is required");								
+							}
+
+							if(Tax_compliance_certificate_expiration == ""){
+								errors.push("Tax compliance Field is required");								
+							}
+
+							if(Revenue_Authority_Taxpayers_Identification_Number == ""){
+								errors.push("Revenue Authority Taxpayers Identification Number Field is required");								
+							}
+
+							if(company_email == ""){
+								errors.push("Company Email Field is required");								
+							}
+
+							if(physical_address == ""){
+								errors.push("Physical Address Field is required");								
+							}
+
+
+							if(National_Pension_Authority == ""){
+								errors.push("National Pension Authority Field is required");								
+							}
+
+							if(NAPSA_Compliance_Status_certificate == ""){
+								errors.push("NAPSA Field is required");								
+							}
+
+							if(contact_person == ""){
+								errors.push("Contact Person Field is required");								
+							}
+
+
+							if(company_telephone == ""){
+								errors.push("Company Telephone Field is required");								
+							}
+
+							if(contact_person_telephone == ""){
+								errors.push("Contact Person Telephone Field is required");								
+							}
+
+							if(Account_name == ""){
+								errors.push("Account Name Field is required");								
+							}
+
+							if(Bank_name == ""){
+								errors.push("Bank Name Field is required");								
+							}
+
+							if(Bank_Account == ""){
+								errors.push("Bank Account Field is required");								
+							}
+
+							if(Bank_Branch == ""){
+								errors.push("Bank Branch Field is required");								
+							}
+							if(Branch_code == ""){
+								errors.push("Branch Code Field is required");								
+							}
+							if(Account_currency == ""){
+								errors.push("Account Currency Field is required");								
+							}
+							if(company_financial_contact == ""){
+								errors.push("Company Financial Contact Field is required");								
+							}
+							if(contact_person_email == ""){
+								errors.push("Contact person Email Field is required");								
+							}
+							if(contact_person_phone_number == ""){
+								errors.push("contact person phone number Field is required");								
+							}
+							if(Annual_turnover == ""){
+								errors.push("Annual Turnover Field is required");								
+							}
+							if(Current_assets == ""){
+								errors.push("Current Assets Field is required");								
+							}
+							if(Current_liabilities == ""){
+								errors.push("Current liabilities Field is required");								
+							}
+							if(Current_ratio == ""){
+								errors.push("Current Ratio Field is required");								
+							}
+							if(Relevant_specialisation == ""){
+								errors.push("Relevant Specialisation Field is required");								
+							}
+							if(maximum_of_10_Projects_contracts == ""){
+								errors.push("Maximum of 10 projects Field is required");								
+							}
+							if(No_of_years_in_business == ""){
+								errors.push("Number of years Field is required");								
+							}
+							if(Number_of_employees == ""){
+								errors.push("Number of Employees Field is required");								
+							}
+							if(Other_employees == ""){
+								errors.push("Other Employess Field is required");								
+							}
 								
-								
+											
+							
+							if(errors.length){
+								swal('Error',errors.join('\n'),'error');
+								$('#Supplier_Registration_Details').attr('disabled','false');
+								return false;
 							}
 
 
@@ -1116,9 +1107,16 @@
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 								url			:'SupplierRegistration-Details',
 								success		:function(data){
-									if(data.status){
+									if(data.status){	
+										alert(data.message);							
 										$('form').stepy('step',3);
 										$('.supplier-submitted-details').html(data.details);
+										$('#db_country').html(data.submited_country);
+										// var x = $("#unique_id_db").val(data);
+										
+										// $('#db_country').html(data.unique_id);
+										// $('.cart_total').html( data.cart_total );
+										// $('#unique_id_db').attr('value', data.unique_id)
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();
@@ -1132,13 +1130,32 @@
 						});
 					});
 
-
 					$(document).ready(function(){
-						$('#Supplier_Registration_Details').click(function(){
+						$('#final_submission').click(function(){
+
+							$('#final_submission').html('Submitting...');
+							$('#final_submission').attr('disabled', true);
+
+							var check = false;
+							if($('#Acceept_rules_and_regulations').prop('checked') == true ){
+								check = $('#Acceept_rules_and_regulations').val();
+							}
+
+							if(check == 0){
+								alert("You have to accept the rules and regulations before you submit");
+							}
+							else{
+								status = $('#Acceept_rules_and_regulations').val();
+								ididid = $('#unique_id_db').val();
+
+								alert(ididid);
+
+								var form_data = new FormData();
+								form_data.append('status', status);
+								
 							
-							var form_data = new FormData();
-							form_data.append('x','x');
-							$.ajax({
+
+								$.ajax({
 								type: "post",
 								processData: false,
 								contentType: false,
@@ -1146,17 +1163,55 @@
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 
-								url			:'/fetch-supplier-data',
+								url			:'/update-and-submit',
 								success		:function(data){
-
+									
+									if(data.status){
+										$('#firstForm').hide();
+										$('#otpForm').show();
+										$('#otpMessage').html(data.message);
+										// redirectBack();
+									}else{										
+										$('#firstForm').show();
+										$('#otpForm').hide();
+									}
+									
 								},
-								error: function(data)
+								error: function($data)
 								{
-									$('body').html(JSON.stringify(data, null, 4));
+									alert(data);
+	
 								}
 							});
-						});
+						}
 					});
+				});
+
+
+					// $(document).ready(function(){
+					// 	$('#Supplier_Registration_Details').click(function(){
+							
+					// 		var form_data = new FormData();
+					// 		form_data.append('x','x');
+					// 		$.ajax({
+					// 			type: "post",
+					// 			processData: false,
+					// 			contentType: false,
+					// 			cache: false,
+					// 			data		: form_data,								
+					// 			headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+
+					// 			url			:'/fetch-supplier-data',
+					// 			success		:function(data){
+
+					// 			},
+					// 			error: function(data)
+					// 			{
+					// 				$('body').html(JSON.stringify(data, null, 4));
+					// 			}
+					// 		});
+					// 	});
+					// });
 
 
 					$(document).ready(function(){
@@ -1192,11 +1247,15 @@
 
 											$("#Tax_Compliance_certificate_expiration_label").text("ZRA Tax compliance certificate expiration date");
 
-											
+											$("#NAPSA_Compliance_Status_certificate_label").text("NAPSA Compliance Status certificate :");
+
+											$("#National_Pension_Authority_Registration_Number_label").text("National Pension Authority (NPSA) Registration No :");
 										}
 										else{
 											$("#Tax_Compliance_no_label").text("Revenue Authority Taxpayer’s Identification Number");
 											$("#Tax_Compliance_certificate_expiration_label").text("Tax compliance certificate expiration date :");
+											$("#NAPSA_Compliance_Status_certificate_label").text(" Compliance Status certificate :");
+											$("#National_Pension_Authority_Registration_Number_label").text("National Pension Authority Registration No :");
 										}
 
 									}else{										

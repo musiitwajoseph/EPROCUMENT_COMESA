@@ -312,24 +312,24 @@ class COMESA_CONTROLLER extends Controller
 
         // Storing other input files
 
-        $post->country = $request->country;
+         $country = $post->country = $request->country;
 
-        $request->country;
+         $request->country;
         
-        $post->Category = $request->Category;
-        $post->SubCategory = $request->SubCategory;
-        $post->Type_of_Business = $request->Type_of_Business;    
-        $post->Nature_of_Business = $request->Nature_of_Business;
-        $post->BusinessName = $request->BusinessName;
-        $post->Certificate_of_Registration = $request->Certificate_of_Registration;
-        $post->Tax_compliance_certificate_expiration = $request->Tax_compliance_certificate_expiration; 
-        $post->Revenue_Authority_Taxpayers_Identification_Number = $request->Revenue_Authority_Taxpayers_Identification_Number;
-        $post->company_email = $request->company_email;
-        $post->physical_address = $request->physical_address;      
-        $post->National_Pension_Authority = $request->National_Pension_Authority;
-        $post->NAPSA_Compliance_Status_certificate = $request->NAPSA_Compliance_Status_certificate;
-        $post->contact_person = $request->contact_person;
-        $post->company_telephone = $request->company_telephone;
+         $post->Category = $request->Category;
+         $post->SubCategory = $request->SubCategory;
+         $post->Type_of_Business = $request->Type_of_Business;    
+         $informatics = $post->Nature_of_Business = $request->Nature_of_Business;
+         $post->BusinessName = $request->BusinessName;
+         $post->Certificate_of_Registration = $request->Certificate_of_Registration;
+         $post->Tax_compliance_certificate_expiration = $request->Tax_compliance_certificate_expiration; 
+         $post->Revenue_Authority_Taxpayers_Identification_Number = $request->Revenue_Authority_Taxpayers_Identification_Number;
+         $post->company_email = $request->company_email;
+         $post->physical_address = $request->physical_address;      
+         $post->National_Pension_Authority = $request->National_Pension_Authority;
+         $post->NAPSA_Compliance_Status_certificate = $request->NAPSA_Compliance_Status_certificate;
+         $post->contact_person = $request->contact_person;
+         $post->company_telephone = $request->company_telephone;
          $post->contact_person_telephone = $request->contact_person_telephone;
          $post->Account_name = $request->Account_name;
          $post->Bank_name = $request->Bank_name;
@@ -349,7 +349,9 @@ class COMESA_CONTROLLER extends Controller
          $post->No_of_years_in_business = $request->No_of_years_in_business;
          $post->Number_of_employees = $request->Number_of_employees;
          $post->Other_employees = $request->Other_employees;
-
+         $post->Reference = $ref;
+        
+      $save = $post->save();
 
         // @@@@@@@@@@@@@@@@                NOT NEEDED          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     
@@ -365,20 +367,47 @@ class COMESA_CONTROLLER extends Controller
                 $filename = preg_replace("/[^A-Za-z0-9\_\-\.]/i", '_', $doc_list[$i-1]).'__'.date('YmdHis').'.'.$file->getClientOriginalExtension();
                 $file->move('All_Documents',$filename);
                 $PostData->Attachments = $filename;
-                $PostData->References = $ref;
+                $PostData->documents_references = $ref;
                 $PostData->save();
             }
         }
 
       $email = $request->company_email;
 
-      $save = $post->save();
+      $user_unique_id  = DB::table('supplier_registration_details_models')->where('company_email',$email)->value('id');
 
-      $saved_data =  DB::table('supplier_registration_details_models')->where('company_email', $email)->get();
-      $saved_user_id =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('id');
+    //   dd($user_unique_id);
+   
+      $country_update = DB::table('Countries')->where('PhoneCode',$country)->value('Name');
+      
+      
+      $details = $this->supplierFetchData($email);
 
       
-      $saved_documents =  DB::table('documents')->where('References', $ref)->get();
+        if($save){
+            return response()->json([
+                "status" => True,
+                "message" => "Form has been submitted successfully",
+                "submited_country"=>$country_update,
+                "details" => $details,
+                "unique_id"=>$user_unique_id,
+            ]);
+        } 
+
+    }
+
+    
+
+    public function supplierFetchData($email){
+       
+      $saved_data =  DB::table('supplier_registration_details_models')->where('company_email', $email)->get();
+      $saved_user_id =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('id');
+      $ref =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Reference');
+      $T_O_B =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Type_of_Business');
+        
+     
+      
+       $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
     
       $details = '<table class="table table-bordered table-striped" id="smpl_tbl">';
 
@@ -388,13 +417,21 @@ class COMESA_CONTROLLER extends Controller
         $country = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
 
-        // $user_id = $saved_user_id;
-        // $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
+        $user_id = $data->Category;
+        $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
         
-        // return $category;
+
+        $type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+    
+       
+        // $data->SubCategory
+        $subcategory = DB::table('master_data')->select('md_code')->where('md_id','=',$user_id)->value('md_name');
+
+
+
         $details .= '<tr>';
         $details .= '<td colspan="3" "><h3>1.Business Details</h3></td>';
-        $details .= '<td>'.'<a href="edit-business-details/'.$saved_user_id.'" class="btn btn-primary">Edit Business Details</a>' .'</td>';
+        $details .= '<td>'.'<a href="/edit-business-details/'.$saved_user_id.'" class="btn btn-primary">Edit Business Details</a>' .'</td>';
         $details .= '</tr>'; 
 
        
@@ -407,8 +444,8 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';  
         $details .= '<td>'.$country.'</td>';
-        $details .= '<td>'.$data->Category.'</td>';
-        $details .= '<td>'.$data->SubCategory.'</td>';
+        $details .= '<td>'.$category.'</td>';
+        $details .= '<td>'.$subcategory.'</td>';
         $details .= '<td>'.$data->BusinessName.'</td>';
         $details .= '</tr>';  
 
@@ -421,7 +458,7 @@ class COMESA_CONTROLLER extends Controller
 
 
         $details .= '<tr>';  
-        $details .= '<td>'.$data->Type_of_Business.'</td>';
+        $details .= '<td>'.$type_of_business.'</td>';
         $details .= '<td>'.$data->Nature_of_Business.'</td>';
         $details .= '<td>'.$data->Certificate_of_Registration.'</td>';
         $details .= '<td>'.$data->Revenue_Authority_Taxpayers_Identification_Number.'</td>';
@@ -457,7 +494,7 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';
         $details .= '<td colspan="3"><h3>2.Financial Information</h3></td>';
-        $details .= '<td><a href="edit-financial-details/'.$saved_user_id.'" class="btn btn-primary">Edit Financial Details</a></t>';
+        $details .= '<td><a href="/edit-financial-details/'.$saved_user_id.'" class="btn btn-primary">Edit Financial Details</a></t>';
         $details .= '</tr>'; 
 
 
@@ -502,7 +539,7 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';
         $details .= '<td colspan="3"><h3>3.Capacity Levels</h3></td>';
-        $details .= '<td><a href="edit-capacity-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Capacity Levels</a></t>';
+        $details .= '<td><a href="/edit-capacity-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Capacity Levels</a></t>';
         
         $details .= '</tr>'; 
 
@@ -533,7 +570,7 @@ class COMESA_CONTROLLER extends Controller
         $details .= '<td>'.$data->No_of_years_in_business.'</td>';
         $details .= '<td>'.$data->Number_of_employees.'</td>';
         $details .= '<td>'.$data->Other_employees.'</td>';
-        $details .= '<td>'.$data->certificate_of_Registration_Incorporation.'</td>';
+        $details .= '<td>'.$data->Relevant_specialisation.'</td>';
         $details .= '</tr>';
 
         $details .= '<tr>';
@@ -547,13 +584,16 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';
         $details .= '<td colspan="3"><h3>4.Required Documents</h3></td>';
-        $details .= '<td><a href="#" class="btn btn-primary">Edit Required Documents</a></t>';
+        $details .= '<td><a href="/edit-required-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Required Documents</a></t>';
         $details .= '</tr>'; 
 
         $details .= '<tr>';
         $details .= '<td colspan="3">';
         foreach($saved_documents as $doc){
-            $details .= '<a href="Link'.'">'.$doc->Attachments.'</a><br/>';
+            
+            $details .= '<span>Attachment:</span>';
+            $details .= '<a href="/download/'.$doc->Attachments.'">'.$doc->Attachments.'</a><br/>';
+
         }
         $details .= '</td>';
         $details .= '</tr>';
@@ -562,31 +602,35 @@ class COMESA_CONTROLLER extends Controller
 
       $details .= "</table>";
 
-      $this->supplierFetchData($email);
+      return $details;
 
-        if($save){
-            return response()->json([
-                "status" => True,
-                "message" => "Form has been submitted successfully",
-                "details" => $details,
-            ]);
-        } 
-
-    }
-
-    
-
-    public function supplierFetchData(){
-
-       return  $data = SupplierRegistrationDetailsModel::all();
-
-        } 
+} 
 
         public function Edit_Business_Details(Request $request,$id){
 
         $countrylist = DB::select('select Name,PhoneCode from Countries');
 
         $Accessed_user =  DB::table('supplier_registration_details_models')->where('id', $id)->get();
+        
+        // Auto Insert Data when editing the Dropdowns
+        
+        $User_country =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+
+        $user_country_name =  DB::table('Countries')->where('PhoneCode', $User_country)->value('Name');
+            
+        $db_category =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        
+        $user_selected_category = DB::table('master_data')->where('md_id',$db_category)->value('md_name');
+       
+
+        $db_sub_category =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        
+        $user_selected_sub_category = DB::table('master_data')->select('md_code')->where('md_id','=',$db_sub_category)->value('md_name');
+            
+        $db_type_of_business =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $user_selected_type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$db_type_of_business)->value('md_name');
+      
+        
 
         //getting categories
         $categories = DB::table("master_data")
@@ -608,7 +652,9 @@ class COMESA_CONTROLLER extends Controller
         ->where('md_master_code_id',1032)
         ->get();
 
-            return  view('Edits.Business_Details',compact(['countrylist','Accessed_user','categories','Type_of_Business','Documents']));     
+            return  view('Edits.Business_Details',compact(['countrylist','Accessed_user','categories',
+            'Type_of_Business','Documents','User_country','db_category','user_selected_sub_category',
+            'db_sub_category','db_type_of_business','user_country_name','user_selected_category','user_selected_type_of_business']));     
         }
 
 
@@ -616,6 +662,11 @@ class COMESA_CONTROLLER extends Controller
 
         $input = $request->all();
         $user_id = $input['user_id'];
+
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $user_id)->value('country');
+        $country_update = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
 
         $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
@@ -638,11 +689,16 @@ class COMESA_CONTROLLER extends Controller
         
             $save = $post->save();  
 
+           
+
             return response()->json([
                 "status"=>"True",
                 "user_id"=>$user_id,
                 "message"=>"Data has updated successfully",
+                "update_country"=>$country_update,
             ]);
+
+           
     }
 
     
@@ -651,11 +707,10 @@ class COMESA_CONTROLLER extends Controller
         $input = $request->all();
         $user_id = $input['user_id'];
 
-        // dd($user_id);
-
         $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
 
+        $post->Account_name = $request->Account_name;
         $post->Bank_name = $request->Bank_name;
         $post->Bank_Account = $request->Bank_Account;
         $post->Bank_Branch = $request->Bank_Branch;
@@ -688,7 +743,7 @@ class COMESA_CONTROLLER extends Controller
         $post->Current_assets = $request->Current_assets;
         $post->Current_liabilities = $request->Current_liabilities;
         $post->Current_ratio = $request->Current_ratio;
-        $post->Relevant_specialisation = $request->Relevant_specialisation;
+        $saate = $post->Relevant_specialisation = $request->Relevant_specialisation;
         $post->maximum_of_10_Projects_contracts = $request->maximum_of_10_Projects_contracts;
         $post->No_of_years_in_business = $request->No_of_years_in_business;
         $post->Number_of_employees = $request->Number_of_employees;
@@ -706,397 +761,66 @@ class COMESA_CONTROLLER extends Controller
 
 
 
-    public function LoadUpdatedData(){ //working code
+    public function LoadUpdatedData(Request $request){ //working code
     
-        $id = 137;
-        $saved_user_id = 137;
-        $ref = "876242023-10-16 13:16:30";
+        $input = $request->all();
+        $user_id = $input['user_id'];
+
+    
+        $email =  DB::table('supplier_registration_details_models')->where('id', $user_id)->value('company_email');
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $user_id)->value('country');
 
 
-        // $saved_user_id =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('id');
+        $country_update = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
-        $saved_data = DB::table('supplier_registration_details_models')->where('id', $id)->get();
-
-        $saved_documents =  DB::table('documents')->where('References', $ref)->get();        
-
-        $details = '<table class="table table-bordered table-striped" id="smpl_tbl">';
-  
-        foreach($saved_data as $data){            
-
-        $country_code = $data->country;
-        $country = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
-  
-          $details .= '<tr>';
-          $details .= '<td colspan="3" "><h3>1.Business Details</h3></td>';
-          $details .= '<td>'.'<a href="edit-business-details/'.$saved_user_id.'" class="btn btn-primary">Edit Business Details</a>' .'</td>';
-          $details .= '</tr>'; 
-  
-         
-          $details .= '<tr>';
-          $details .= '<th>Country</th>';
-          $details .= '<th>Category</th>';
-          $details .= '<th>Sub-category</th>';
-          $details .= '<th>BusinessName</th>';
-          $details .= '</tr>';  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$country.'</td>';
-          $details .= '<td>'.$data->Category.'</td>';
-          $details .= '<td>'.$data->SubCategory.'</td>';
-          $details .= '<td>'.$data->BusinessName.'</td>';
-          $details .= '</tr>';  
-  
-          $details .= '<tr>';
-          $details .= '<th>Type of Business</th>';
-          $details .= '<th>Nature of Business</th>';
-          $details .= '<th>Certificate of Registration Incorporation number</th>';
-          $details .= '<th>Revenue Authority Taxpayer’s Identification Number</th>';
-          $details .= '</tr>';  
-  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->Type_of_Business.'</td>';
-          $details .= '<td>'.$data->Nature_of_Business.'</td>';
-          $details .= '<td>'.$data->Certificate_of_Registration.'</td>';
-          $details .= '<td>'.$data->Revenue_Authority_Taxpayers_Identification_Number.'</td>';
-          $details .= '</tr>'; 
-  
-          $details .= '<tr>';
-          $details .= '<th>Tax compliance certificate expiration date</th>';
-          $details .= '<th>Physical address</th>';
-          $details .= '<th>Company Email</th>';
-          $details .= '<th>National Pension Authority (NPSA) Registration No</th>';
-          $details .= '</tr>';  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->Tax_compliance_certificate_expiration.'</td>';
-          $details .= '<td>'.$data->physical_address.'</td>';
-          $details .= '<td>'.$data->company_email.'</td>';
-          $details .= '<td>'.$data->NAPSA_Compliance_Status_certificate.'</td>';
-          $details .= '</tr>'; 
-  
-          $details .= '<tr>';
-          $details .= '<th>Personal contact :</th>';
-          $details .= '<th>Company Telephone number</th>';
-          $details .= '<th>Contact Telephone number</th>';
-          $details .= '<th></th>';
-          $details .= '</tr>';  
-  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->contact_person.'</td>';
-          $details .= '<td>'.$data->company_telephone.'</td>';
-          $details .= '<td>'.$data->contact_person_telephone.'</td>';
-          $details .= '</tr>'; 
-  
-          $details .= '<tr>';
-          $details .= '<td colspan="3"><h3>2.Financial Information</h3></td>';
-          $details .= '<td><a href="edit-financial-details/'.$saved_user_id.'" class="btn btn-primary">Edit Financial Details</a></t>';
-          $details .= '</tr>'; 
-  
-  
-        $details .= '<tr>';
-        $details .= '<th>Account name </th>';
-        $details .= '<th>Bank Account number</th>';
-        $details .= '<th>Bank name </th>';
-        $details .= '<th>Bank Branch </th>';
-        $details .= '</tr>';  
-
-
-        $details .= '<tr>';  
-        $details .= '<td>'.$data->Account_Name.'</td>';
-        $details .= '<td>'.$data->Bank_Account.'</td>';
-        $details .= '<td>'.$data->Bank_name.'</td>';
-        $details .= '<td>'.$data->Bank_Branch.'</td>';
-        $details .= '</tr>'; 
-
-
-        $details .= '<tr>';
-        $details .= '<th>Branch code  </th>';
-        $details .= '<th>Account currency </th>';
-        $details .= '<th>Company financial contact person</th>';
-        $details .= '<th>Contact person email</th>';
-        $details .= '</tr>';  
-
-
-        $details .= '<tr>';  
-        $details .= '<td>'.$data->Branch_code.'</td>';
-        $details .= '<td>'.$data->Account_currency.'</td>';
-        $details .= '<td>'.$data->company_financial_contact.'</td>';
-        $details .= '<td>'.$data->contact_person_email.'</td>';
-        $details .= '</tr>';
-
-        $details .= '<tr>';
-        $details .= '<th>Contact person phone number</th>';
-        $details .= '</tr>';
-
-        $details .= '<tr>';  
-        $details .= '<td>'.$data->contact_person_phone_number.'</td>';
-        $details .= '</tr>';
-  
-          $details .= '<tr>';
-          $details .= '<td colspan="3"><h3>3.Capacity Levels</h3></td>';
-          $details .= '<td><a href="#" class="btn btn-primary">Edit Capacity Levels</a></t>';
-          $details .= '</tr>'; 
-  
-          $details .= '<tr>';
-          $details .= '<th>Annual turnover excluding this contract </th>';
-          $details .= '<th>Current assets </th>';
-          $details .= '<th>Current liabilities </th>';
-          $details .= '<th>Current ratio (current assets/current liabilities) </th>';
-          $details .= '</tr>';  
-  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->Annual_turnover.'</td>';
-          $details .= '<td>'.$data->Current_assets.'</td>';
-          $details .= '<td>'.$data->Current_liabilities.'</td>';
-          $details .= '<td>'.$data->Current_ratio.'</td>';
-          $details .= '</tr>';
-  
-          $details .= '<tr>';
-          $details .= '<th>No of years in business :</th>';
-          $details .= '<th>Number of employees</th>';
-          $details .= '<th>Other employees </th>';
-          $details .= '<th>Relevant specialisation</th>';
-          $details .= '</tr>';  
-  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->No_of_years_in_business.'</td>';
-          $details .= '<td>'.$data->Number_of_employees.'</td>';
-          $details .= '<td>'.$data->Other_employees.'</td>';
-          $details .= '<td>'.$data->certificate_of_Registration_Incorporation.'</td>';
-          $details .= '</tr>';
-  
-          $details .= '<tr>';
-          $details .= '<th>A maximum of 10 Projects|contracts  :</th>';
-          $details .= '</tr>';
-  
-  
-          $details .= '<tr>';  
-          $details .= '<td>'.$data->maximum_of_10_Projects_contracts.'</td>';
-          $details .= '</tr>';
-  
-          $details .= '<tr>';
-          $details .= '<td colspan="3"><h3>4.Required Documents</h3></td>';
-          $details .= '<td><a href="#" class="btn btn-primary">Edit Required Documents</a></t>';
-          $details .= '</tr>'; 
-  
-          $details .= '<tr>';
-          $details .= '<td colspan="3">';
-          foreach($saved_documents as $doc){
-              $details .= '<a href="Link'.'">'.$doc->Attachments.'</a><br/>';
-          }
-          $details .= '</td>';
-          $details .= '</tr>';
-  
-        }
-  
-        $details .= "</table>";
+        // $email = 'th@gmail.com';//static
+        $details = $this->supplierFetchData($email);
           
               return response()->json([
                   "status" => True,
                   "message" => "Data has been updated successfully",
                   "details" => $details,
+                  "submited_country"=>$country_update,
               ]);
              
     }
 
-    public function LoadFinancialUpdatedData(){
+    public function LoadFinancialUpdatedData(Request $request){
     
-    $id = 137;
-    $saved_user_id = 137;
-    $ref = "876242023-10-16 13:16:30";
+        $input = $request->all();
+        $user_id = $input['user_id'];
 
-        // dd($id);
-    $saved_data = DB::table('supplier_registration_details_models')->where('id', $id)->get();
-
-    $saved_documents =  DB::table('documents')->where('References', $ref)->get();        
-
-    $details = '<table class="table table-bordered table-striped" id="smpl_tbl">';
-
-    foreach($saved_data as $data){
-
-      $details .= '<tr>';
-      $details .= '<td colspan="3" "><h3>1.Business Details</h3></td>';
-      $details .= '<td>'.'<a href="edit-business-details/'.$saved_user_id.'" class="btn btn-primary">Edit Business Details</a>' .'</td>';
-      $details .= '</tr>'; 
-
-     
-      $details .= '<tr>';
-      $details .= '<th>Country</th>';
-      $details .= '<th>Category</th>';
-      $details .= '<th>Sub-category</th>';
-      $details .= '<th>BusinessName</th>';
-      $details .= '</tr>';  
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->country.'</td>';
-      $details .= '<td>'.$data->Category.'</td>';
-      $details .= '<td>'.$data->SubCategory.'</td>';
-      $details .= '<td>'.$data->BusinessName.'</td>';
-      $details .= '</tr>';  
-
-      $details .= '<tr>';
-      $details .= '<th>Type of Business</th>';
-      $details .= '<th>Nature of Business</th>';
-      $details .= '<th>Certificate of Registration Incorporation number</th>';
-      $details .= '<th>Revenue Authority Taxpayer’s Identification Number</th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->Type_of_Business.'</td>';
-      $details .= '<td>'.$data->Nature_of_Business.'</td>';
-      $details .= '<td>'.$data->Certificate_of_Registration.'</td>';
-      $details .= '<td>'.$data->Revenue_Authority_Taxpayers_Identification_Number.'</td>';
-      $details .= '</tr>'; 
-
-      $details .= '<tr>';
-      $details .= '<th>Tax compliance certificate expiration date</th>';
-      $details .= '<th>Physical address</th>';
-      $details .= '<th>Company Email</th>';
-      $details .= '<th>National Pension Authority (NPSA) Registration No</th>';
-      $details .= '</tr>';  
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->Tax_compliance_certificate_expiration.'</td>';
-      $details .= '<td>'.$data->physical_address.'</td>';
-      $details .= '<td>'.$data->company_email.'</td>';
-      $details .= '<td>'.$data->NAPSA_Compliance_Status_certificate.'</td>';
-      $details .= '</tr>'; 
-
-      $details .= '<tr>';
-      $details .= '<th>Personal contact :</th>';
-      $details .= '<th>Company Telephone number</th>';
-      $details .= '<th>Contact Telephone number</th>';
-      $details .= '<th></th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->contact_person.'</td>';
-      $details .= '<td>'.$data->company_telephone.'</td>';
-      $details .= '<td>'.$data->contact_person_telephone.'</td>';
-      $details .= '</tr>'; 
-
-      $details .= '<tr>';
-      $details .= '<td colspan="3"><h3>2.Financial Information</h3></td>';
-      $details .= '<td><a href="edit-financial-details/'.$saved_user_id.'" class="btn btn-primary">Edit Financial Details</a></t>';
-      $details .= '</tr>'; 
-
-
-      $details .= '<tr>';
-      $details .= '<th>Bank name </th>';
-      $details .= '<th>Bank Account number</th>';
-      $details .= '<th>Bank Branch </th>';
-      $details .= '<th>Branch code  </th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->Bank_name.'</td>';
-      $details .= '<td>'.$data->Bank_Account.'</td>';
-      $details .= '<td>'.$data->Bank_Branch.'</td>';
-      $details .= '<td>'.$data->Branch_code.'</td>';
-      $details .= '</tr>'; 
-
-
-      $details .= '<tr>';
-      $details .= '<th>Account currency </th>';
-      $details .= '<th>Company financial contact person</th>';
-      $details .= '<th>Contact person email</th>';
-      $details .= '<th>Contact person phone number</th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->Account_currency.'</td>';
-      $details .= '<td>'.$data->company_financial_contact.'</td>';
-      $details .= '<td>'.$data->contact_person_email.'</td>';
-      $details .= '<td>'.$data->contact_person_phone_number.'</td>';
-      $details .= '</tr>';
-
-      
-      $details .= '<tr>';
-      $details .= '<td colspan="3"><h3>3.Capacity Levels</h3></td>';
-      $details .= '<td><a href="edit-capacity-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Capacity Levels</a></t>';
-      $details .= '</tr>'; 
-
-      $details .= '<tr>';
-      $details .= '<th>Annual turnover excluding this contract </th>';
-      $details .= '<th>Current assets </th>';
-      $details .= '<th>Current liabilities </th>';
-      $details .= '<th>Current ratio (current assets/current liabilities) </th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->Annual_turnover.'</td>';
-      $details .= '<td>'.$data->Current_assets.'</td>';
-      $details .= '<td>'.$data->Current_liabilities.'</td>';
-      $details .= '<td>'.$data->Current_ratio.'</td>';
-      $details .= '</tr>';
-
-      $details .= '<tr>';
-      $details .= '<th>No of years in business :</th>';
-      $details .= '<th>Number of employees</th>';
-      $details .= '<th>Other employees </th>';
-      $details .= '<th>Relevant specialisation</th>';
-      $details .= '</tr>';  
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->No_of_years_in_business.'</td>';
-      $details .= '<td>'.$data->Number_of_employees.'</td>';
-      $details .= '<td>'.$data->Other_employees.'</td>';
-      $details .= '<td>'.$data->certificate_of_Registration_Incorporation.'</td>';
-      $details .= '</tr>';
-
-      $details .= '<tr>';
-      $details .= '<th>A maximum of 10 Projects|contracts  :</th>';
-      $details .= '</tr>';
-
-
-      $details .= '<tr>';  
-      $details .= '<td>'.$data->maximum_of_10_Projects_contracts.'</td>';
-      $details .= '</tr>';
-
-      $details .= '<tr>';
-      $details .= '<td colspan="3"><h3>4.Required Documents</h3></td>';
-      $details .= '<td><a href="#" class="btn btn-primary">Edit Required Documents</a></t>';
-      $details .= '</tr>'; 
-
-      $details .= '<tr>';
-      $details .= '<td colspan="3">';
-      foreach($saved_documents as $doc){
-          $details .= '<a href="Link'.'">'.$doc->Attachments.'</a><br/>';
-      }
-      $details .= '</td>';
-      $details .= '</tr>';
-
-    }
-
-    $details .= "</table>";
+         $email =  DB::table('supplier_registration_details_models')->where('id', $user_id)->value('company_email');   
+         $country_code =  DB::table('supplier_registration_details_models')->where('id', $user_id)->value('country');
+         $country_update = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+  
+        $details = $this->supplierFetchData($email);
       
           return response()->json([
               "status" => True,
               "message" => "Data has been updated successfully",
               "details" => $details,
+              "submited_country"=>$country_update,
           ]);
          
 }
 
 
-    public function redirectedPage(){
+    public function redirectedPage($id){
 
-       return view('Edits.redirect');
+       $dynamic_id = $id;
+       $dynamic_id;
+
+       return view('Edits.redirect',compact(['dynamic_id']));
     }
 
-    public function redirectedFinancialPage(){
+    public function redirectedFinancialPage($id){
 
-    return view('Edits.redirectFinancial');
+        $dynamic_id = $id;
+        $dynamic_id;
+
+    return view('Edits.redirectFinancial',compact(['dynamic_id']));
     }
 
 
@@ -1186,11 +910,6 @@ class COMESA_CONTROLLER extends Controller
         }
 
 
-        // public function Updated_Capacity_Documents()
-        //  {
-        //     return view('Edits.Capacity_Documents_Details');
-        // }
-
         public function Updated_Capacity_Documents(Request $request,$id){
 
             $countrylist = DB::select('select Name,PhoneCode from Countries');
@@ -1221,16 +940,19 @@ class COMESA_CONTROLLER extends Controller
             }
 
 
-        public function Update_Required_Documents(){
+        public function Update_Required_Documents(Request $request,$id){
 
-             $md_master_code_id = 1032;
+            $Accessed_user =  DB::table('supplier_registration_details_models')->where('id', $id)->get();
+
+
+            $md_master_code_id = 1032;
 
             $Documents = DB::table("master_data")
             ->select('md_id','md_name')
             ->where('md_master_code_id',$md_master_code_id)
             ->get();
             
-            return view('Edits.Required_Documents',compact(['Documents','md_master_code_id']));
+            return view('Edits.Required_Documents',compact(['Documents','md_master_code_id','Accessed_user']));
         }
 
 
@@ -1238,49 +960,61 @@ class COMESA_CONTROLLER extends Controller
 
             $input = $request->all();
             $md_master_code_id = $input['md_master_code_id'];
+            $user_id = $input['user_id'];
 
-            // $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
+           $return_reference = DB::table('supplier_registration_details_models')->select('Reference')->where('id','=',$user_id)->value('Reference');
+           $return_document_reference = DB::table('documents')->select('documents_references')->where('documents_references','=',$return_reference)->value('documents_references');
+        
+            $inforrd = document::where('documents_references',$return_reference)->pluck('documents_references')->all();
+
+
+           
             $Total_Documents = $request->Total_Documents;
+ 
 
             for($i=1; $i<=$Total_Documents; $i++){
                 if($request->file('attachment'.$i)){
-                    $PostData = new Document();
                     $file = $request->{'attachment'.$i};
                     $filename = preg_replace("/[^A-Za-z0-9\_\-\.]/i", '_', $doc_list[$i-1]).'__'.date('YmdHis').'.'.$file->getClientOriginalExtension();
                     $file->move('All_Documents',$filename);
                     $PostData->Attachments = $filename;
-                    $PostData->References = $ref;
+                    $PostData->documents_references = $ref;
                     $PostData->save();
                 }
             }
 
-
-            // $input = $request->all();
-            // $md_master_code_id = $input['md_master_code_id'];
-
-            return "Data has been added on !!!";
-    
-            // $post = SupplierRegistrationDetailsModel::find($request->user_id);
-    
-    
-            // $post->Annual_turnover = $request->Annual_turnover;
-            // $post->Current_assets = $request->Current_assets;
-            // $post->Current_liabilities = $request->Current_liabilities;
-            // $post->Current_ratio = $request->Current_ratio;
-            // $post->Relevant_specialisation = $request->Relevant_specialisation;
-            // $post->maximum_of_10_Projects_contracts = $request->maximum_of_10_Projects_contracts;
-            // $post->No_of_years_in_business = $request->No_of_years_in_business;
-            // $post->Number_of_employees = $request->Number_of_employees;
-            // $post->Other_employees = $request->Other_employees;
-    
             
-            //     $save = $post->save();  
-    
-            //     return response()->json([
-            //         "status"=>"True",
-            //         "user_id"=>$user_id,
-            //         "message"=>"Capacity Information has updated successfully",
-            //     ]);
+            return response()->json([
+                "status" => True,
+                "message" => "Documents have been updated successfully",
+            ]);
+            
+
+        }
+
+
+        public function download($file){
+            return response()->download(public_path('All_Documents/'.$file));
+        }
+
+
+        public function SupplierFormSubmission(Request $request){
+
+            $input = $request->all();
+
+            $post = SupplierRegistrationDetailsModel::find($request->user_id);
+
+            $post->session_status = $request->status;
+       
+
+        
+            $save = $post->save();  
+
+            return response()->json([
+                "status"=>"True",
+                "user_id"=>$user_id,
+                "message"=>"Capacity Information has updated successfully",
+            ]);
         }
 }

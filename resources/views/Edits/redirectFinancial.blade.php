@@ -158,24 +158,73 @@
 						</div>
 
 						<div class="formSep form-group">
-                            <label for="v_message" class="col-md-2 control-label">Your Message:</label>
+                            <label for="v_message" class="col-md-2 control-label">Additional Infomation that may be added <br> (If applicable):</label>
                             <div class="col-md-10">
 								<textarea name="v_message" id="v_message" rows="3" class="form-control"></textarea>
 							</div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Newsletter:</label>
-                            <div class="col-md-10">
-								<label class="radio-inline" for="newsletter_yes">
-									<input type="radio" value="yes" id="newsletter_yes" name="v_newsletter"> Yes
-								</label>
-								<label class="radio-inline" for="newsletter_no">
-									<input type="radio" value="no" id="newsletter_no" name="v_newsletter"> No
-								</label>
+						<div class="row">
+							<div class="col-sm-12 col-md-12">
+								<div class="row">
+									<div class="col-sm-12 col-md-12">
+										<h3 class="heading">SELF-DECLARATION </h3>
+										<div id="accordion1" class="panel-group accordion">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<a href="#collapseOne" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle collapsed">
+														Please Read & Confirm these Regulations : #1
+													</a>
+												</div>
+												<div class="panel-collapse collapse" id="collapseOne">
+													<div class="panel-body" style="font-size: 1em;">
+
+
+														<ol>
+										
+
+														<p><li>	I/We are nationals of <span id="db_country"></span> therefore eligible and that I/We have legal capacity to enter into contract and have sufficient experience to undertake this assignment;</li></p>
+														
+														<p><li>	The information given above is true and further state that I/We also understand that payment of any required fees does not guarantee inclusion into the supplier database;</li></p>
+														
+														<p><li>	I/We are not insolvent/in receivership, bankrupt or wound up, business activities not suspended/not subject to legal proceedings. I/We/ have not been convicted of offences concerning professional conduct by a judgment which have the force of res judicata; (i.e. against which no appeal is possible);</li></p>
+														
+														<p><li>	I/We have not been the subject of a judgment which has the force of res judicata for fraud, corruption, involvement in a criminal organisation or any other illegal activity detrimental to the COMESA Secretariat's financial interests; or are not being currently subject to an administrative penalty;</li></p>
+														
+														<p><li>	if the legal, technical, financial position, or the contractual capacity of the firm changes, we commit ourselves to inform you and acknowledge your sole right to review the pre-qualification made;</li></p>
+														
+														<p><li>	I/We understand that I/We shall be disqualified should the information submitted here for purpose of seeking qualification be materially inaccurate or materially incomplete;</li></p>
+														
+														<p><li>	I/We give COMESA the authority to seek any other references concerning my/Our Company from whatever sources deemed relevant; </li></p>
+														
+														<p><li>	if pre-qualified, I/we undertake to participate in submission of a tender or quotation when called upon to do so;</li></p>
+														
+														<p><li>	I/We have fulfilled obligations related to the payments of social security contributions and the payment of taxes in accordance with the legal provisions of the country in which I am/we are established or with those countries where the contract is to be performed;</li></p>
+														
+														<p><li>	I/We are aware that, for the purposes of safeguarding the COMESA’s financial interests, our personal data may be transferred to internal audit services, of COMESA</li></p>
+														
+														<p><li>	I/We undertake, if required, to provide the proof usual under the law of the country in which we are effectively established that we do not fall into any of the exclusion situations. The date on the evidence or documents provided will be no earlier than 1 year before the date of submission of the tender and, in addition, we will provide a statement that our situation has not altered in the period which has elapsed since the evidence in question was drawn up.</li></p>
+														
+														<p><li>	I/We also undertake, if required, to provide evidence of our financial and economic standing and our technical and professional capacity according to the requirements of this call for Prequalification</li></p>
+														<br>
+				
+														
+															<input type="checkbox" id="Acceept" name="Acceept" value="Acceept" >
+															<label for="AcceeptRules" style="font-weight: bold;color: #337ab7;"> Read and accept the above rules and regulations before you submit your Application </label><br>
+				
+														</ol>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+									
+								</div>
 							</div>
-                        </div>	
+						</div>   
 						
+						<input type="hidden" name="dynamic_id" id="dynamic_id" value={{$dynamic_id}}>
 						
 						<div id="backText">
 							<button type="button" class="btn btn-primary">
@@ -194,19 +243,26 @@
 				<script type="text/javascript">
 					$(document).ready(function(){
 						
+						var user_id = $('#dynamic_id').val();
+
+						var form_data = new FormData();
+
+                        form_data.append('user_id', user_id);
+
 							$.ajax({
 								type: "post",
 								processData: false,
 								contentType: false,
 								cache: false,
-								data		: "",								
+								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 
 								url			:'/LoadFinancialUpdatedInformation',
 								success		:function(data){
-										// alert("data has been submitetd");
+									
 									if(data.status){
 										$('.supplier-submitted-details').html(data.details);
+										$('#db_country').html(data.submited_country);
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();
