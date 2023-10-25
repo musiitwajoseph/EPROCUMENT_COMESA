@@ -164,6 +164,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        
+
         /*
          * Package Service Providers...
          */
@@ -176,7 +178,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        
+        Barryvdh\DomPDF\ServiceProvider::class,//Add this code
+        Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
     /*
@@ -192,6 +196,9 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
+
+        'PDF' => Barryvdh\DomPDF\Facade::class,//Add this code
+        'Captcha' => 'Mews\Captcha\Facades\Captcha',
     ])->toArray(),
 
 ];

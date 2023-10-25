@@ -130,24 +130,6 @@
 			<div class="col-sm-12 col-md-12">
                 <form id="validate_wizard" class="stepy-wizzard form-horizontal">
 							
-				<fieldset>
-		
-						<legend class="hide">Provide Supplier Details</legend>
-
-						<div id="backText" class="pull-left">
-							<button type="button" class="btn btn-primary">
-								<i class="glyphicon glyphicon-chevron-left"></i> Back 
-							</button>
-						</div>
-
-						<div id="nextText_000" class="pull-right">
-							<button type="button" id="Supplier_Registration_Details" class="btn btn-primary">
-								Save and Complete <i class="glyphicon glyphicon-chevron-right"></i>
-							</button>
-						</div>
-
-                    </fieldset>
-
 
 					<fieldset title="Confirm Details">
                         <legend class="hide">Confirm provided Supplier Details</legend>
@@ -180,10 +162,9 @@
 													<div class="panel-body" style="font-size: 1em;">
 
 
-														<ol>
+														<ol type="a">
 										
-
-														<p><li>	I/We are nationals of <span id="db_country"></span> therefore eligible and that I/We have legal capacity to enter into contract and have sufficient experience to undertake this assignment;</li></p>
+														<p><li>	I/We are nationals of  <span id="db_country"> </span>  therefore eligible and that I/We have legal capacity to enter into contract and have sufficient experience to undertake this assignment;</li></p>
 														
 														<p><li>	The information given above is true and further state that I/We also understand that payment of any required fees does not guarantee inclusion into the supplier database;</li></p>
 														
@@ -208,10 +189,10 @@
 														<p><li>	I/We also undertake, if required, to provide evidence of our financial and economic standing and our technical and professional capacity according to the requirements of this call for Prequalification</li></p>
 														<br>
 				
-														
-															<input type="checkbox" id="Acceept" name="Acceept" value="Acceept" >
-															<label for="AcceeptRules" style="font-weight: bold;color: #337ab7;"> Read and accept the above rules and regulations before you submit your Application </label><br>
-				
+															
+														<input type="checkbox" id="Acceept_rules_and_regulations"  required> &nbsp; <label for="Acceept_rules_and_regulations" style="display: inline">Read and accept the above rules and regulations before you submit your Application</label> 
+															
+														<input type="hidden" value="hello" id="unique_id_db">
 														</ol>
 													</div>
 												</div>
@@ -222,7 +203,7 @@
 									
 								</div>
 							</div>
-						</div>   
+						</div>  
 						
 						<input type="hidden" name="dynamic_id" id="dynamic_id" value={{$dynamic_id}}>
 						
@@ -234,13 +215,62 @@
 					</fieldset>
 
 					
-                    <button type="button" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
+                    <button type="button" id="final_submission" class="finish btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
                 </form>
 				
 				<script src="/assets/js/jquery.min.js"></script>
 
 				
 				<script type="text/javascript">
+
+
+				$(document).ready(function(){
+						$('#final_submission').click(function(){
+
+							var check = false;
+							if($('#Acceept_rules_and_regulations').prop('checked') == true ){
+								check = $('#Acceept_rules_and_regulations').val();
+							}
+
+							if(check == 0){
+								alert("You have to accept the rules and regulations before you submit");
+								return ;
+							}
+
+
+							var user_id = $('#unique_id_db').val();
+
+
+							var form_data = new FormData();
+
+							form_data.append('user_id', user_id);
+
+
+							$.ajax({
+								type: "post",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+
+								url			:'/update-and-submit',
+								success		:function(data){
+									if(data.status){
+										alert(data.message);
+										location.replace('/userdata/'+data.user_id);
+									}
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+						});
+				});
+
+
+
 					$(document).ready(function(){
 						
 						var user_id = $('#dynamic_id').val();
@@ -263,6 +293,7 @@
 									if(data.status){
 										$('.supplier-submitted-details').html(data.details);
 										$('#db_country').html(data.submited_country);
+										$("#unique_id_db").val(data.unique_id);
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();

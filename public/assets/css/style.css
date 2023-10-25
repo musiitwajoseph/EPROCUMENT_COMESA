@@ -905,3 +905,10 @@
 			padding-top: 4rem;
 			padding-right: 25rem;
 		}
+
+
+		.img-centre{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		 }

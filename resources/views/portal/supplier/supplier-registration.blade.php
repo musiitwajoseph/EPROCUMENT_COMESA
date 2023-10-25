@@ -308,8 +308,12 @@
 								<li class="active"><a href="#tab1" data-toggle="tab">1.Business Details</a></li>
 								<li><a href="#tab2" data-toggle="tab">2.Financial Information</a></li>
 								<li><a href="#tab3" data-toggle="tab">3.Capacity</a></li>
-								<li><a href="#tab6" data-toggle="tab">4.Required Documents</a></li>
+								<li><a href="#tab4" data-toggle="tab">4.Required Documents</a></li>
+								<li><a href="#tab5" data-toggle="tab">5.Account Information</a></li>
 							</ul>
+
+
+							
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab1">
 									<div class="formSep form-group">
@@ -450,37 +454,34 @@
 													<input type="text" name="contact_person_telephone" id="contact_person_telephone" class="input-sm form-control" required>
 												</div>
 											</div>
-		
-						
 								</div>
-								</div>
-
+							</div>
 								
-								<div class="tab-pane" id="tab2">
+							<div class="tab-pane" id="tab2">
 									
-									<h2 class="heading padMarg" style="font-weight: bold">2.Financial Information</h2>          
-								
+								<h2 class="heading padMarg" style="font-weight: bold">2.Financial Information</h2>          
+							
 								<div class="formSep form-group">
-									
+								
 									<div class="col-md-3">
 										<label for="" class="boldTitle padMarg">Account name :</label>
 										<input type="text" name="Account_name" id="Account_name" class="input-sm form-control" required>
 									</div>
 
-											<div class="col-md-3">
-												<label for="" class="boldTitle padMarg">Bank name :</label>
-												<input type="text" name="Bank_name" id="Bank_name" class="input-sm form-control" required>
-											</div>
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Bank name :</label>
+											<input type="text" name="Bank_name" id="Bank_name" class="input-sm form-control" required>
+										</div>
 
-											<div class="col-md-3">
-												<label for="" class="boldTitle padMarg">Bank Account number :</label>
-												<input type="text" name="Bank_Account" id="Bank_Account" class="input-sm form-control" required>
-											</div>
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Bank Account number :</label>
+											<input type="text" name="Bank_Account" id="Bank_Account" class="input-sm form-control" required>
+										</div>
 
-											<div class="col-md-3">
-												<label for="" class="boldTitle padMarg">Bank Branch :</label>
-												<input type="text" name="Bank_Branch" id="Bank_Branch" class="input-sm form-control" required>
-											</div>
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Bank Branch :</label>
+											<input type="text" name="Bank_Branch" id="Bank_Branch" class="input-sm form-control" required>
+										</div>
 
 										<div class="RowCollection">
 											<div class="col-md-3">
@@ -518,9 +519,141 @@
 												</div>
 											</div>					
 										</div>
+								</div>
+							</div>
+
+						
+								<div class="tab-pane" id="tab2">
+									
+									<h2 class="heading padMarg" style="font-weight: bold">2.Financial Information</h2>          
+								
+									<div class="formSep form-group">
+									
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Account name :</label>
+											<input type="text" name="Account_name" id="Account_name" class="input-sm form-control" required>
+										</div>
+
+											<div class="col-md-3">
+												<label for="" class="boldTitle padMarg">Bank name :</label>
+												<input type="text" name="Bank_name" id="Bank_name" class="input-sm form-control" required>
+											</div>
+
+											<div class="col-md-3">
+												<label for="" class="boldTitle padMarg">Bank Account number :</label>
+												<input type="text" name="Bank_Account" id="Bank_Account" class="input-sm form-control" required>
+											</div>
+
+											<div class="col-md-3">
+												<label for="" class="boldTitle padMarg">Bank Branch :</label>
+												<input type="text" name="Bank_Branch" id="Bank_Branch" class="input-sm form-control" required>
+											</div>
+
+											<div class="RowCollection">
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">Branch code :</label>
+													<input type="text" name="Branch_code" id="Branch_code" class="input-sm form-control" required>
+												</div>
+					
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">Account currency :</label>
+													<input type="text" name="Account_currency" id="Account_currency" class="input-sm form-control" required>
+												</div>
+												
+					
+												<div class="col-md-3 padMarg">
+													<label for="" class="boldTitle " >Company financial contact person </label>
+													<input type="text" name="company_financial_contact" id="company_financial_contact" class="input-sm form-control" required>
+												</div>
+
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">Contact person email :</label>
+													<input type="eamail" name="contact_person_email" id="contact_person_email" class="input-sm form-control" required>
+												</div>
+
+											</div>
+
+											<div class="RowCollection">
+
+												<div class="col-md-4 mt-3 pt-4 padMarg">
+													<label for="" class="boldTitle">Contact person phone number : </label>
+													<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
+														<input type="text" name="code3" id="code4" class="input-sm form-control" value="+256">
+													</div>
+													<div class="col-md-10" style="padding:0; margin:0;">
+														<input type="text" name="contact_person_phone_number" id="contact_person_phone_number" class="input-sm form-control">
+													</div>
+												</div>					
+											</div>
 	                        		</div>
 								</div>
 
+								<div class="tab-pane" id="tab5">
+									
+									<h2 class="heading padMarg" style="font-weight: bold">5.Create your Supplier Account Credentials :</h2>          
+								
+									<div class="formSep form-group">
+										
+
+												@if (Session::get('fail'))
+													<div class="alert alert-danger">
+														{{Session::get('fail')}}
+													</div>
+												@endif
+									
+											<div class="RowCollection">
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">username :</label>
+													<input type="text" name="login_username" id="login_username" class="input-sm form-control" required>
+													{{-- <span class="alert alert-danger">
+														@error('login_username')
+															{{$message}}
+														@enderror
+													</span> --}}
+													
+												</div>
+					
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">password :</label>
+													<input type="text" name="login_password" id="login_password" class="input-sm form-control" required>
+												
+													{{-- <span class="alert alert-danger">
+														@error('login_password')
+														
+													@enderror</span> --}}
+												</div>
+
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg">confirm password :</label>
+													<input type="text" name="confirm_password" id="confirm_password" class="input-sm form-control" required>
+													
+													{{-- <span class="alert alert-danger">
+														@error('confirm_password')
+															{{$message}}
+														@enderror
+													</span> --}}
+												
+												</div>
+
+												<input type="hidden" id="original_supplier_email">
+					
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" class="padMarg" hidden>Supplier Reference Number :</label>
+													<input type="hidden" name="supplier_reference_number" id="supplier_reference_number" class="input-sm form-control" required>
+													{{-- <span class="alert alert-danger">
+														@error('supplier_reference_number')
+															{{$message}}
+														@enderror
+													</span> --}}
+													
+												</div>
+
+											</div>
+
+											
+	                        		</div>
+								</div>
+							
 
 								<div class="tab-pane" id="tab3">
 									<h2 class="heading padMarg" style="font-weight: bold">1.Economic & financial capacity</h2>
@@ -568,48 +701,50 @@
 
 											  
 
-									<h2 class="heading padMarg" style="font-weight: bold">3.Technical capacity</h2>
+										<h2 class="heading padMarg" style="font-weight: bold">3.Technical capacity</h2>
 
-									<div class="formSep form-group">
-										<div class="mt-4 pt-4 padMarg">
-										<div class="col-md-6">
-											<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3) :</label>
-											<textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea>
-										</div>
+											<div class="formSep form-group">
+												<div class="mt-4 pt-4 padMarg">
+												<div class="col-md-6">
+													<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3) :</label>
+													<textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea>
+												</div>
 
-										<div class="col-md-6">
-											<label for="" class="boldTitle padMarg">b)	A maximum of 10 Projects/contracts (For each, state: Country projects executed, Overall contract value (US$); Proportion carried out by legal entity; Number of personnel provided; Name of client; and Origin of funding)</label>
-											{{-- <input type="number" > --}}
-											<textarea name="maximum_of_10_Projects_contracts" id="maximum_of_10_Projects_contracts" class="input-sm form-control" cols="30" rows="10" required></textarea>
-										</div>
-									</div>
+												<div class="col-md-6">
+													<label for="" class="boldTitle padMarg">b)	A maximum of 10 Projects/contracts (For each, state: Country projects executed, Overall contract value (US$); Proportion carried out by legal entity; Number of personnel provided; Name of client; and Origin of funding)</label>
+													{{-- <input type="number" > --}}
+													<textarea name="maximum_of_10_Projects_contracts" id="maximum_of_10_Projects_contracts" class="input-sm form-control" cols="30" rows="10" required></textarea>
+												</div>
+											</div>
+										<div class="formSep form-group">
+								</div>
+							</div>	
+											
+						</div>
+
+							<div class="tab-pane" id="tab4">
+								<h2 class="heading padMarg" style="font-weight: bold"4>4.Required Documents </h2>
 
 								<div class="formSep form-group">
+										<?php $counter = 1; ?>
+										@foreach ($Documents as $document)
+											<div class="col-md-6">
+												<label for="" class="boldTitle padMarg" class="padMarg">{{$document->md_name}} :</label>
+												<input data-name = "{{$document->md_name}}" type="file"  name="attachment<?php echo $counter; ?>" id="attachment<?php echo $counter; ?>" class="input-sm form-control " required>
+											</div>
+											<?php $counter++; ?>
+										@endforeach
 
-									
-							</div>
-						</div>					
-						</div>
-
-							<div class="tab-pane" id="tab6">
-							<h2 class="heading padMarg" style="font-weight: bold"4>.Required Documents </h2>
-
-						<div class="formSep form-group">
-							<?php $counter = 1; ?>
-							@foreach ($Documents as $document)
-								<div class="col-md-6">
-									<label for="" class="boldTitle padMarg" class="padMarg">{{$document->md_name}} :</label>
-									<input data-name = "{{$document->md_name}}" type="file"  name="attachment<?php echo $counter; ?>" id="attachment<?php echo $counter; ?>" class="input-sm form-control " required>
-								</div>
-								<?php $counter++; ?>
-							@endforeach
-
-							<input type="hidden" value="<?php echo $counter-1; ?>" id="Total_Documents"/>
-
-							</div>
+									<input type="hidden" value="<?php echo $counter-1; ?>" id="Total_Documents"/>
+								  </div>
 								</div>
 							</div>
+
+							
 						</div>
+						
+
+
 		
 						<legend class="hide">Provide Supplier Details</legend>
 
@@ -689,10 +824,9 @@
 														<br>
 				
 															
+														<input type="checkbox" id="Acceept_rules_and_regulations"  required> &nbsp; <label for="Acceept_rules_and_regulations" style="display: inline">Read and accept the above rules and regulations before you submit your Application</label> 
 															
-															<p ><input type="checkbox" id="Acceept_rules_and_regulations" name="Acceept_rules_and_regulations"  required> &nbsp; Read and accept the above rules and regulations before you submit your Application</p>
-															
-				
+														<input type="hidden" value="hello" id="unique_id_db">
 														</ol>
 													</div>
 												</div>
@@ -710,6 +844,8 @@
 								<i class="glyphicon glyphicon-chevron-left"></i> Back 
 							</button>
 
+							
+
 							<button type="button" class="btn btn-primary pull-right" id="final_submission"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
 						</div>
 						
@@ -717,13 +853,18 @@
 					</fieldset>
 
 					
-					<input type="hidden" value="" id="unique_id_db">
+					
 					<input type="hidden" name="" class="finish">
 				</form>
 				
 
 				
 				<script type="text/javascript">
+
+
+				//  Credential validation before complete
+
+
 
 				$(document).ready(function(){
 						$('#final_submission').click(function(){
@@ -735,21 +876,60 @@
 
 							if(check == 0){
 								alert("You have to accept the rules and regulations before you submit");
-								// return ;
+								return ;
 							}
 
-						});
-					});
 
+							var user_id = $('#unique_id_db').val();
+
+
+							var form_data = new FormData();
+
+							form_data.append('user_id', user_id);
+
+
+							$.ajax({
+								type: "post",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+
+								url			:'/update-and-submit',
+								success		:function(data){
+									if(data.status){
+										alert(data.message);
+										location.replace('/userdata/'+data.user_id);
+									}
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+						});
+				});
+
+
+		
 					$(document).ready(function(){
 						$('#validateEmail').click(function(){
 
 							$('#validateEmail').attr('disabled','false');
 							$('#validateEmail').html('Loading...');
 
+							
 							var username = $('#v_username').val();
 							var telephone = $('#v_telephone').val();
 							var email = $('#v_email').val();
+
+
+							if(username  == "" || telephone == "" || email == ""){
+								alert("Missing Form fields");
+								location.replace('/supplier-registration/');
+							}
+							
 							
 							var form_data = new FormData();
 							form_data.append('username', username);
@@ -766,24 +946,26 @@
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 
-								url			:'generate-otp',
+								url			:'/generate-otp',
 								success		:function(data){
 
 									if(data.status){
+										if(data.verification){
+											$('form').stepy('step',2);
+										}
 										$('#firstForm').hide();
 										$('#otpForm').show();
 										$('#otpMessage').html(data.message);
-										// redirectBack();
+										$("#original_supplier_email").val(data.original_email);
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();
 									}
 									
 								},
-								error: function($data)
+								error: function(data)
 								{
-									alert(data);
-	
+									$('body').html(data.responseText);
 								}
 							});
 						});
@@ -810,12 +992,12 @@
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 
-								url			:'regenerate-otp',
+								url			:'/regenerate-otp',
 								success		:function(data){
 									if(data.status){
 										$('#regenerate_otp').hide();
 										$('#OTP_sent').show();
-										alert(data['message']);
+										alert(data.message);
 									}else{										
 										$('#regenerate_otp').show();
 									}
@@ -824,7 +1006,6 @@
 								error: function(data)
 								{
 									alert(data);
-									//window.location.href = "supplier-registration";
 								}
 							});
 						});
@@ -834,6 +1015,7 @@
 
 					function verifyOTPZ()
 					{
+						
 						var email = $('#v_email').val();
 						var otp_token = $('#otp_token').val();
 
@@ -842,6 +1024,8 @@
 							
 							var form_data = new FormData();
 							form_data.append('email', email);
+
+							
 							form_data.append('otp_token', otp_token);
 							
 							$.ajax({
@@ -852,7 +1036,7 @@
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 
-								url			:'fetch-email',
+								url			:'/fetch-email',
 								success		:function(data){
 									
 									var values = data;//JSON.parse(data);
@@ -879,6 +1063,23 @@
 						$('#Supplier_Registration_Details_').click(function(){
 
 							//$('#Supplier_Registration_Details').html('Loading...');
+
+
+							var login_username = $('#login_username').val();
+							var login_password = $('#login_password').val();
+							var confirm_password = $('#confirm_password').val();
+							// var supplier_reference_number = $('#supplier_reference_number').val();
+							var original_supplier_email = $('#original_supplier_email').val();
+
+
+					
+							// alert(login_username);
+						
+							// if(login_password == confirm_password){
+							// 	alert("The password has to be the same");
+							// 	return
+							// }
+
 
 							var country = $('#country').val();
 							var Category = $('#Category').val();
@@ -1050,6 +1251,20 @@
 							if(Other_employees == ""){
 								errors.push("Other Employess Field is required");								
 							}
+
+							if(login_username == ""){
+								errors.push("Login username Field is required");								
+							}
+							if(login_password == ""){
+								errors.push("Password Field is required");								
+							}
+							if(confirm_password == ""){
+								errors.push("Confirm password Field is required");								
+							}
+							// if(supplier_reference_number == ""){
+							// 	errors.push("Supplier Reference number Field is required");								
+							// }
+
 								
 											
 							
@@ -1061,6 +1276,14 @@
 
 
 							form_data.append('Total_Documents', Total_Documents);
+
+
+							form_data.append('login_username', login_username);
+							form_data.append('login_password', login_password);
+							form_data.append('confirm_password', confirm_password);
+							// form_data.append('supplier_reference_number', supplier_reference_number);
+							form_data.append('original_supplier_email', original_supplier_email);
+
 
 							form_data.append('country', country);
 							form_data.append('Category', Category);
@@ -1105,18 +1328,14 @@
 								cache: false,
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								url			:'SupplierRegistration-Details',
+								url			:'/SupplierRegistration-Details',
 								success		:function(data){
-									if(data.status){	
-										alert(data.message);							
+									if(data.status){							
 										$('form').stepy('step',3);
 										$('.supplier-submitted-details').html(data.details);
 										$('#db_country').html(data.submited_country);
-										// var x = $("#unique_id_db").val(data);
+									    $("#unique_id_db").val(data.unique_id);
 										
-										// $('#db_country').html(data.unique_id);
-										// $('.cart_total').html( data.cart_total );
-										// $('#unique_id_db').attr('value', data.unique_id)
 									}else{										
 										$('#firstForm').show();
 										$('#otpForm').hide();
@@ -1130,90 +1349,7 @@
 						});
 					});
 
-					$(document).ready(function(){
-						$('#final_submission').click(function(){
-
-							$('#final_submission').html('Submitting...');
-							$('#final_submission').attr('disabled', true);
-
-							var check = false;
-							if($('#Acceept_rules_and_regulations').prop('checked') == true ){
-								check = $('#Acceept_rules_and_regulations').val();
-							}
-
-							if(check == 0){
-								alert("You have to accept the rules and regulations before you submit");
-							}
-							else{
-								status = $('#Acceept_rules_and_regulations').val();
-								ididid = $('#unique_id_db').val();
-
-								alert(ididid);
-
-								var form_data = new FormData();
-								form_data.append('status', status);
-								
-							
-
-								$.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,								
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-
-								url			:'/update-and-submit',
-								success		:function(data){
-									
-									if(data.status){
-										$('#firstForm').hide();
-										$('#otpForm').show();
-										$('#otpMessage').html(data.message);
-										// redirectBack();
-									}else{										
-										$('#firstForm').show();
-										$('#otpForm').hide();
-									}
-									
-								},
-								error: function($data)
-								{
-									alert(data);
-	
-								}
-							});
-						}
-					});
-				});
-
-
-					// $(document).ready(function(){
-					// 	$('#Supplier_Registration_Details').click(function(){
-							
-					// 		var form_data = new FormData();
-					// 		form_data.append('x','x');
-					// 		$.ajax({
-					// 			type: "post",
-					// 			processData: false,
-					// 			contentType: false,
-					// 			cache: false,
-					// 			data		: form_data,								
-					// 			headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-
-					// 			url			:'/fetch-supplier-data',
-					// 			success		:function(data){
-
-					// 			},
-					// 			error: function(data)
-					// 			{
-					// 				$('body').html(JSON.stringify(data, null, 4));
-					// 			}
-					// 		});
-					// 	});
-					// });
-
-
+					
 					$(document).ready(function(){
 					$("#country").change(function(){
 

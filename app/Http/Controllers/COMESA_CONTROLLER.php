@@ -10,13 +10,13 @@ use App\Mail\SupplierMail;
 use App\Models\SupplierRegistrationDetailsModel;
 use DB;
 use Carbon;
+use PDF;
+use Illuminate\Support\Facades\Hash;
+use App\Models\SupplierLogin;
+use App\Models\Admin;
 
 class COMESA_CONTROLLER extends Controller
 {
-
-    public function dashboard(){
-        return view('staff.dashboard');
-    }
     
     public function supplierRegistration(){
 
@@ -48,9 +48,7 @@ class COMESA_CONTROLLER extends Controller
         return view('portal.supplier.supplier-registration',compact(['countrylist','categories','Type_of_Business','Documents']));
     }
 
-    public function supplierDashboard(){
-        return view('portal.supplier.supplier-dashboard');
-    }
+    
 
     public function generateOTP(Request $request){
     
@@ -58,15 +56,14 @@ class COMESA_CONTROLLER extends Controller
         $input = $request->all();
         $email = $input['email'];
 
-        // $email_status = DB::table('otps')->where('email', $email)->value('status');
-
          $email_status = DB::table('otps')->where('email', $email)->orderBy('id', 'desc')->value('status');
         
         if($email_status == 'verified'){
 
             return response()->json([
                 "status" => True,
-                "message" => "OTP sent to email: $email",
+                "message" => "Email has been already verified",
+                "verification"=>"Done",
             ]);  
         }
 
@@ -94,6 +91,7 @@ class COMESA_CONTROLLER extends Controller
         return response()->json([
             "status" => True,
             "message" => "OTP sent to email: $email",
+            "original_email"=>$email,
             "expiryTime"=>"Your OTP verifyication expires in 15 mins from now at : " . $endTime ,
         ]);
     }
@@ -125,19 +123,16 @@ class COMESA_CONTROLLER extends Controller
         $email_form = $input['email'];
         $entered_otp = $input['otp_token'];
 
-
           //Subtraction from different timestamps
-           $mytime = Carbon\Carbon::now();
-
-           $verify_otp_status_created_at = $user = DB::table('otps')->where('email', $email_form)->value('created_at');
-           $verify_otp_status_updated_at = $user = DB::table('otps')->where('email', $email_form)->value('updated_at');
+          $mytime = Carbon\Carbon::now();
 
 
-          $diffInMinutes_created_at = $mytime->diffInMinutes($verify_otp_status_created_at);
-           $diffInMinutes_updated_at = $mytime->diffInMinutes($verify_otp_status_updated_at);
-            
-          //User TimeOut for not using the Token
-          if($diffInMinutes_created_at >= 15 || $diffInMinutes_updated_at >= 15){
+           $email_status = DB::table('otps')->where('email', $email_form)->orderBy('id', 'desc')->value('updated_at');
+           
+           $diffInMinutes_created_at = $mytime->diffInMinutes($email_status);
+
+        
+          if($diffInMinutes_created_at >= 15 ){
             return response()->json([
                 "status" => FALSE,
                 "message" => "The Otp token has been expired request for a new one",
@@ -171,7 +166,7 @@ class COMESA_CONTROLLER extends Controller
        }
 
 
-       else if( $entered_otp == ''){
+       else if($entered_otp == ''){
         return response()->json([
             "status" => FALSE,
             "message" => "Enter Token before clicking submit",
@@ -213,8 +208,8 @@ class COMESA_CONTROLLER extends Controller
         }
         else{
 
-            DB::table('otps')->where('email', $email)->update(array( 'otp_token'=>$new_otp,));
-
+            DB::table('otps')->where('email', $email) ->update(['otp_token' => $new_otp]);
+            
             $username  = $user = DB::table('otps')->where('email', $email)->value('supplier_name');
 
             $otp = $new_otp;
@@ -295,12 +290,59 @@ class COMESA_CONTROLLER extends Controller
             'No_of_years_in_business'=>'required',
             'Number_of_employees'=>'required',
             'Other_employees'=>'required',
-
+            'login_username'=>'required',
+            'login_password'=>'required',
+            'confirm_password'=>'required',
+            // 'login_password'=>  [
+            //     'required',
+            //     'string',
+            //     'min:10',             // must be at least 10 characters in length
+            //     'regex:/[a-z]/',      // must contain at least one lowercase letter
+            //     'regex:/[A-Z]/',      // must contain at least one uppercase letter
+            //     'regex:/[0-9]/',      // must contain at least one digit
+            //     'regex:/[@$!%*#?&]/', // must contain a special character
+            // ],
+            // 'confirm_password'=>'required|same:login_password',
         ]);
 
 
-          
+        // Supplier_reference number 
+            $supplier_reference_number =  $request->input('supplier_reference_number');
+           
 
+            $login_username =  $request->input('login_username');
+            $login_password =  $request->input('login_password');
+            
+            $original_supplier_email = $request->input('original_supplier_email');
+
+
+          $random_number_reference = rand(10000, 99999);
+
+          $sup_ref = $login_username.''.$random_number_reference;
+
+        
+        
+        $supplier =  new SupplierLogin;
+
+        $supplier->username = $login_username;
+        $supplier->email = $original_supplier_email;
+        $supplier->password = Hash::make($login_password);
+        $supplier->supplier_reference = $sup_ref;
+        
+
+        $save = $supplier->save();
+
+        // if($save){
+        //     dd("Data has been saved successfully in the database");
+        //     return back()->with('   ','New user has been added to the database');
+        // }
+        // else{
+
+        //     return back()->with('fail','There was something wrong in the login, try again later');
+        // }
+
+
+        
           $mytime =  date('Y-m-d H:i:s');
           $random_number_reference = rand(10000, 99999);
 
@@ -375,14 +417,14 @@ class COMESA_CONTROLLER extends Controller
       $email = $request->company_email;
 
       $user_unique_id  = DB::table('supplier_registration_details_models')->where('company_email',$email)->value('id');
-
-    //   dd($user_unique_id);
    
       $country_update = DB::table('Countries')->where('PhoneCode',$country)->value('Name');
       
       
-      $details = $this->supplierFetchData($email);
 
+      $this->supplierFetchData($email);
+      $details = $this->supplierFetchData($email);
+      
       
         if($save){
             return response()->json([
@@ -425,7 +467,7 @@ class COMESA_CONTROLLER extends Controller
     
        
         // $data->SubCategory
-        $subcategory = DB::table('master_data')->select('md_code')->where('md_id','=',$user_id)->value('md_name');
+        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
 
 
 
@@ -782,6 +824,7 @@ class COMESA_CONTROLLER extends Controller
                   "message" => "Data has been updated successfully",
                   "details" => $details,
                   "submited_country"=>$country_update,
+                  "unique_id"=>$user_id,
               ]);
              
     }
@@ -796,12 +839,12 @@ class COMESA_CONTROLLER extends Controller
          $country_update = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
   
         $details = $this->supplierFetchData($email);
-      
+        
           return response()->json([
               "status" => True,
               "message" => "Data has been updated successfully",
               "details" => $details,
-              "submited_country"=>$country_update,
+              "unique_id"=>$user_id,
           ]);
          
 }
@@ -810,7 +853,8 @@ class COMESA_CONTROLLER extends Controller
     public function redirectedPage($id){
 
        $dynamic_id = $id;
-       $dynamic_id;
+
+    //    dd($dynamic_id);
 
        return view('Edits.redirect',compact(['dynamic_id']));
     }
@@ -818,7 +862,6 @@ class COMESA_CONTROLLER extends Controller
     public function redirectedFinancialPage($id){
 
         $dynamic_id = $id;
-        $dynamic_id;
 
     return view('Edits.redirectFinancial',compact(['dynamic_id']));
     }
@@ -999,22 +1042,326 @@ class COMESA_CONTROLLER extends Controller
         }
 
 
-        public function SupplierFormSubmission(Request $request){
+      public function sendMailWithPDF(Request $request)
+      {
+        $data["email"] = "test@gmail.com";
+        $data["title"] = "COMESA:E-PROCUREMENT - Successfull Submisson of Supplier Form ";
+        $data["body"] = "Laravel 10 COMESA E-PROCUREMENT";
 
-            $input = $request->all();
+        $pdf = PDF::loadView('userdata', $data); // The pdf that requires to be dseen the client
+        $pdf_data = PDF::loadView('pdf_mail', $data); //The one Containing the body of the Email
 
-            $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
-            $post->session_status = $request->status;
-       
+        Mail::send('pdf_mail', $data, function ($message) use ($data, $pdf, $pdf_data) {
+            $message->to($data["email"], $data["email"])
+                ->subject($data["title"])
+                ->attachData($pdf->output(), "SubmittedForm.pdf");
+        });
+
+        echo "email send successfully !!";
+
+        }
+
+
+
+      public function SupplierFormSubmission(Request $request){
+
+        $input = $request->all();
+
+        $user_id = $input['user_id'];
+
+        $post = SupplierRegistrationDetailsModel::find($request->user_id);
+
+        $post->status = "Accepted";
+        $save = $post->save();  
+
+        return response()->json([
+            "status"=>"True",
+            "user_id"=>$user_id,
+            "message"=>"Form has been submitted Successfully",
+        ]);
+    }
+   
+
+    public function userdata($id){
+
+
+        $email =  DB::table('supplier_registration_details_models')->where('id', $id)->value('company_email');
+        
+        $saved_data =  DB::table('supplier_registration_details_models')->where('company_email', $email)->get();
+        $saved_user_id =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('id');
+        $ref =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Reference');
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Type_of_Business');
+
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+
+
+        foreach($saved_data as $data){
+
+            $country_code = $data->country;
+            $country = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+    
+    
+            $user_id = $data->Category;
+            $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
+            
+    
+            $type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+        
+           
+            // $data->SubCategory
+            $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
+
+            $details = "";
+
+            foreach($saved_documents as $doc){
+        
+                $details = $doc->Attachments;
+                
+            }
+
+                $data = [
+                    'country'    => $country,
+                    'category'         => $category,
+                    'SubCategory'      => $subcategory,
+                    'BusinessName' => $data->BusinessName,
+
+                    'TypeOfBusiness'    => $type_of_business,
+                    'natutreofbusiness'         => $data->Nature_of_Business,
+                    'Certificate_of_Registration'      => $data->Certificate_of_Registration,
+                    'Revenue_Authority_Taxpayers_Identification_Number' => $data->Revenue_Authority_Taxpayers_Identification_Number,
+
+                    'Tax_compliance_certificate_expiration'    => $data->Tax_compliance_certificate_expiration,
+                    'physical_address'         => $data->physical_address,
+                    'company_email'      => $data->company_email,
+                    'NAPSA_Compliance_Status_certificate' => $data->NAPSA_Compliance_Status_certificate,
+
+                    'contact_person'    => $data->contact_person,
+                    'contact_person_phone_number' => $data->contact_person_phone_number,
+                    'contact_person_email'    => $data->contact_person_email,
+                    'company_telephone'         => $data->company_telephone,
+                    'contact_person_telephone'      => $data->contact_person_telephone,
+                    'Account_Name' => $data->Account_Name,
+                    'Bank_Name' => $data->Bank_name,
+
+
+                    'Bank_Account'    => $data->Bank_Account,
+                    'Bank_Branch'         => $data->Bank_Branch,
+                    'Branch_code'      => $data->Branch_code,
+                    'Account_currency' => $data->Account_currency,
+
+
+                    'company_financial_contact'    => $data->company_financial_contact,
+                    'Annual_turnover'         => $data->Annual_turnover,
+                    'Current_assets'      => $data->Current_assets,
+                    'Current_liabilities' => $data->Current_liabilities,
+
+
+                    'Current_ratio'    => $data->Current_ratio,
+                    'No_of_years_in_business'         => $data->No_of_years_in_business,
+                    'Number_of_employees'      => $data->Number_of_employees,
+                    'Other_employees' => $data->Other_employees,
+
+
+                    'Relevant_specialisation'    => $data->Relevant_specialisation,
+                    'maximum_of_10_Projects_contracts'         => $data->maximum_of_10_Projects_contracts,
+                    'saved_documents'         => $details,
+                ];
+              
+
+                $data["email"] = $email;                
+                $data["title"] = "COMESA:E-PROCUREMENT - Successfull Submisson of Supplier Form ";
+                $data["body"] = "Laravel 10 COMESA E-PROCUREMENT";
+        
+                // $pdf = PDF::loadView('userdata', $data);
+                $pdf = PDF::loadView('userdata', $data); // The pdf that requires to be dseen the client
+                $pdf_data = PDF::loadView('pdf_mail', $data); //The one Containing the body of the Email
+        
+        
+                Mail::send('pdf_mail', $data, function ($message) use ($data, $pdf, $pdf_data) {
+                    $message->to($data["email"], $data["email"])
+                        ->subject($data["title"])
+                        ->attachData($pdf->output(), "SubmittedForm.pdf");
+                });
+        
+                echo "email send successfully !!";
+
+                return $pdf->stream('userdata.pdf');
+
+            }
+    }
+
+
+    // Supplier Login Credentials :
+
+
+    public function SupplierLogin(){
+
+        return view('Login.SupplierLogin');
+    }
+
+
+    public function save(Request $request){
+
+            $request->validate([
+            'email'=> 'required|email|unique:supplier_logins',
+            'password'=> 'required',
+            
+        ]);
+        
+        // inserting data in the database;
+
+        $supplier =  new SupplierLogin;
+
+        $supplier->email = $request->email;
+        $supplier->password = Hash::make($request->password);
+
+        $save = $supplier->save();
+
+        if($save){
+
+            return back()->with('success','New user has been added to the database');
+        }
+        else{
+
+            return back()->with('fail','There was something wrong in the login, try again later');
+        }
+    }
+
+
+    public function checkUser(Request $request){
+
+
+            $request->validate([
+                'email'=>'required|email',
+                'password'=>'required'
+            ]);
+
+            $userInfo = SupplierLogin::where('email','=',$request->email)->first();
+
+
+            if(!$userInfo){
+                return back()->with('fail','We dont recognise the above email or password');
+            }
+            else{
+                if(Hash::check($request->password,$userInfo->password)){
+                    
+                    $request->session()->put('LoggedSupplier',$userInfo->id);
+
+                    return redirect('supplier-dashboard');
+                }
+                else{
+                    return back()->with('fail','Incorrect password or Email entered');
+                }
+            }
+    }
+
+    public function supplier_logout(){
+        if(session()->has('LoggedSupplier')){
+            session()->pull('LoggedSupplier');
+            return redirect('supplier-login');
+        }
+    }
+
+    public function supplierDashboard(){
+
+        $data = ['LoggedUserInfo'=>SupplierLogin::where('id','=', session('LoggedSupplier'))->first()];
+
+        return view('portal.supplier.supplier-dashboard',$data);
+    }
+
+
+    public function supplier_login_test(){
+
+        return view('TestAdmin');
+    }
+
+
+    // Admin Login and register Details
+
+
+    public function admin_register(){
+
+        return view('Login.AdminRegister');
+    }
+
+
+    public function admin_save(Request $request){
+
+        $request->validate([
+            'username'=>'required',
+            'email'=>'required|email|unique:admins',
+            'password'=>'required|min:5|max:12',
+        ]);
 
         
-            $save = $post->save();  
 
-            return response()->json([
-                "status"=>"True",
-                "user_id"=>$user_id,
-                "message"=>"Capacity Information has updated successfully",
-            ]);
+        $admindb =  new Admin;
+
+        $admindb->email = $request->email;
+        $admindb->username = $request->username;
+        $admindb->password = Hash::make($request->password);
+
+        $save = $admindb->save();
+
+        if($save){
+
+            return back()->with('success','New Admin has been added to the COMESA Admins');
         }
+        else{
+
+            return back()->with('fail','There was something wrong in creating the new Admin');
+        }
+    }
+
+
+    public function admin_login(){
+
+        return view('Login.AdminLogin');
+    }
+
+
+    public function admin_check(Request $request){
+
+            $request->validate([
+                'email'=>'required',
+                'password'=>'required',
+            ]);
+
+            $AdminInfo = Admin::where('email','=',$request->email)->first();
+
+            if(!$AdminInfo){
+                return back()->with('fail','We dont recognise the above email or password');
+            }
+
+            else{
+                if(Hash::check($request->password,$AdminInfo->password)){
+                    
+                    $request->session()->put('LoggedAdmin',$AdminInfo->id);
+
+                    return redirect('admin-dashboard');
+                }
+                else{
+                    return back()->with('fail','Incorrect password or Email entered');
+                }
+            }
+    }
+
+
+    public function admin_dashboard(){
+
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        return view('portal.admin.admin-dashboard',$data);
+    }
+
+
+    public function admin_logout(){
+
+        if(session()->has('LoggedAdmin')){
+            session()->pull('LoggedAdmin');
+            return redirect('admin-login');
+        }
+
+    }
 }
