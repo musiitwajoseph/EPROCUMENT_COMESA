@@ -38,6 +38,8 @@
 
             <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
+			<meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <!-- favicon -->
             <link rel="shortcut icon" href="/assets/favicon.ico" />
 
@@ -110,11 +112,6 @@
 
             <header>
 
-			
-
-				{{-- @include('includes.TopNavTest'); --}}
-
-
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
@@ -126,7 +123,7 @@
 								<li class="divider-vertical hidden-sm hidden-xs"></li>                                                              
                                                                                                                                                                                                             
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:void(0);">My Profile</a></li>
 										<li class="divider"></li>
@@ -265,216 +262,286 @@
 </div>
 
 	<div class="row">
+
+        <style>
+            th{
+                text-align: center;
+                color: rgb(23, 137, 23);
+                text-transform: uppercase;
+            }
+        </style>
 		<div class="col-sm-12 tac">
-			<ul class="ov_boxes">
-				<li>
-					<div class="p_bar_up p_canvas"><span>2,4,9,7,12,8,16</span></div>
-					<div class="ov_text">
-						<strong>$3 458,00</strong>
-						Weekly Sale
 
-					</div>
-				</li>
-				<li>
-					<div class="p_bar_down p_canvas"><span>20,15,18,14,10,13,9,7</span></div>
-					<div class="ov_text">
-						<strong>$43 567,43</strong>
-						Monthly Sale
-					</div>
-				</li>
-				
-				</li>
-				<li>
-					<div class="p_line_down p_canvas"><span>20,16,14,18,15,14,14,13,12,10,10,8</span></div>
-					<div class="ov_text">
-						<strong>30240</strong>
-						Unique visitors (last week)
-					</div>
-				</li>
-			</ul>
+            <h1 style="text-align: center;color:green;margin:3rem;background-color:yellow;">Cancelled Supplier</h1>
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+
+				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
+
+				@csrf
+
+                <tr>
+                    <td colspan="4"><h3>1.Business Details</h3></td>
+                </tr>
+
+            <tr>
+            <th>Country</th>
+            <th>Category</th>
+            <th>Sub-category</th>
+            <th>BusinessName</th>
+            </tr>  
+
+            <tr>
+                <td>{{$country_name}}</td>
+                <td>{{$category}}</td>
+                <td>{{$subcategory}}</td>
+                <td>{{$info->BusinessName}}</td>
+            </tr>  
+
+                <tr>
+                <th>Type of Business</th>
+                <th>Nature of Business</th>
+                <th>Certificate of Registration Incorporation number</th>
+                <th>Revenue Authority Taxpayer’s Identification Number</th>
+                </tr>  
+
+                <tr>
+                    <td>{{$Types_of_business}}</td>
+                    <td>{{$info->Nature_of_Business}}</td>
+                    <td>{{$info->Certificate_of_Registration}}</td>
+                    <td>{{$info->Revenue_Authority_Taxpayers_Identification_Number}}</td>
+                </tr> 
+
+                    <tr>
+                    <th>Tax compliance certificate expiration date</th>
+                    <th>Physical address</th>
+                    <th>Company Email</th>
+                    <th>National Pension Authority (NPSA) Registration No</th>
+                    </tr>    
+
+                    <tr>
+                        <td>{{$info->Tax_compliance_certificate_expiration}}</td>
+                        <td>{{$info->physical_address}}</td>
+                        <td>{{$info->company_email}}</td>
+                        <td>{{$info->National_Pension_Authority}}</td>
+                    </tr> 
+
+                        <tr>
+                        <th>Personal contact :</th>
+                        <th>Company Telephone number</th>
+                        <th>Contact Telephone number</th>
+                        <th></th>
+                        </tr>  
+
+                        <tr>
+                            <td>{{$info->contact_person}}</td>
+                            <td>{{$info->company_telephone}}</td>
+                            <td>{{$info->contact_person_telephone}}</td>
+                        </tr> 
+
+                        <tr>
+                            <td colspan="4"><h3>2.Financial Information</h3></td>
+                        </tr>
+
+                            <tr>
+                            <th>Account name </th>
+                            <th>Bank Account number</th>
+                            <th>Bank name </th>
+                            <th>Bank Branch </th>
+                            </tr>  
+
+                            <tr>
+                                <td>{{$info->Account_Name}}</td>
+                                <td>{{$info->Bank_Account}}</td>
+                                <td>{{$info->Bank_name}}</td>
+                                <td>{{$info->Bank_Branch}}</td>
+                            </tr> 
+
+                                <tr>
+                                <th>Branch code  </th>
+                                <th>Account currency </th>
+                                <th>Company financial contact person</th>
+                                <th>Contact person email</th>
+                                </tr>  
+
+                                <tr>
+                                    <td>{{$info->Branch_code}}</td>
+                                    <td>{{$info->Account_currency}}</td>
+                                    <td>{{$info->company_financial_contact}}</td>
+                                    <td>{{$info->contact_person_email}}</td>
+                                </tr> 
+
+                                    <tr>
+                                    <th>Contact person phone number</th>
+                                    </tr>
+
+                                    <tr>
+                                        <td>{{$info->contact_person_phone_number}}</td>
+                                   </tr>
+
+                                   <tr>
+                                    <td colspan="4"><h3>3.Capacity Levels</h3></td>
+                                   </tr>
+
+                                    <tr>
+                                    <th>Annual turnover excluding this contract </th>
+                                    <th>Current assets </th>
+                                    <th>Current liabilities </th>
+                                    <th>Current ratio (current assets/current liabilities) </th>
+                                    </tr>  
+
+                                    <tr>
+                                        <td>{{$info->Annual_turnover}}</td>
+                                        <td>{{$info->Current_assets}}</td>
+                                        <td>{{$info->Current_liabilities}}</td>
+                                        <td>{{$info->Current_ratio}}</td>
+                                    </tr>
+
+                                        <tr>
+                                        <th>No of years in business :</th>
+                                        <th>Number of employees</th>
+                                        <th>Other employees </th>
+                                        <th>Relevant specialisation</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>{{$info->No_of_years_in_business}}</td>
+                                            <td>{{$info->Number_of_employees}}</td>
+                                            <td>{{$info->Other_employees}}</td>
+                                            <td>{{$info->Relevant_specialisation}}</td>
+                                        </tr>
+
+										
+
+                                        <tr>
+                                            <th>A maximum of 10 Projects|contracts  :</th>
+                                        </tr>
+
+                                            <tr>  
+                                            <td>{{$info->maximum_of_10_Projects_contracts}}</td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="4"><h3>4.Required Documents</h3></td>
+                                            </tr>
+
+                                            <tr>
+                                              
+                                                <td colspan="3" style="text-align: left">
+                                                    @foreach ($saved_documents as $doc)
+                                                    <span>Attachment:</span>
+                                                    <a href="{{ url('download/'.$doc->Attachments) }}">{{$doc->Attachments}}</a><br/>
+                                                    @endforeach
+                                                </td>
+                                           
+                                            </tr>
+
+											
+            </table>
+
+           {{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Cancel Supplier</button>
+
+            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}
 		</div>
 	</div>
-
-	<div class="row">
-		<div class="col-sm-12">
-			<ul class="dshb_icoNav clearfix">
-				<li><a href="{{ route('approve-dashboard') }}" style="background-image: url(/assets/img/gCons/multi-agents.png)"><span class="label label-info">+9</span> Approvals</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/world.png)">Map</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/configuration.png)">Settings</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/lab.png)">Lab</a>
-				</li><li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/pie-chart.png)">Charts</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/edit.png)">Add New Article</a></li>
-				
-			</ul>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-5">
-				<h3 class="heading">Visitors by Country <small>last week</small></h3>
-			<div id="fl_2" style="height:200px;width:80%;margin:50px auto 0"></div>
-		</div>
-		<div class="col-sm-7">
-				<div class="heading clearfix">
-					<h3 class="pull-left">Another Chart</h3>
-					<span class="pull-right label label-info bs_ttip" data-placement="left" data-container="body" title="Here is a sample info tooltip">Info</span>
-				</div>
-			<div id="fl_1" style="height:270px;width:100%;margin:15px auto 0"></div>
-		</div>
-	</div>
-
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Orders</h3>
-				<span class="pull-right label label-danger">5 Orders</span>
-			</div>
-			<table class="table table-striped table-bordered mediaTable">
-				<thead>
-					<tr>
-						<th class="optional">id</th>
-						<th class="essential persist">Customer</th>
-						<th class="optional">Status</th>
-						<th class="optional">Date Added</th>
-						<th class="essential">Total</th>
-						<th class="essential">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>134</td>
-						<td>Summer Throssell</td>
-						<td>Pending</td>
-						<td>24/04/2015</td>
-						<td>$120.23</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>133</td>
-						<td>Declan Pamphlett</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$320.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>132</td>
-						<td>Erin Church</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$44.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>131</td>
-						<td>Koby Auld</td>
-						<td>Pending</td>
-						<td>22/04/2015</td>
-						<td>$180.20</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>130</td>
-						<td>Anthony Pound</td>
-						<td>Pending</td>
-						<td>20/04/2015</td>
-						<td>$610.42</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-        </div>
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Images <small>(gallery grid)</small></h3>
-				<span class="pull-right label label-success">12</span>
-			</div>
-			<div id="small_grid" class="wmk_grid">
-				<ul>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image04.jpg" title="Image_4 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image04_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>300KB<br>21/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image05.jpg" title="Image_5 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image05_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>200KB<br>10/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image06.jpg" title="Image_6 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image06_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>174KB<br>14/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image07.jpg" title="Image_7 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image07_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>289KB<br>27/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image08.jpg" title="Image_8 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image08_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>265KB<br>18/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image09.jpg" title="Image_9 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image09_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>230KB<br>12/05/2015</span>
-						</p>
-					</li>
-					
-									</ul>
-			</div>
-        </div>
-    </div>
-
                  
+    </div>
+          
 </div>
-            </div>
 
-        </div>
+</div>
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
     @include('includes.side-bar')
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+            $(document).ready(function(){
+                $('#approving_btn').click(function(){
+                    if (confirm('Are you sure you want to Approve this Supplier ?')) {
+                        
+
+						var id_hidden  = $('#id_hidden').val();
+
+						var form_data = new FormData();
+						form_data.append('id_hidden', id_hidden);
+
+
+                            $.ajax({
+								type: "POST",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/approving',
+								success		:function(data){
+									if(data.status){		
+                                        alert(data.message);	
+										location.replace('/approve-dashboard');						
+									}								
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+                    }
+                else{
+                   
+                    return false;
+                }
+                 
+                });
+            });
+
+
+
+            $(document).ready(function(){
+                $('#disapproving_btn').click(function(){
+                    if (confirm('Are you sure you want to cancel this Supplier Application ?')) {
+                        
+
+						var id_hidden  = $('#id_hidden').val();
+
+						var form_data = new FormData();
+						form_data.append('id_hidden', id_hidden);
+
+
+
+                            $.ajax({
+								type: "POST",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/cancel_approving',
+								success		:function(data){
+									if(data.status){		
+                                        alert(data.message);	
+										location.replace('/approve-dashboard');				
+									}								
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+                    }
+                else{
+                   
+                    return false;
+                }
+                 
+                });
+            });
+
+
+    </script>
 
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-migrate.min.js"></script>

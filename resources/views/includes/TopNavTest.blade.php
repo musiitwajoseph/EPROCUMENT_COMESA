@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="brand pull-left" href="dashboard.html">Gebo Admin</a>
+            <a class="brand pull-left" href="dashboard.html">COMESA :: EPROCUREMENT</a>
            
             <ul class="nav navbar-nav user_menu pull-right">
                 

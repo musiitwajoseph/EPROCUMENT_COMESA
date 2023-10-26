@@ -860,10 +860,7 @@
 
 				
 				<script type="text/javascript">
-
-
 				//  Credential validation before complete
-
 
 
 				$(document).ready(function(){
@@ -1070,16 +1067,6 @@
 							var confirm_password = $('#confirm_password').val();
 							// var supplier_reference_number = $('#supplier_reference_number').val();
 							var original_supplier_email = $('#original_supplier_email').val();
-
-
-					
-							// alert(login_username);
-						
-							// if(login_password == confirm_password){
-							// 	alert("The password has to be the same");
-							// 	return
-							// }
-
 
 							var country = $('#country').val();
 							var Category = $('#Category').val();
@@ -1427,10 +1414,8 @@
 								}
 					});
 				});
-				});
-
-
-			// </script>
+			});
+	 </script>
 
 				
 								</div>

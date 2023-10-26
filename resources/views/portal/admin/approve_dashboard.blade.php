@@ -126,7 +126,7 @@
 								<li class="divider-vertical hidden-sm hidden-xs"></li>                                                              
                                                                                                                                                                                                             
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:void(0);">My Profile</a></li>
 										<li class="divider"></li>
@@ -205,10 +205,9 @@
 									<thead>
 										<tr>
 											<th>id</th>
-											<th>Summary</th>
-											<th>Updated</th>
-											<th>Priority</th>
-											<th>Status</th>
+											<th>username</th>
+											<th>email</th>
+											<th>temp_otp</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -217,28 +216,28 @@
 											<td><a href="/assets/javascript:void(0)">Admin should not break if URL…</a></td>
 											<td>23/05/2015</td>
 											<td><span class="label label-danger">High</span></td>
-											<td>Open</td>
+										
 										</tr>
 										<tr>
 											<td>P-18</td>
 											<td><a href="/assets/javascript:void(0)">Displaying submenus in custom…</a></td>
 											<td>22/05/2015</td>
 											<td><span class="label label-warning">Medium</span></td>
-											<td>Reopen</td>
+											
 										</tr>
 										<tr>
 											<td>P-25</td>
 											<td><a href="/assets/javascript:void(0)">Featured image on post types…</a></td>
 											<td>22/05/2015</td>
 											<td><span class="label label-success">Low</span></td>
-											<td>Updated</td>
+											
 										</tr>
 										<tr>
 											<td>P-10</td>
 											<td><a href="/assets/javascript:void(0)">Multiple feed fixes and…</a></td>
 											<td>17/05/2015</td>
 											<td><span class="label label-warning">Medium</span></td>
-											<td>Open</td>
+											
 										</tr>
 									</tbody>
 								</table>
@@ -253,222 +252,173 @@
 			</header>
             <div id="contentwrapper">
                 <div class="main_content">
-<div id="jCrumbs" class="breadCrumb module">
-    <ul>
-        <li>
-            <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
-        </li>
-        <li>
-            <a href="javascript:void(0);">Admin Dashboard</a>
-        </li>
-    </ul>
-</div>
 
-	<div class="row">
-		<div class="col-sm-12 tac">
-			<ul class="ov_boxes">
-				<li>
-					<div class="p_bar_up p_canvas"><span>2,4,9,7,12,8,16</span></div>
-					<div class="ov_text">
-						<strong>$3 458,00</strong>
-						Weekly Sale
+        <div id="jCrumbs" class="breadCrumb module">
+            <ul>
+                <li>
+                    <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">Admin Dashboard</a>
+                </li>
+            </ul>
+        </div>
 
-					</div>
-				</li>
-				<li>
-					<div class="p_bar_down p_canvas"><span>20,15,18,14,10,13,9,7</span></div>
-					<div class="ov_text">
-						<strong>$43 567,43</strong>
-						Monthly Sale
-					</div>
-				</li>
-				
-				</li>
-				<li>
-					<div class="p_line_down p_canvas"><span>20,16,14,18,15,14,14,13,12,10,10,8</span></div>
-					<div class="ov_text">
-						<strong>30240</strong>
-						Unique visitors (last week)
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
+
 
 	<div class="row">
 		<div class="col-sm-12">
 			<ul class="dshb_icoNav clearfix">
-				<li><a href="{{ route('approve-dashboard') }}" style="background-image: url(/assets/img/gCons/multi-agents.png)"><span class="label label-info">+9</span> Approvals</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/world.png)">Map</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/configuration.png)">Settings</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/lab.png)">Lab</a>
-				</li><li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/pie-chart.png)">Charts</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/edit.png)">Add New Article</a></li>
-				
+				<li><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png)"><span class="label label-info">{{$approved_count}}</span> Approved</a></li>
+                <li><a class="btn" id="pending_btn" style="background-image: url(/assets/img/gCons/processing1.png)"><span class="label label-info">{{$pending_count}}</span> Pending</a></li>
+                <li><a class="btn" id="cancelled_btn" style="background-image: url(/assets/img/gCons/delete-item1.png)"><span class="label label-info">{{$cancelled_count}}</span> Cancelled</a></li>				
 			</ul>
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-5">
-				<h3 class="heading">Visitors by Country <small>last week</small></h3>
-			<div id="fl_2" style="height:200px;width:80%;margin:50px auto 0"></div>
-		</div>
-		<div class="col-sm-7">
-				<div class="heading clearfix">
-					<h3 class="pull-left">Another Chart</h3>
-					<span class="pull-right label label-info bs_ttip" data-placement="left" data-container="body" title="Here is a sample info tooltip">Info</span>
-				</div>
-			<div id="fl_1" style="height:270px;width:100%;margin:15px auto 0"></div>
-		</div>
-	</div>
 
     <div class="row">
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Orders</h3>
-				<span class="pull-right label label-danger">5 Orders</span>
-			</div>
-			<table class="table table-striped table-bordered mediaTable">
-				<thead>
-					<tr>
-						<th class="optional">id</th>
-						<th class="essential persist">Customer</th>
-						<th class="optional">Status</th>
-						<th class="optional">Date Added</th>
-						<th class="essential">Total</th>
-						<th class="essential">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>134</td>
-						<td>Summer Throssell</td>
-						<td>Pending</td>
-						<td>24/04/2015</td>
-						<td>$120.23</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>133</td>
-						<td>Declan Pamphlett</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$320.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>132</td>
-						<td>Erin Church</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$44.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>131</td>
-						<td>Koby Auld</td>
-						<td>Pending</td>
-						<td>22/04/2015</td>
-						<td>$180.20</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>130</td>
-						<td>Anthony Pound</td>
-						<td>Pending</td>
-						<td>20/04/2015</td>
-						<td>$610.42</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-        </div>
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Images <small>(gallery grid)</small></h3>
-				<span class="pull-right label label-success">12</span>
-			</div>
-			<div id="small_grid" class="wmk_grid">
-				<ul>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image04.jpg" title="Image_4 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image04_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>300KB<br>21/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image05.jpg" title="Image_5 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image05_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>200KB<br>10/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image06.jpg" title="Image_6 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image06_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>174KB<br>14/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image07.jpg" title="Image_7 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image07_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>289KB<br>27/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image08.jpg" title="Image_8 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image08_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>265KB<br>18/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image09.jpg" title="Image_9 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image09_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>230KB<br>12/05/2015</span>
-						</p>
-					</li>
-					
-									</ul>
-			</div>
+        <div class="col-sm-12 col-md-12">
+
+            <section id="Approved_suppliers">
+            <h3 class="heading" style="color: rgb(26, 239, 54)" >Approved Suppliers Records</h3>
+                  
+            
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Nature of Business</th>
+                        <th>Contact Person</th>
+                        <th>Physical Address</th>
+                        <th>National Pension Authority</th>
+                        <th>Bank Name</th>
+                        <th>Branch Name</th>
+                        <th>Years in Business</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($approved as $item)    
+                    
+                    <tr>
+                        <td>{{$item->BusinessName}}</td>
+                        <td>{{$item->Nature_of_Business}}</td>
+                        <td>{{$item->contact_person}}</td>
+                        <td>{{$item->physical_address}}</td>
+                        <td>{{$item->National_Pension_Authority}}</td>
+                        <td>{{$item->Bank_name}}</td>
+                        <td>{{$item->Bank_Branch}}</td>
+                        <td>{{$item->No_of_years_in_business}}</td>
+                        <td><a href="{{'approved-record/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            {{$approved->links()}}
+
+            <style>
+                .w-5{
+                    display: none;
+                    }
+            </style>
+
+        </section>
         </div>
     </div>
 
+    <section id="Pending_Suppliers">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 class="heading" style="color: rgba(255, 170, 0, 0.637)">Pending Suppliers Records</h3>
+            
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Nature of Business</th>
+                        <th>Contact Person</th>
+                        <th>Physical Address</th>
+                        <th>National Pension Authority</th>
+                        <th>Bank Name</th>
+                        <th>Years in Business</th>
+                        <th style="text-align: center">Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($pending as $item)    
+                    
+                    <tr>
+                        <td>{{$item->BusinessName}}</td>
+                        <td>{{$item->Nature_of_Business}}</td>
+                        <td>{{$item->contact_person}}</td>
+                        <td>{{$item->physical_address}}</td>
+                        <td>{{$item->National_Pension_Authority}}</td>
+                        <td>{{$item->Bank_name}}</td>
+                        <td>{{$item->No_of_years_in_business}}</td>
+                        <td><button class="btn btn-warning">Pending</button></td>
+                        <td><a href="{{'pending-record/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                    </tr>
+
+                    @endforeach
+                  
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    </section>
+
+    <section id="Cancelled_Suppliers">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h3 class="heading" style="color: red">Cancelled Suppliers Records</h3>
+            
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Nature of Business</th>
+                        <th>Contact Person</th>
+                        <th>Physical Address</th>
+                        <th>National Pension Authority</th>
+                        <th>Bank Name</th>
+                        <th>Years in Business</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($cancelled as $item)    
+                    
+                    <tr>
+                        <td>{{$item->BusinessName}}</td>
+                        <td>{{$item->Nature_of_Business}}</td>
+                        <td>{{$item->contact_person}}</td>
+                        <td>{{$item->physical_address}}</td>
+                        <td>{{$item->National_Pension_Authority}}</td>
+                        <td>{{$item->Bank_name}}</td>
+                        <td>{{$item->No_of_years_in_business}}</td>
+                        <td><button class="btn btn-danger">Cancelled</button></td>
+                        <td><a href="{{'cancelled-record/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                    </tr>
+
+                    @endforeach
+                  
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    </section>
                  
-</div>
             </div>
+        </div>
 
         </div>
 
@@ -477,6 +427,52 @@
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+            $(document).ready(function(){
+                    $('#Pending_Suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+            });
+
+
+            $(document).ready(function(){
+                $('#approved_btn').click(function(){
+
+                    $('#Approved_suppliers').show();
+                    $('#Pending_Suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                });
+            });
+
+
+            $(document).ready(function(){
+                $('#pending_btn').click(function(){
+
+                    $('#Pending_Suppliers').show();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                });
+            });
+
+            $(document).ready(function(){
+                $('#cancelled_btn').click(function(){
+
+                    $('#Pending_Suppliers').hide();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').show();
+                });
+            });
+
+    </script>
+
+
+
+
+
+
+
+
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->

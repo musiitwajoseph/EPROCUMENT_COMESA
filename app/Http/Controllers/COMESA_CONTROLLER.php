@@ -167,10 +167,12 @@ class COMESA_CONTROLLER extends Controller
 
 
        else if($entered_otp == ''){
+
         return response()->json([
             "status" => FALSE,
             "message" => "Enter Token before clicking submit",
         ]);
+
        }
        else if(strlen($entered_otp)< 5 ){
         return response()->json([
@@ -331,18 +333,7 @@ class COMESA_CONTROLLER extends Controller
         
 
         $save = $supplier->save();
-
-        // if($save){
-        //     dd("Data has been saved successfully in the database");
-        //     return back()->with('   ','New user has been added to the database');
-        // }
-        // else{
-
-        //     return back()->with('fail','There was something wrong in the login, try again later');
-        // }
-
-
-        
+   
           $mytime =  date('Y-m-d H:i:s');
           $random_number_reference = rand(10000, 99999);
 
@@ -816,7 +807,6 @@ class COMESA_CONTROLLER extends Controller
 
         $country_update = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
-        // $email = 'th@gmail.com';//static
         $details = $this->supplierFetchData($email);
           
               return response()->json([
@@ -853,8 +843,6 @@ class COMESA_CONTROLLER extends Controller
     public function redirectedPage($id){
 
        $dynamic_id = $id;
-
-    //    dd($dynamic_id);
 
        return view('Edits.redirect',compact(['dynamic_id']));
     }
@@ -1186,13 +1174,11 @@ class COMESA_CONTROLLER extends Controller
         
                 echo "email send successfully !!";
 
-                return $pdf->stream('userdata.pdf');
+                // return $pdf->stream('userdata.pdf');
 
+                return redirect('supplier-login');
             }
     }
-
-
-    // Supplier Login Credentials :
 
 
     public function SupplierLogin(){
@@ -1209,7 +1195,6 @@ class COMESA_CONTROLLER extends Controller
             
         ]);
         
-        // inserting data in the database;
 
         $supplier =  new SupplierLogin;
 
@@ -1230,31 +1215,77 @@ class COMESA_CONTROLLER extends Controller
 
 
     public function checkUser(Request $request){
-
-
+    
             $request->validate([
                 'email'=>'required|email',
-                'password'=>'required'
+                'password'=>'required',
+                'captcha'=>'required|captcha',
             ]);
 
             $userInfo = SupplierLogin::where('email','=',$request->email)->first();
-
 
             if(!$userInfo){
                 return back()->with('fail','We dont recognise the above email or password');
             }
             else{
+
                 if(Hash::check($request->password,$userInfo->password)){
                     
                     $request->session()->put('LoggedSupplier',$userInfo->id);
 
-                    return redirect('supplier-dashboard');
+                    $user_check_email = $request->email;
+
+                    $new_otp = rand(10000, 99999);
+
+                    
+                    $info = DB::table('supplier_logins')->where('email', $user_check_email)->update(['temp_otp' => $new_otp]);
+
+                    $user_id_check = DB::table('supplier_logins')->where('email', $user_check_email)->value('id');
+                    $username = DB::table('admins')->where('email', $user_check_email)->value('username');
+
+                    $data = [
+                        'subject'=>'SUPPLIER LOGIN OTP',
+                        'body'=>'Enter the Sent OTP to Login : ',
+                        'otp'=> $new_otp,
+                        'username' => $username,
+                    ];
+        
+                        Mail::to($user_check_email)->send(new SupplierMail($data));
+
+                    return view('Login.OTP2',compact(['user_id_check']));
+
                 }
-                else{
-                    return back()->with('fail','Incorrect password or Email entered');
-                }
+
             }
     }
+
+
+    public function supplier_verify_otp(Request $request){
+
+
+        $data_otp = $request->input('verify_otp');        
+        $user_id = $request->input('hidden_otp');
+
+
+        $user_id_email_check = DB::table('supplier_logins')->where('id', $user_id)->value('email');
+
+        // dd($user_id_email_check);
+
+        $user_otp_check_db = DB::table('supplier_logins')->where('email', $user_id_email_check)->value('temp_otp');
+
+        if($data_otp == $user_otp_check_db){
+
+            return redirect('supplier-dashboard');
+        }
+        else{
+
+            return response()->json([
+                "status"=>FALSE,
+                "message"=>"Invalid OTP being entered",
+            ]);
+        }
+    }
+    
 
     public function supplier_logout(){
         if(session()->has('LoggedSupplier')){
@@ -1275,9 +1306,6 @@ class COMESA_CONTROLLER extends Controller
 
         return view('TestAdmin');
     }
-
-
-    // Admin Login and register Details
 
 
     public function admin_register(){
@@ -1315,6 +1343,12 @@ class COMESA_CONTROLLER extends Controller
     }
 
 
+    public function Supplier_OTP(){
+
+
+        return view('Login.SupplierOTP');
+    }
+
     public function admin_login(){
 
         return view('Login.AdminLogin');
@@ -1323,9 +1357,10 @@ class COMESA_CONTROLLER extends Controller
 
     public function admin_check(Request $request){
 
-            $request->validate([
+           $validatoring =  $request->validate([
                 'email'=>'required',
                 'password'=>'required',
+                'captcha'=>'required|captcha',
             ]);
 
             $AdminInfo = Admin::where('email','=',$request->email)->first();
@@ -1339,12 +1374,66 @@ class COMESA_CONTROLLER extends Controller
                     
                     $request->session()->put('LoggedAdmin',$AdminInfo->id);
 
-                    return redirect('admin-dashboard');
+                    $user_check_email = $request->email;
+
+                    $new_otp = rand(10000, 99999);
+
+                    
+                    $info = DB::table('admins')->where('email', $user_check_email)->update(['temp_otp' => $new_otp]);
+
+                    $user_id_check = DB::table('admins')->where('email', $user_check_email)->value('id');
+                    $username = DB::table('admins')->where('email', $user_check_email)->value('username');
+
+                    $data = [
+                        'subject'=>'ADMIN LOGIN OTP',
+                        'body'=>'Enter the Sent OTP to Login : ',
+                        'otp'=> $new_otp,
+                        'username' => $username,
+                    ];
+        
+                        Mail::to($user_check_email)->send(new SupplierMail($data));
+
+                    return view('Login.OTP',compact(['user_id_check']));
+
                 }
                 else{
                     return back()->with('fail','Incorrect password or Email entered');
                 }
             }
+    }
+
+
+
+    public function admin_verify_otp(Request $request){
+
+
+        $data_otp = $request->input('verify_otp');        
+        $user_id = $request->input('hidden_otp');
+
+
+        $user_id_email_check = DB::table('admins')->where('id', $user_id)->value('email');
+
+        $user_otp_check_db = DB::table('admins')->where('email', $user_id_email_check)->value('temp_otp');
+
+        if($data_otp == $user_otp_check_db){
+
+            return redirect('admin-dashboard');
+        }
+        else{
+
+            return response()->json([
+                "status"=>FALSE,
+                "message"=>"Invalid OTP being entered",
+            ]);
+        }
+    }
+
+
+
+
+    public function OTP_Validation(){
+
+        return view('Login.OTP');
     }
 
 
@@ -1364,4 +1453,179 @@ class COMESA_CONTROLLER extends Controller
         }
 
     }
+
+    // CAPTCHA RELOAD
+
+    public function ReloadCaptcha(){
+
+        return response()->json(['captcha'=>captcha_img()]);
+    }
+
+
+    public function approve_dashboard(){
+
+
+        $approved = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')->simplePaginate(10);
+        $approved_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')->count();
+
+        $pending = DB::table('supplier_registration_details_models')->where('approval_status', 'Pending')->simplePaginate(10);
+        $pending_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Pending')->count();
+
+
+        $cancelled = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')->simplePaginate(10);
+        $cancelled_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')->count();
+
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.approve_dashboard',$data)->with('approved',$approved)
+                                                           ->with('pending',$pending)
+                                                           ->with('cancelled',$cancelled)
+                                                           ->with('approved_count',$approved_count)
+                                                           ->with('pending_count',$pending_count)
+                                                           ->with('cancelled_count',$cancelled_count);
+                                                           
+    }
+
+    // Fetch data from user controller
+    
+    public function get_user_data(){
+
+     $saved_data = Admin::all();
+
+    return view('portal.admin.approve_dashboard',compact(['saved_data']));
+        
+    }
+
+
+    public function pending_record($id)
+    {
+        
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+        $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+        $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        
+        $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+
+
+        $info = SupplierRegistrationDetailsModel::find($id);
+        $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.admin_accept_supplier',$data)->with('info',$info)
+                                                              ->with('saved_documents',$saved_documents)
+                                                              ->with('Types_of_business',$Types_of_business)
+                                                              ->with('id',$id)->with('country_name',$country_name)
+                                                              ->with('subcategory',$subcategory)->with('category',$category);
+    }
+
+
+
+    public function approved_record($id)
+    {
+        $id = (int)$id;
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+        $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+        $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        
+        $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+
+
+        $info = SupplierRegistrationDetailsModel::find($id);
+        $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.admin_approved_and_cancelled',$data)->with('info',$info)
+                                                              ->with('saved_documents',$saved_documents)
+                                                              ->with('Types_of_business',$Types_of_business)
+                                                              ->with('id',$id)->with('country_name',$country_name)
+                                                              ->with('subcategory',$subcategory)->with('category',$category);
+    }
+
+
+
+    public function cancelled_record($id)
+    {
+        
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+        $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+        $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        
+        $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+
+
+        $info = SupplierRegistrationDetailsModel::find($id);
+        $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.admin_cancelled_records',$data)->with('info',$info)
+                                                              ->with('saved_documents',$saved_documents)
+                                                              ->with('Types_of_business',$Types_of_business)
+                                                              ->with('id',$id)->with('country_name',$country_name)
+                                                              ->with('subcategory',$subcategory)->with('category',$category);
+    }
+
+
+
+
+
+
+    public function show_table(){
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        return view('portal.admin.admin_accept_supplier',$data);
+    }
+
+    public function approving_supplier(Request $request){
+
+        $data =  $request->input('id_hidden');
+        DB::table('supplier_registration_details_models')->where('id', $data) ->update(['approval_status' => "Approved"]);
+
+
+        return response()->json([
+                "status" => True,
+                "message"=>"The supplier Applciation request has been approved",
+            ]);
+    }
+
+    public function cancel_approving_supplier(Request $request){
+
+        $data =  $request->input('id_hidden');
+
+        DB::table('supplier_registration_details_models')->where('id', $data) ->update(['approval_status' => "Cancelled"]);
+
+        return response()->json([
+            "status" => True,
+            "message"=>"This supplier application request has been cancelled",
+        ]);
+    }
+
+
 }

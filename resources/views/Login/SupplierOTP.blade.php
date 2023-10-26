@@ -10,8 +10,6 @@
     <title>..:: COMESA - Admin Portal ::..</title>
 </head>
 <body>
-
-    
     <div class="img-centre">
       <a href="#"><img id="logo_resize_img" src="/assets/img/logo.jpg" alt="COMESA_logo" class="responsive"></a>  
     </div>
@@ -22,7 +20,7 @@
                 <div class="signup-form">
                     <form action="{{ route('admin.check') }}" class="mt-5 border p-4 bg-light shadow" method="POST">
                         @csrf
-                        <h2 class="mb-2 text-primary" style="text-align: center">COMESA ADMIN PORTAL</h2>
+                        <h2 class="mb-5 text-success" style="text-align: center">OTP HAS BEEN SENT TO YOU'RE EMAIL</h2>
                         
                         @if (Session::get('fail'))
                            <div class="alert alert-danger">
@@ -40,30 +38,9 @@
                         <div class="row">
 
                             <div class="mb-3 col-md-12">
-                                <label>Email<span class="text-danger">*</span></label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email" value="{{old('email')}}" required>
-                                <span class="text-danger">@error('email'){{$message}}@enderror</span>
-                            </div>
-
-                            <div class="mb-3 col-md-12">
-                                <label>Password<span class="text-danger">*</span></label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password" required>
-                                <span class="text-danger">@error('password'){{$message}}@enderror</span>
-                            </div>
-
-
-                            <div class="mb-4 col-md-12">
-                                <label class="mb-1">Captcha<span class="text-danger">*</span></label>
-                                    <input type="text" name="captcha" id="captcha" class="form-control" placeholder="Enter captcha" required>
-                                    <span class="text-danger">@error('captcha'){{$message}}@enderror</span>
-                            </div>
-
-
-                            <div class="mb-1 col-md-12">
-                                <div class="captcha">
-                                    <span>{!! captcha_img('flat') !!}</span>
-                                    <button type="button" class="btn btn-danger reload" id="reload">&#x21bb;</button>                                    
-                                </div>
+                                <label>Enter OTP for validation : <span class="text-danger">*</span></label>
+                                <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP Sent" value="{{old('otp')}}" required>
+                                <span class="text-danger">@error('otp'){{$message}}@enderror</span>
                             </div>
 
                            
@@ -111,7 +88,7 @@
 
 
                 $ajax({
-                     type: "POST",
+                     type: "post",
 
                         processData: false,
                         contentType: false,

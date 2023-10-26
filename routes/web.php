@@ -100,10 +100,7 @@ Route::group(['middleware'=>['SupplierCheck']], function(){
 
 Route::get('supplier-login-test',[COMESA_CONTROLLER::class,'supplier_login_test']);
 
-
-
 Route::post('admin.save',[COMESA_CONTROLLER::class,'admin_save'])->name('admin.save');
-
 
 Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('admin-login');
 
@@ -116,4 +113,36 @@ Route::group(['middleware'=>['AdminAuth']], function(){
 
     Route::get('admin-dashboard',[COMESA_CONTROLLER::class,'admin_dashboard'])->name('admin-dashboard');
     Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
+    Route::get('OTP-validation',[COMESA_CONTROLLER::class,'OTP_Validation'])->name('OTP-validation');
 });
+
+
+Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
+
+
+Route::post('admin-verify-otp',[COMESA_CONTROLLER::class,'admin_verify_otp'])->name('admin-verify-otp');
+Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp'])->name('supplier-verify-otp');
+
+Route::get('reload-captcha',[COMESA_CONTROLLER::class,'ReloadCaptcha'])->name('reload-captcha');
+
+
+// 
+
+Route::get('Supplier-OTP',[COMESA_CONTROLLER::class,'Supplier_OTP'])->name('Supplier-OTP');
+
+
+Route::get('approve-dashboard',[COMESA_CONTROLLER::class,'approve_dashboard'])->name('approve-dashboard');
+
+
+Route::get('user-data',[COMESA_CONTROLLER::class,'get_user_data'])->name('user-data');
+
+
+Route::get('pending-record/{id}',[COMESA_CONTROLLER::class,'pending_record']);
+Route::get('approved-record/{id}',[COMESA_CONTROLLER::class,'approved_record']);
+Route::get('cancelled-record/{id}',[COMESA_CONTROLLER::class,'cancelled_record']);
+
+Route::get('show_tb',[COMESA_CONTROLLER::class,'show_table']);
+
+
+Route::post('approving',[COMESA_CONTROLLER::class,'approving_supplier']);
+Route::post('cancel_approving',[COMESA_CONTROLLER::class,'cancel_approving_supplier']);
