@@ -118,7 +118,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="dashboard.html">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -256,7 +256,7 @@
         <div id="jCrumbs" class="breadCrumb module">
             <ul>
                 <li>
-                    <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+                    <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
                 </li>
                 <li>
                     <a href="javascript:void(0);">Admin Dashboard</a>

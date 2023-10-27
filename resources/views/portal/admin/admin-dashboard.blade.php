@@ -110,15 +110,10 @@
 
             <header>
 
-			
-
-				{{-- @include('includes.TopNavTest'); --}}
-
-
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="dashboard.html">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard')}}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -256,7 +251,7 @@
 <div id="jCrumbs" class="breadCrumb module">
     <ul>
         <li>
-            <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
         </li>
         <li>
             <a href="javascript:void(0);">Admin Dashboard</a>
@@ -310,162 +305,8 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-5">
-				<h3 class="heading">Visitors by Country <small>last week</small></h3>
-			<div id="fl_2" style="height:200px;width:80%;margin:50px auto 0"></div>
-		</div>
-		<div class="col-sm-7">
-				<div class="heading clearfix">
-					<h3 class="pull-left">Another Chart</h3>
-					<span class="pull-right label label-info bs_ttip" data-placement="left" data-container="body" title="Here is a sample info tooltip">Info</span>
-				</div>
-			<div id="fl_1" style="height:270px;width:100%;margin:15px auto 0"></div>
-		</div>
-	</div>
 
-    <div class="row">
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Orders</h3>
-				<span class="pull-right label label-danger">5 Orders</span>
-			</div>
-			<table class="table table-striped table-bordered mediaTable">
-				<thead>
-					<tr>
-						<th class="optional">id</th>
-						<th class="essential persist">Customer</th>
-						<th class="optional">Status</th>
-						<th class="optional">Date Added</th>
-						<th class="essential">Total</th>
-						<th class="essential">Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>134</td>
-						<td>Summer Throssell</td>
-						<td>Pending</td>
-						<td>24/04/2015</td>
-						<td>$120.23</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>133</td>
-						<td>Declan Pamphlett</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$320.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>132</td>
-						<td>Erin Church</td>
-						<td>Pending</td>
-						<td>23/04/2015</td>
-						<td>$44.00</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>131</td>
-						<td>Koby Auld</td>
-						<td>Pending</td>
-						<td>22/04/2015</td>
-						<td>$180.20</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-					<tr>
-						<td>130</td>
-						<td>Anthony Pound</td>
-						<td>Pending</td>
-						<td>20/04/2015</td>
-						<td>$610.42</td>
-						<td>
-							<a href="/assets/#" title="Edit"><i class="splashy-document_letter_edit"></i></a>
-							<a href="/assets/#" title="Accept"><i class="splashy-document_letter_okay"></i></a>
-							<a href="/assets/#" title="Remove"><i class="splashy-document_letter_remove"></i></a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-        </div>
-        <div class="col-sm-6 col-lg-6">
-			<div class="heading clearfix">
-				<h3 class="pull-left">Latest Images <small>(gallery grid)</small></h3>
-				<span class="pull-right label label-success">12</span>
-			</div>
-			<div id="small_grid" class="wmk_grid">
-				<ul>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image04.jpg" title="Image_4 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image04_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>300KB<br>21/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image05.jpg" title="Image_5 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image05_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>200KB<br>10/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image06.jpg" title="Image_6 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image06_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>174KB<br>14/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image07.jpg" title="Image_7 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image07_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>289KB<br>27/05/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image08.jpg" title="Image_8 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image08_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>265KB<br>18/06/2015</span>
-						</p>
-					</li>
-										<li class="thumbnail">
-						<a href="/assets/gallery/Image09.jpg" title="Image_9 Lorem ipsum dolor sit amet...">
-							<img src="/assets/gallery/Image09_tn.jpg" alt="">
-						</a>
-						<p>
-							<span>230KB<br>12/05/2015</span>
-						</p>
-					</li>
-					
-									</ul>
-			</div>
-        </div>
-    </div>
-
+ 
                  
 </div>
             </div>

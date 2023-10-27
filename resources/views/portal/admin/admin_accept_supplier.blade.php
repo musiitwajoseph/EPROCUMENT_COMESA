@@ -107,7 +107,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="dashboard.html">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard')}}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -245,7 +245,7 @@
 <div id="jCrumbs" class="breadCrumb module">
     <ul>
         <li>
-            <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
         </li>
         <li>
             <a href="javascript:void(0);">Admin Dashboard</a>
@@ -269,6 +269,8 @@
 
 				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
 
+				<input type="hidden" name="admin_username_hidden" id="admin_username_hidden" value={{$LoggedUserAdmin['username']}}>
+				<input type="hidden" name="admin_email_hidden" id="admin_email_hidden" value={{$LoggedUserAdmin['email']}}>
 				@csrf
 
                 <tr>
@@ -428,6 +430,16 @@
                                            
                                             </tr>
 
+
+											  <tr>
+												<td colspan="3"><h3>5.Reason for rejecting Supplier Application</h3></td>
+											   </tr>
+
+											   <tr>
+												<td colspan="4">
+													<textarea name="reason_for_rejection" id="reason_for_rejection" cols="130" rows="10"></textarea>
+												</td>
+											   </tr>
 											
             </table>
 
@@ -455,11 +467,20 @@
                 $('#approving_btn').click(function(){
                     if (confirm('Are you sure you want to Approve this Supplier ?')) {
                         
-
+ 
 						var id_hidden  = $('#id_hidden').val();
 
+						var admin_email_hidden  = $('#admin_email_hidden').val();
+						var admin_username_hidden  = $('#admin_username_hidden').val();
+						var reason_for_rejection = $('#reason_for_rejection').val();
+
+
 						var form_data = new FormData();
+
 						form_data.append('id_hidden', id_hidden);
+						form_data.append('admin_email_hidden', admin_email_hidden);
+						form_data.append('admin_username_hidden', admin_username_hidden);
+						form_data.append('reason_for_rejection', reason_for_rejection);
 
 
                             $.ajax({
@@ -498,11 +519,25 @@
                         
 
 						var id_hidden  = $('#id_hidden').val();
+						var admin_email_hidden  = $('#admin_email_hidden').val();
+						var reason_for_rejection = $('#reason_for_rejection').val();
+						var admin_username_hidden  = $('#admin_username_hidden').val();
+
+
+						if(reason_for_rejection == ""){
+							alert("Provide a reason for rejecting Supplier Application before rejecting : ");
+							return false;
+						}
+						else
+						{
 
 						var form_data = new FormData();
+
 						form_data.append('id_hidden', id_hidden);
-
-
+						form_data.append('admin_email_hidden', admin_email_hidden);
+						form_data.append('reason_for_rejection', reason_for_rejection);
+						form_data.append('admin_username_hidden', admin_username_hidden);
+					
 
                             $.ajax({
 								type: "POST",
@@ -523,11 +558,13 @@
 									$('body').html(data.responseText);
 								}
 							});
-                    }
-                else{
-                   
-                    return false;
-                }
+						}
+					}
+					else
+					{
+					
+						return false;
+					}
                  
                 });
             });

@@ -115,7 +115,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="dashboard.html">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard')}}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -253,7 +253,7 @@
 <div id="jCrumbs" class="breadCrumb module">
     <ul>
         <li>
-            <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
         </li>
         <li>
             <a href="javascript:void(0);">Admin Dashboard</a>
@@ -436,9 +436,21 @@
                                            
                                             </tr>
 
-											
+											<tr>
+                                                <td colspan="4"><h3>5.Reason for Accepting Application</h3></td>
+                                            </tr>
+
+											<tr>
+                                                <td colspan="4" style="text-align: left;margin-top:2rem;">{{$info->reason_for_rejection}}</td>
+                                            </tr>
+
             </table>
 
+			<p style="text-align: left;font-weight:bold;">Approved by : {{$info->approved_by}}</p>
+			<p style="text-align: left;font-weight:bold;">Approver Email : {{$info->approved_email}}</p>
+			<p style="text-align: left;font-weight:bold;">Approved date : {{$info->updated_at}}</p>
+
+			
            {{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Cancel Supplier</button>
 
             <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}

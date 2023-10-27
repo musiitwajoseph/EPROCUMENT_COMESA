@@ -1252,7 +1252,7 @@ class COMESA_CONTROLLER extends Controller
         
                         Mail::to($user_check_email)->send(new SupplierMail($data));
 
-                    return view('Login.OTP2',compact(['user_id_check']));
+                    return view('Login.OTP2',compact(['user_id_check','user_check_email']));
 
                 }
 
@@ -1268,8 +1268,6 @@ class COMESA_CONTROLLER extends Controller
 
 
         $user_id_email_check = DB::table('supplier_logins')->where('id', $user_id)->value('email');
-
-        // dd($user_id_email_check);
 
         $user_otp_check_db = DB::table('supplier_logins')->where('email', $user_id_email_check)->value('temp_otp');
 
@@ -1393,7 +1391,7 @@ class COMESA_CONTROLLER extends Controller
         
                         Mail::to($user_check_email)->send(new SupplierMail($data));
 
-                    return view('Login.OTP',compact(['user_id_check']));
+                    return view('Login.OTP',compact(['user_id_check','user_check_email']));
 
                 }
                 else{
@@ -1605,10 +1603,33 @@ class COMESA_CONTROLLER extends Controller
 
     public function approving_supplier(Request $request){
 
-        $data =  $request->input('id_hidden');
-        DB::table('supplier_registration_details_models')->where('id', $data) ->update(['approval_status' => "Approved"]);
+        $id_hidden =  $request->input('id_hidden');
 
+        $admin_email_hidden =  $request->input('admin_email_hidden');
+        $reason_for_rejection =  $request->input('reason_for_rejection');
+        $admin_username_hidden =  $request->input('admin_username_hidden');
 
+        if($reason_for_rejection == null){
+            DB::table('supplier_registration_details_models')
+                                ->where('id', $id_hidden)
+                                ->update([  'approval_status' => "Approved",
+                                            'approved_by' => $admin_username_hidden,
+                                            'approved_email' => $admin_email_hidden,
+                                            'reason_for_rejection' => "Not provided",
+                                        ]);
+        }
+        else{
+
+            DB::table('supplier_registration_details_models')
+                                ->where('id', $id_hidden)
+                                ->update([  'approval_status' => "Approved",
+                                            'approved_by' => $admin_username_hidden,
+                                            'approved_email' => $admin_email_hidden,
+                                            'reason_for_rejection' => $reason_for_rejection,
+                                        ]);
+                                        
+        }
+        
         return response()->json([
                 "status" => True,
                 "message"=>"The supplier Applciation request has been approved",
@@ -1617,15 +1638,26 @@ class COMESA_CONTROLLER extends Controller
 
     public function cancel_approving_supplier(Request $request){
 
-        $data =  $request->input('id_hidden');
+        $id_hidden =  $request->input('id_hidden');
 
-        DB::table('supplier_registration_details_models')->where('id', $data) ->update(['approval_status' => "Cancelled"]);
+        $admin_email_hidden =  $request->input('admin_email_hidden');
+        $reason_for_rejection =  $request->input('reason_for_rejection');
+        $admin_username_hidden =  $request->input('admin_username_hidden');
+
+        DB::table('supplier_registration_details_models')
+                                ->where('id', $id_hidden)
+                                ->update([  'approval_status' => "Cancelled",
+                                            'approved_by' => $admin_username_hidden,
+                                            'approved_email' => $admin_email_hidden,
+                                            'reason_for_rejection' => $reason_for_rejection,
+                                        ]);
+
 
         return response()->json([
             "status" => True,
             "message"=>"This supplier application request has been cancelled",
         ]);
     }
-
+    
 
 }

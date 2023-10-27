@@ -20,8 +20,8 @@
                 <div class="signup-form">
                     <form action="{{ route('supplier-verify-otp') }}" class="mt-5 border p-4 bg-light shadow" method="POST">
                         @csrf
-                        <h2 class="mb-5 text-success" style="text-align: center">OTP HAS BEEN SENT TO YOU'RE EMAIL</h2>
-                        
+                        <h2 class="mb-5 text-success" style="text-align: center">OTP HAS BEEN SENT TO THE EMAIL BELOW:</h2>
+                        <h3 style="color: red" class="mb-2"> OTP sent to : {{$user_check_email}}</h3>
                         @if (Session::get('fail'))
                            <div class="alert alert-danger">
                             {{Session::get('fail')}}

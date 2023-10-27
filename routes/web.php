@@ -146,3 +146,6 @@ Route::get('show_tb',[COMESA_CONTROLLER::class,'show_table']);
 
 Route::post('approving',[COMESA_CONTROLLER::class,'approving_supplier']);
 Route::post('cancel_approving',[COMESA_CONTROLLER::class,'cancel_approving_supplier']);
+
+
+Route::get('/',[COMESA_CONTROLLER::class,'welcome']);
