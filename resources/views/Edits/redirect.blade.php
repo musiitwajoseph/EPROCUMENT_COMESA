@@ -71,7 +71,7 @@
 			</div>
 			<div class="sepH_c">
 				<p>Layout:</p>
-				<div class="clearfix">
+				<div class="clearfix" id="ChooseCategoty">
 					<label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fluid" value="" checked="" type="radio"> Fluid</label>
 					<label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fixed" value="gebo-fixed" type="radio"> Fixed</label>
 				</div>

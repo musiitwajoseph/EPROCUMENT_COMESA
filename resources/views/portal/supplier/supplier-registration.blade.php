@@ -47,62 +47,7 @@
 
    </head>
     <body class="full_width">
-        <div class="style_switcher">
-			<div class="sepH_c">
-				<p>Colors:</p>
-				<div class="clearfix">
-					<a href="/assets/javascript:void(0)" class="style_item jQclr blue_theme style_active" title="blue">blue</a>
-					<a href="/assets/javascript:void(0)" class="style_item jQclr dark_theme" title="dark">dark</a>
-					<a href="/assets/javascript:void(0)" class="style_item jQclr green_theme" title="green">green</a>
-					<a href="/assets/javascript:void(0)" class="style_item jQclr brown_theme" title="brown">brown</a>
-					<a href="/assets/javascript:void(0)" class="style_item jQclr eastern_blue_theme" title="eastern_blue">eastern blue</a>
-					<a href="/assets/javascript:void(0)" class="style_item jQclr tamarillo_theme" title="tamarillo">tamarillo</a>
-				</div>
-			</div>
-			<div class="sepH_c">
-				<p>Backgrounds:</p>
-				<div class="clearfix">
-					<span class="style_item jQptrn style_active ptrn_def" title=""></span>
-					<span class="ssw_ptrn_a style_item jQptrn" title="ptrn_a"></span>
-					<span class="ssw_ptrn_b style_item jQptrn" title="ptrn_b"></span>
-					<span class="ssw_ptrn_c style_item jQptrn" title="ptrn_c"></span>
-					<span class="ssw_ptrn_d style_item jQptrn" title="ptrn_d"></span>
-					<span class="ssw_ptrn_e style_item jQptrn" title="ptrn_e"></span>
-				</div>
-			</div>
-			<div class="sepH_c">
-				<p>Layout:</p>
-				<div class="clearfix">
-					<label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fluid" value="" checked="" type="radio"> Fluid</label>
-					<label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fixed" value="gebo-fixed" type="radio"> Fixed</label>
-				</div>
-			</div>
-			<div class="sepH_c">
-				<p>Sidebar position:</p>
-				<div class="clearfix">
-					<label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_left" value="" checked="" type="radio"> Left</label>
-					<label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_right" value="sidebar_right" type="radio"> Right</label>
-				</div>
-			</div>
-			<div class="sepH_c">
-				<p>Show top menu on:</p>
-				<div class="clearfix">
-					<label class="radio-inline"><input name="ssw_menu" id="ssw_menu_click" value="" checked="" type="radio"> Click</label>
-					<label class="radio-inline"><input name="ssw_menu" id="ssw_menu_hover" value="menu_hover" type="radio"> Hover</label>
-				</div>
-			</div>
-
-			<div class="gh_button-group">
-				<a href="/assets/#" id="showCss" class="btn btn-primary btn-sm">Show CSS</a>
-				<a href="/assets/#" id="resetDefault" class="btn btn-default btn-sm">Reset</a>
-			</div>
-			<div class="hide">
-				<ul id="ssw_styles">
-					<li class="small ssw_mbColor sepH_a" style="display:none">body {<span class="ssw_mColor sepH_a" style="display:none"> color: #<span></span>;</span> <span class="ssw_bColor" style="display:none">background-color: #<span></span> </span>}</li>
-					<li class="small ssw_lColor sepH_a" style="display:none">a { color: #<span></span> }</li>
-				</ul>
-			</div>
-		</div>		<div id="maincontainer" class="clearfix">
+        <div id="maincontainer" class="clearfix">
 
             <header>
 
@@ -223,7 +168,7 @@
 <div id="jCrumbs" class="breadCrumb module">
     <ul>
         <li>
-            <a href="/assets/#"><i class="glyphicon glyphicon-home"></i></a>
+            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
         </li>
         <li>
             Supplier Registration Form 
@@ -240,36 +185,90 @@
 					@csrf
                     <fieldset title="Contract info">
 						<legend class="hide">Email Validation & OTP</legend>
+						
+						{{-- <div class="formSep form-group">
+							<label for="v_registration" id="v_registration" class="col-md-2 control-label">Registration Type :</label>
+						<div class="col-md-10"> --}}
+							{{-- <label class="radio-inline"><input type="radio" name="optionsRadios" id="company_id" checked>Company</label>
+							<label class="radio-inline"><input type="radio" name="optionsRadios" id="individual_id">Individual</label> --}}
+						{{-- </div>
+					</div> --}}
+					
 						<section id="firstForm">
-							<div>
-								<label class="">Email Validation Step</label>
-							</div>
+
 							<div class="formSep form-group">
-								<label for="v_username" class="col-md-2 control-label">Company Name / Personal Name:</label>
+								<label for="v_company_name" id="v_company_name" class="col-md-2 control-label">Company Name :</label>
 								<div class="col-md-10">
-									<input type="text" name="v_username" id="v_username" class="input-sm form-control">
+									<input type="text" name="v_username" id="v_username" class="input-sm form-control"  required>
 								</div>
 							</div>
+
+
 							<div class="formSep form-group">
-								<label for="v_telephone" class="col-md-2 control-label">Telephone:</label>
+								<label for="" id="" class="col-md-2 control-label">Telephone:</label>
+
 								<div class="col-md-10">
+								
+								<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
+									{{-- <input type="text" name="code3" id="code4" class="input-sm form-control" value="+260"> --}}
+
+									<select name="" id=""  class="input-sm form-control">		
+										@foreach ($countrylist as $country)
+										<option data-countryCode="GB" value={{$country->PhoneCode}} Selected>+{{$country->PhoneCode}} {{$country->Name}}</option>
+										@endforeach
+									</select>
+
+								</div>
+
+								<div class="col-md-9" style="padding:0; margin:0;">
 									<input type="text" name="v_telephone" id="v_telephone" class="input-sm form-control">
 								</div>
 							</div>
+							</div>
+
+
+
 							<div class="form-group">
 								<label for="v_email" class="col-md-2 control-label">E-mail:</label>
 								<div class="col-md-10">
-									<input type="text" name="v_email" id="v_email" class="input-sm form-control">
+									<input type="text" name="v_email" id="v_email" class="input-sm form-control" placeholder="Enter email address" required>
 
 									@error('v_email')
 										<label class="text-danger">{{message}}</label>
 									@enderror
 								</div>
-							</div>						
+							</div>		
+							
+
+							<div class="formSep form-group">
+								<label for="" id="" class="col-md-2 control-label">Captcha :</label>
+								<div class="col-md-10">
+									<input type="text" name="captcha_code" id="captcha_code" class="input-sm form-control" placeholder="Enter captcha code" required>
+                                    <span class="text-danger">@error('captcha_code'){{$message}}@enderror</span>
+                                </div>
+							</div>
+
+
+							
+                            <div class="formSep form-group">
+								<label for="" id="" class="col-md-2 control-label">Enter this captcha :</label>
+                                    <div class="col-md-10">
+                                        <div class="captcha"> 
+                                       		 <span>{!! captcha_img('flat') !!}</span>
+                                       		 <button type="submit" class="btn btn-danger reload" id="reload">&#x21bb;</button>  
+										</div> 
+                                    </div>
+							 </div>
+
+							
 							<div>
 								<button  id="validateEmail" type="button" class="btn btn-primary">
 									Validate Email <i class="glyphicon glyphicon-check"></i>
 								</button>
+								
+								<br> <br>
+
+								<p>If you already have an account, Please <a href="{{route('supplier-login')}}">Login Now</a></p>
 							</div>
 						</section>
 						<section id="otpForm">
@@ -288,7 +287,7 @@
 							<div class="form-group">
 								<label for="otp_token" class="col-md-2 control-label">Enter OTP</label>
 								<div class="col-md-10">
-									<input type="text" name="otp_token" id="otp_token" class="input-sm form-control" required>
+									<input type="number" name="otp_token" id="otp_token" class="input-sm form-control" required>
 								</div>
 							</div>	
 
@@ -305,161 +304,63 @@
 					<fieldset title="Supplier Details">
 						<div class="tabbable tabs-left">
 							<ul class="nav nav-tabs">
-								<li class="active"><a href="#tab1" data-toggle="tab">1.Business Details</a></li>
-								<li><a href="#tab2" data-toggle="tab">2.Financial Information</a></li>
-								<li><a href="#tab3" data-toggle="tab">3.Capacity</a></li>
-								<li><a href="#tab4" data-toggle="tab">4.Required Documents</a></li>
-								<li><a href="#tab5" data-toggle="tab">5.Account Information</a></li>
+								<li class="active"><a href="#tab1" data-toggle="tab">1. Login Credentials</a></li>
+								<li><a href="#tab5" data-toggle="tab">2. Business Information</a></li>
+								<li><a href="#tab2" data-toggle="tab">3. Financial Information</a></li>
+								<li><a href="#tab3" data-toggle="tab">4. Capacity</a></li>
+								<li><a href="#tab4" data-toggle="tab">5. Required Documents</a></li>
+								
 							</ul>
 
 
-							
 							<div class="tab-content">
 								<div class="tab-pane active" id="tab1">
+									<h2 class="heading padMarg" style="font-weight: bold">1. Account Login Credentails :</h2> 
 									<div class="formSep form-group">
-										<h2 class="heading padMarg" style="font-weight: bold">Business Details</h2>
-										<div class="col-md-3">								
-										<label for="" class="boldTitle padMarg">Country :</label>  
-										<select name="country" id="country"  class="input-sm form-control">		
-											
-											@foreach ($countrylist as $country)
-		
-											<option data-countryCode="GB" value={{$country->PhoneCode}} Selected>{{$country->Name}}</option>
-											@endforeach
 
-		
-										</select>
+										@if (Session::get('fail'))
+										<div class="alert alert-danger">
+											{{Session::get('fail')}}
 										</div>
+									@endif
+						
+								<div class="RowCollection">
+									<div class="col-md-3">
+										<label for="" class="boldTitle padMarg" class="padMarg">Username :</label>
+										<input type="text" name="login_username" id="login_username" class="input-sm form-control" required>
+										{{-- <span class="alert alert-danger">@error('login_username'){{$message}}@enderror</span> --}}
+									</div>
+		
+									<div class="col-md-3">
+										<label for="" class="boldTitle padMarg" class="padMarg">Password :</label>
+										<input type="password" name="login_password" id="login_password" class="input-sm form-control" required>
+										{{-- <span class="alert alert-danger">@error('login_password')@enderror</span> --}}
 										
+									</div>
+
+									<div class="col-md-3">
+										<label for="" class="boldTitle padMarg" class="padMarg">Confirm password :</label>
+										<input type="password" name="confirm_password" id="confirm_password" class="input-sm form-control" required>
+										{{-- <span class="alert alert-danger">	@error('confirm_password'){{$message}}@enderror</span> --}}
+									</div>
+
+									<input type="hidden" id="email_verified_already_id">
+
+									<input type="hidden" id="original_supplier_email">
 		
-										<div class="col-md-3">
-											<label for="" class="boldTitle padMarg">Category :</label>
-											<select name="Category" id="Category"  class="input-sm form-control">
-												<option value="">Select Category</option>
-												@foreach ($categories as $item)
-													<option value="{{$item->md_id}}">{{$item->md_name}}</option>
-												@endforeach
-		
-											</select>	
-										</div>
-		
-										<div class="col-md-3">
-											<label for="" class="boldTitle padMarg">Sub-category :</label>
-											<select name="SubCategory" id="SubCategory"  class="input-sm form-control">
-												
-											</select>
-												
-										</div>
-		
-										<div class="col-md-3">
-											<label for="" class="boldTitle padMarg">Business Name :</label>
-											<input type="text" name="BusinessName" id="BusinessName" class="input-sm form-control" required>
-										</div>
-		
-										<div class="padMarg">
-		
-												<div class="col-md-3 mt-3 pt-4">
-													<label for="" class="boldTitle padMarg" class="padMarg">Type of Business :</label>
-													<select type="text" name="Type_of_Business" id="Type_of_Business" class="input-sm form-control">
-														@foreach ($Type_of_Business as $item)
-													<option value="{{$item->md_id}}">{{$item->md_name}}</option>
-													@endforeach
-		
-		
-													</select>
-												</div>
-		
-												<div class="col-md-3 mt-3 pt-4">
-													<label for="" class="boldTitle padMarg" class="padMarg">Nature of Business :</label>
-													<select type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control">
-														<option value="Cereals">Cereals</option>
-														<option value="saab">Cosmetics</option>
-														<option value="mercedes">Mercedes</option>
-														<option value="audi">Audi</option>
-													</select>
-												</div>
-		
-												<div class="col-md-3">
-													<label for="" class="boldTitle " style="text-align: left">Certificate of Registration Incorporation number :</label>
-													<input type="text" name="Certificate_of_Registration" id="Certificate_of_Registration" class="input-sm form-control" required>
-												</div>
-		
-		
-												<div class="col-md-3">
-													<label for="" class="boldTitle padMarg" >Revenue Authority Taxpayer’s Identification Number</label>
-													<input type="text" name="Revenue_Authority_Taxpayers_Identification_Number" id="Revenue_Authority_Taxpayers_Identification_Number" class="input-sm form-control" required>
-												</div>
-										</div>
-		
-										<div class="padMarg">
-		
-											<div class="col-md-3 mt-3 pt-4">
-												<label for="" class="boldTitle " style="text-align: left" id="Tax_Compliance_certificate_expiration_label">Tax compliance certificate expiration date :</label>
-												<input type="text" name="Tax_compliance_certificate_expiration" id="Tax_compliance_certificate_expiration" class="input-sm form-control" required>
-											</div>
-		
-											<div class="col-md-3">
-												<label for="" class="boldTitle padMarg"  class="padMarg">Physical address :</label>
-												<input type="text" name="physical_address" id="physical_address" class="input-sm form-control">
-											</div>
-		
-		
-											<div class="col-md-3">
-												<label for="" class="boldTitle padMarg" class="padMarg">Company Email :</label>
-												<input type="email" name="company_email" id="company_email" class="input-sm form-control" required>
-											</div>
-										</div>
-		
-										<div class="padMarg">
-											<div class="col-md-3 mt-3 pt-4">
-												<label for="" class="boldTitle"  id="National_Pension_Authority_Registration_Number_label">National Pension Authority (NPSA) Registration No : </label>
-												<input type="text" name="National_Pension_Authority" id="National_Pension_Authority" class="input-sm form-control" required>
-											</div>
-		
-											<div class="col-md-6 mt-3 pt-4">
-												<label for="" class="boldTitle padMarg" style="text-align: left" id="NAPSA_Compliance_Status_certificate_label">NAPSA Compliance Status certificate  :</label>
-												<input type="text" name="NAPSA_Compliance_Status_certificate" id="NAPSA_Compliance_Status_certificate" class="input-sm form-control" required>
-											</div>
-		
-		
-											<div class="col-md-6 mt-3 pt-4 padMarg">
-												<label for="" class="boldTitle">Personal contact :</label>
-												<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
-													<input type="text" name="code1" value="+260" id="code1" class="input-sm form-control" >
-												</div>										
-												<div class="col-md-10  mt-0 pt-0 ml-0 pl-0" style="padding:0; margin:0;">
-													<input type="text" name="contact_person" id="contact_person" class="input-sm form-control"  required>
-												</div>
-											</div>
-										</div>
-											
-		
-											
-											<div class="col-md-6 mt-3 pt-4 padMarg">
-												<label for="" class="boldTitle">Company Telephone number : </label>
-												<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
-													<input type="text" name="code2" id="code2" class="input-sm form-control" value="+256">
-												</div>
-												<div class="col-md-10 mt-3 pt-4 " style="padding:0; margin:0;">
-													<input type="text" name="company_telephone" id="company_telephone" class="input-sm form-control"  required>
-												</div>
-											</div>
-		
-											<div class="col-md-6 mt-3 pt-4 padMarg">
-												<label for="" class="boldTitle">Contact telephone number : </label>
-												<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
-													<input type="text" name="code3" id="code3" class="input-sm form-control" value="+256">
-												</div>
-												<div class="col-md-10" style="padding:0; margin:0;">
-													<input type="text" name="contact_person_telephone" id="contact_person_telephone" class="input-sm form-control" required>
-												</div>
-											</div>
+									<div class="col-md-3">
+										<label for="" class="boldTitle padMarg" class="padMarg" hidden>Supplier Reference Number :</label>
+										<input type="hidden" name="supplier_reference_number" id="supplier_reference_number" class="input-sm form-control" required>
+										{{-- <span class="alert alert-danger">	@error('supplier_reference_number'){{$message}}	@enderror</span> --}}
+									</div>
+								</div>
+
 								</div>
 							</div>
 								
 							<div class="tab-pane" id="tab2">
 									
-								<h2 class="heading padMarg" style="font-weight: bold">2.Financial Information</h2>          
+								<h2 class="heading padMarg" style="font-weight: bold">3.Financial Information</h2>          
 							
 								<div class="formSep form-group">
 								
@@ -520,9 +421,10 @@
 											</div>					
 										</div>
 								</div>
+
 							</div>
 
-						
+{{-- 						
 								<div class="tab-pane" id="tab2">
 									
 									<h2 class="heading padMarg" style="font-weight: bold">2.Financial Information</h2>          
@@ -586,75 +488,9 @@
 												</div>					
 											</div>
 	                        		</div>
-								</div>
+								</div> --}}
 
-								<div class="tab-pane" id="tab5">
-									
-									<h2 class="heading padMarg" style="font-weight: bold">5.Create your Supplier Account Credentials :</h2>          
-								
-									<div class="formSep form-group">
-										
-
-												@if (Session::get('fail'))
-													<div class="alert alert-danger">
-														{{Session::get('fail')}}
-													</div>
-												@endif
-									
-											<div class="RowCollection">
-												<div class="col-md-3">
-													<label for="" class="boldTitle padMarg" class="padMarg">username :</label>
-													<input type="text" name="login_username" id="login_username" class="input-sm form-control" required>
-													{{-- <span class="alert alert-danger">
-														@error('login_username')
-															{{$message}}
-														@enderror
-													</span> --}}
-													
-												</div>
-					
-												<div class="col-md-3">
-													<label for="" class="boldTitle padMarg" class="padMarg">password :</label>
-													<input type="text" name="login_password" id="login_password" class="input-sm form-control" required>
-												
-													{{-- <span class="alert alert-danger">
-														@error('login_password')
-														
-													@enderror</span> --}}
-												</div>
-
-												<div class="col-md-3">
-													<label for="" class="boldTitle padMarg" class="padMarg">confirm password :</label>
-													<input type="text" name="confirm_password" id="confirm_password" class="input-sm form-control" required>
-													
-													{{-- <span class="alert alert-danger">
-														@error('confirm_password')
-															{{$message}}
-														@enderror
-													</span> --}}
-												
-												</div>
-
-												<input type="hidden" id="original_supplier_email">
-					
-												<div class="col-md-3">
-													<label for="" class="boldTitle padMarg" class="padMarg" hidden>Supplier Reference Number :</label>
-													<input type="hidden" name="supplier_reference_number" id="supplier_reference_number" class="input-sm form-control" required>
-													{{-- <span class="alert alert-danger">
-														@error('supplier_reference_number')
-															{{$message}}
-														@enderror
-													</span> --}}
-													
-												</div>
-
-											</div>
-
-											
-	                        		</div>
-								</div>
 							
-
 								<div class="tab-pane" id="tab3">
 									<h2 class="heading padMarg" style="font-weight: bold">1.Economic & financial capacity</h2>
 
@@ -722,8 +558,158 @@
 											
 						</div>
 
+						<div class="tab-pane" id="tab5">
+									
+							<h2 class="heading padMarg" style="font-weight: bold">2.Business Details</h2>          
+						
+							<div class="formSep form-group">
+								
+
+										@if (Session::get('fail'))
+											<div class="alert alert-danger">
+												{{Session::get('fail')}}
+											</div>
+										@endif
+							
+									<div class="RowCollection">
+
+										<div class="col-md-3">								
+											<label for="" class="boldTitle padMarg">Country :</label>  
+													<select name="country" id="country"  class="input-sm form-control">		
+														
+														@foreach ($countrylist as $country)
+					
+														<option data-countryCode="GB" value={{$country->PhoneCode}} Selected>{{$country->Name}}</option>
+														@endforeach
+													</select>
+										</div>
+
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Category :</label>
+											<select name="Category" id="Category"  class="input-sm form-control">
+												<option value="">Select Category</option>
+												@foreach ($categories as $item)
+													<option value="{{$item->md_id}}">{{$item->md_name}}</option>
+												@endforeach
+		
+											</select>	
+										</div>
+		
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Sub-category :</label>
+											<select name="SubCategory" id="SubCategory"  class="input-sm form-control">
+												
+											</select>
+												
+										</div>
+
+										<div class="col-md-3">
+											<label for="" class="boldTitle padMarg">Business Name :</label>
+											<input type="text" name="BusinessName" id="BusinessName" class="input-sm form-control" required>
+										</div>
+		
+										<div class="padMarg">
+		
+												<div class="col-md-3 mt-3 pt-4">
+													<label for="" class="boldTitle padMarg" class="padMarg">Type of Business :</label>
+													<select type="text" name="Type_of_Business" id="Type_of_Business" class="input-sm form-control">
+														@foreach ($Type_of_Business as $item)
+													<option value="{{$item->md_id}}">{{$item->md_name}}</option>
+													@endforeach
+		
+		
+													</select>
+												</div>
+		
+												<div class="col-md-3 mt-3 pt-4">
+													<label for="" class="boldTitle padMarg" class="padMarg">Nature of Business :</label>
+													<select type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control">
+														<option value="Cereals">Cereals</option>
+														<option value="saab">Cosmetics</option>
+														<option value="mercedes">Mercedes</option>
+														<option value="audi">Audi</option>
+													</select>
+												</div>
+		
+												<div class="col-md-3">
+													<label for="" class="boldTitle " style="text-align: left">Certificate of Registration Incorporation number :</label>
+													<input type="text" name="Certificate_of_Registration" id="Certificate_of_Registration" class="input-sm form-control" required>
+												</div>
+		
+		
+												<div class="col-md-3">
+													<label for="" class="boldTitle padMarg" >Revenue Authority Taxpayer’s Identification Number</label>
+													<input type="text" name="Revenue_Authority_Taxpayers_Identification_Number" id="Revenue_Authority_Taxpayers_Identification_Number" class="input-sm form-control" required>
+												</div>
+										</div>
+
+										<div class="padMarg">
+		
+											<div class="col-md-3 mt-3 pt-4">
+												<label for="" class="boldTitle " style="text-align: left" id="Tax_Compliance_certificate_expiration_label">Tax compliance certificate expiration date :</label>
+												<input type="text" name="Tax_compliance_certificate_expiration" id="Tax_compliance_certificate_expiration" class="input-sm form-control" required>
+											</div>
+		
+											<div class="col-md-3">
+												<label for="" class="boldTitle padMarg"  class="padMarg">Physical address :</label>
+												<input type="text" name="physical_address" id="physical_address" class="input-sm form-control">
+											</div>
+		
+		
+											<div class="col-md-3">
+												<label for="" class="boldTitle padMarg" class="padMarg">Company Email :</label>
+												<input type="email" name="company_email" id="company_email" class="input-sm form-control" required>
+											</div>
+										</div>
+		
+										<div class="padMarg">
+											<div class="col-md-3 mt-3 pt-4">
+												<label for="" class="boldTitle"  id="National_Pension_Authority_Registration_Number_label">National Pension Authority (NPSA) Registration No : </label>
+												<input type="text" name="National_Pension_Authority" id="National_Pension_Authority" class="input-sm form-control" required>
+											</div>
+		
+											<div class="col-md-6 mt-3 pt-4">
+												<label for="" class="boldTitle padMarg" style="text-align: left" id="NAPSA_Compliance_Status_certificate_label">NAPSA Compliance Status certificate  :</label>
+												<input type="text" name="NAPSA_Compliance_Status_certificate" id="NAPSA_Compliance_Status_certificate" class="input-sm form-control" required>
+											</div>
+		
+		
+											<div class="col-md-6 mt-3 pt-4 padMarg">
+												<label for="" class="boldTitle">Personal contact :</label>
+												<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
+													<input type="text" name="code1" value="+260" id="code1" class="input-sm form-control" >
+												</div>										
+												<div class="col-md-10  mt-0 pt-0 ml-0 pl-0" style="padding:0; margin:0;">
+													<input type="text" name="contact_person" id="contact_person" class="input-sm form-control"  required>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6 mt-3 pt-4 padMarg">
+											<label for="" class="boldTitle">Company Telephone number : </label>
+											<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
+												<input type="text" name="code2" id="code2" class="input-sm form-control" value="+256">
+											</div>
+											<div class="col-md-10 mt-3 pt-4 " style="padding:0; margin:0;">
+												<input type="text" name="company_telephone" id="company_telephone" class="input-sm form-control"  required>
+											</div>
+										</div>
+	
+										<div class="col-md-6 mt-3 pt-4 padMarg">
+											<label for="" class="boldTitle">Contact telephone number : </label>
+											<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
+												<input type="text" name="code3" id="code3" class="input-sm form-control" value="+256">
+											</div>
+											<div class="col-md-10" style="padding:0; margin:0;">
+												<input type="text" name="contact_person_telephone" id="contact_person_telephone" class="input-sm form-control" required>
+											</div>
+										</div>
+									</div>
+							</div>
+							</div>
+							
 							<div class="tab-pane" id="tab4">
-								<h2 class="heading padMarg" style="font-weight: bold"4>4.Required Documents </h2>
+								<h2 class="heading padMarg" style="font-weight: bold"4>5.Required Documents </h2>
 
 								<div class="formSep form-group">
 										<?php $counter = 1; ?>
@@ -739,7 +725,6 @@
 								  </div>
 								</div>
 							</div>
-
 							
 						</div>
 						
@@ -827,6 +812,7 @@
 														<input type="checkbox" id="Acceept_rules_and_regulations"  required> &nbsp; <label for="Acceept_rules_and_regulations" style="display: inline">Read and accept the above rules and regulations before you submit your Application</label> 
 															
 														<input type="hidden" value="hello" id="unique_id_db">
+														<input type="hidden" id="_pass_">
 														</ol>
 													</div>
 												</div>
@@ -844,16 +830,12 @@
 								<i class="glyphicon glyphicon-chevron-left"></i> Back 
 							</button>
 
-							
-
 							<button type="button" class="btn btn-primary pull-right" id="final_submission"><i class="glyphicon glyphicon-ok"></i> Send registration</button>
 						</div>
 						
 						{{-- <button class="finish"></button> --}}
 					</fieldset>
 
-					
-					
 					<input type="hidden" name="" class="finish">
 				</form>
 				
@@ -861,6 +843,18 @@
 				
 				<script type="text/javascript">
 				//  Credential validation before complete
+
+				$('#reload').click(function (){
+                      $.ajax({
+      
+                          type:'GET',
+                          url:'/reload-captcha',
+                          success:function(data){
+                              $(".captcha span").html(data.captcha)
+                          }
+                      });
+                  });
+
 
 
 				$(document).ready(function(){
@@ -877,13 +871,17 @@
 							}
 
 
+							var _pass_ = $('#_pass_').val();
 							var user_id = $('#unique_id_db').val();
+							var original_supplier_email = $('#original_supplier_email').val();
 
+							
 
 							var form_data = new FormData();
 
+							form_data.append('_pass_', _pass_);
 							form_data.append('user_id', user_id);
-
+							form_data.append('original_supplier_email', original_supplier_email);
 
 							$.ajax({
 								type: "post",
@@ -920,9 +918,12 @@
 							var username = $('#v_username').val();
 							var telephone = $('#v_telephone').val();
 							var email = $('#v_email').val();
+							var captcha_code = $('#captcha_code').val();
 
 
-							if(username  == "" || telephone == "" || email == ""){
+							// alert(captcha_code);
+
+							if(username  == "" || telephone == "" || email == "" || captcha_code == ""){
 								alert("Missing Form fields");
 								location.replace('/supplier-registration/');
 							}
@@ -933,6 +934,7 @@
 							form_data.append('telephone', telephone);
 							form_data.append('email', email);
 							form_data.append('otp_token', "4523");
+							form_data.append('captcha_code',captcha_code);
 											
 							
 							$.ajax({
@@ -948,15 +950,24 @@
 
 									if(data.status){
 										if(data.verification){
+											$("#email_verified_already_id").val(data.email_verified_already);
 											$('form').stepy('step',2);
+										}
+
+										if(data.Acceptance){
+										alert('This email has already finished submitting an Application, please login into your Supplier Portal');
+											location.href = "{{url('supplier-login')}}";
 										}
 										$('#firstForm').hide();
 										$('#otpForm').show();
 										$('#otpMessage').html(data.message);
 										$("#original_supplier_email").val(data.original_email);
-									}else{										
+									}
+									else{		
+										alert(data.invalid_captcha);								
 										$('#firstForm').show();
 										$('#otpForm').hide();
+										location.replace('/supplier-registration');
 									}
 									
 								},
@@ -1053,6 +1064,41 @@
 						});
 					});
 
+					$(document).ready(function(){
+					$('input[type=radio][name=optionsRadios]').change(function() {
+					if(this.id == 'individual_id') {
+						$("#v_company_name").text("Supplier Name :");
+					}
+					else
+					{
+						$("#v_company_name").text("Company Name :");
+					}
+				});
+			});
+
+
+					// change radio button 
+		// 			$(document).ready(function(){
+
+		// 				$('input[type=radio][name=individual_name_supplier]').change(function() {
+		// 				if (this.value == 'individual_supplier') {
+		// 					$("#v_company_name").text("Supplier Name :");
+				
+		// 				}
+
+		// 			});
+		// 		});
+
+		// 		$(document).ready(function(){
+
+		// 		$('input[type=radio][name=individual_name_supplier]').change(function() {
+		// 		if(this.value == 'company_supplier') {
+		// 			$("#v_company_name").text("Company Name :");
+		// 		}
+		// 	});
+		// });
+
+
 
 					// Collect Supplier Details:
 
@@ -1063,10 +1109,13 @@
 
 
 							var login_username = $('#login_username').val();
+							// alert(login_username);
 							var login_password = $('#login_password').val();
 							var confirm_password = $('#confirm_password').val();
 							// var supplier_reference_number = $('#supplier_reference_number').val();
 							var original_supplier_email = $('#original_supplier_email').val();
+							var email_verified_already_id = $('#email_verified_already_id').val();
+							
 
 							var country = $('#country').val();
 							var Category = $('#Category').val();
@@ -1270,6 +1319,7 @@
 							form_data.append('confirm_password', confirm_password);
 							// form_data.append('supplier_reference_number', supplier_reference_number);
 							form_data.append('original_supplier_email', original_supplier_email);
+							form_data.append('email_verified_already_id', email_verified_already_id);
 
 
 							form_data.append('country', country);
@@ -1322,6 +1372,7 @@
 										$('.supplier-submitted-details').html(data.details);
 										$('#db_country').html(data.submited_country);
 									    $("#unique_id_db").val(data.unique_id);
+										// $("#_pass_").val(data.pass_abc);
 										
 									}else{										
 										$('#firstForm').show();
@@ -1428,7 +1479,7 @@
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
 
-    @include('includes.side-bar')
+    @include('includes.supplier-side-bar')
 
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>

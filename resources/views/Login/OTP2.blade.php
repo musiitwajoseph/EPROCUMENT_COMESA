@@ -41,7 +41,7 @@
 
                             <div class="mb-3 col-md-12">
                                 <label>Enter OTP for validation : <span class="text-danger">*</span></label>
-                                <input type="text" name="verify_otp" id="verify_otp" class="form-control" placeholder="Enter OTP Sent" value="{{old('otp')}}" >
+                                <input type="number" name="verify_otp" id="verify_otp" class="form-control" placeholder="Enter OTP Sent" value="{{old('otp')}}" >
                                 <span class="text-danger">@error('verify_otp'){{$message}}@enderror</span>
                             </div>
 
@@ -94,6 +94,10 @@
                             if(values.status){
 								alert(values.message);
 							}
+                            else{
+                                alert(values.message);
+                                return false;
+                            }
                         },
                         error: function(data)
                         {

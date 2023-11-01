@@ -135,7 +135,7 @@
 		.tab-content > .active {padding:8px}
 
 	/* header */
-		.navbar .brand {width: 300px;padding-bottom:0;padding-top:0;font: 100 18px/38px 'PT Sans', sans-serif;text-decoration:none;color: #fff;text-shadow:none}
+		.navbar .brand {padding-bottom:0;padding-top:0;font: 100 18px/38px 'PT Sans', sans-serif;text-decoration:none;color: #fff;text-shadow:none}
 		.navbar .user_menu {margin-left: 0}
 		.navbar .user_menu .nb_boxes {margin:9px 0 0}
 		.navbar .user_menu .nb_boxes .label {background: transparent;background:rgba(0,0,0,.2);padding:3px 4px}
@@ -923,4 +923,14 @@
 		  .sidebar_switch {
 
 			display: none!important;
+		 }
+
+		 #sidebar_img{
+			width: 100% !important;
+			height: 100% !important;
+			margin-top: -1.8rem !important;
+		 }
+
+		 #backText{
+			display: none !important;
 		 }

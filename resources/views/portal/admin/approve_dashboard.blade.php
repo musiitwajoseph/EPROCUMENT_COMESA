@@ -41,15 +41,7 @@
         <!-- favicon -->
             <link rel="shortcut icon" href="/assets/favicon.ico" />
 
-        <!--[if lte IE 8]>
-            <link rel="stylesheet" href="/assets/css/ie.css" />
-        <![endif]-->
-
-        <!--[if lt IE 9]>
-			<script src="/assets/js/ie/html5.js"></script>
-			<script src="/assets/js/ie/respond.min.js"></script>
-			<script src="/assets/lib/flot/excanvas.min.js"></script>
-        <![endif]-->    </head>
+ </head>
     <body class="full_width">
         <div class="style_switcher">
 			<div class="sepH_c">
@@ -457,6 +449,36 @@
 
             $(document).ready(function(){
                 $('#cancelled_btn').click(function(){
+
+                    $('#Pending_Suppliers').hide();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').show();
+                });
+            });
+
+
+            $(document).ready(function(){
+                $('#approved_btn_supppliers').click(function(){
+
+                    $('#Approved_suppliers').show();
+                    $('#Pending_Suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                });
+            });
+
+
+            $(document).ready(function(){
+                $('#pending_btn_supppliers').click(function(){
+
+                    $('#Pending_Suppliers').show();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                });
+            });
+
+
+            $(document).ready(function(){
+                $('#rejected_btn_supppliers').click(function(){
 
                     $('#Pending_Suppliers').hide();
                     $('#Approved_suppliers').hide();

@@ -294,13 +294,13 @@
 		<div class="col-sm-12">
 			<ul class="dshb_icoNav clearfix">
 				<li><a href="{{ route('approve-dashboard') }}" style="background-image: url(/assets/img/gCons/multi-agents.png)"><span class="label label-info">+9</span> Approvals</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/world.png)">Map</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/configuration.png)">Settings</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/lab.png)">Lab</a>
-				</li><li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/pie-chart.png)">Charts</a></li>
-				<li><a href="/assets/javascript:void(0)" style="background-image: url(/assets/img/gCons/edit.png)">Add New Article</a></li>
-				
+				<li><a href="{{route('procurement')}}" style="background-image: url(/assets/img/gCons/chat-02.png)">Procurement</a></li>
+				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/configuration.png)">Settings</a></li>
+				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/lab.png)">Lab</a>
+				</li><li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
+				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/pie-chart.png)">Charts</a></li>
+				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/edit.png)">Add New Article</a></li>
+		
 			</ul>
 		</div>
 	</div>

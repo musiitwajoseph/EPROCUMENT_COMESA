@@ -14,10 +14,17 @@ use PDF;
 use Illuminate\Support\Facades\Hash;
 use App\Models\SupplierLogin;
 use App\Models\Admin;
+use Validator;
+
+
+use App\Imports\LegitImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
 
 class COMESA_CONTROLLER extends Controller
 {
     
+
     public function supplierRegistration(){
 
         //getting country list
@@ -52,22 +59,50 @@ class COMESA_CONTROLLER extends Controller
 
     public function generateOTP(Request $request){
     
+        
+        $validation = Validator::make($request->all(), [
+            'captcha_code'=>'required|captcha',
+        ]);
+
+
+        if ($validation->fails()) {
+            return response()->json([
+                "invalid_captcha"=>"Invalid captcha code !",
+            ]);
+        } 
+
+        else
+        
+        {
+        
 
         $input = $request->all();
         $email = $input['email'];
 
          $email_status = DB::table('otps')->where('email', $email)->orderBy('id', 'desc')->value('status');
+         $saved_user_email = DB::table('supplier_logins')->where('email', $email)->orderBy('id', 'desc')->value('id');
         
-        if($email_status == 'verified'){
+
+         if($saved_user_email != null){
+
+            return response()->json([
+                "status" => True,
+                "Acceptance"=>"Done",
+            ]);  
+         }
+
+
+         if($email_status == 'verified'){
 
             return response()->json([
                 "status" => True,
                 "message" => "Email has been already verified",
                 "verification"=>"Done",
+                "email_verified_already"=>$email,
             ]);  
         }
 
-         
+    
          $number = rand(10000, 99999);
          $email = $input['email'];
          $username = $input['username'];
@@ -95,26 +130,7 @@ class COMESA_CONTROLLER extends Controller
             "expiryTime"=>"Your OTP verifyication expires in 15 mins from now at : " . $endTime ,
         ]);
     }
-
-
-
-    public function supplierOTP($otp, $to,$username){
-        $data = [
-            'subject'=>'SUPPLIER OTP',
-            'body'=>'TEST',
-            'otp'=> $otp,
-            'username' => $username,
-        ];
-
-        try {
-            Mail::to($to)->send(new SupplierMail($data));
-
-            return "OTP has been sent";
-        } catch (Exception $th) {
-            return "error";
-        }
-    }
-
+}
 
     public function fetch_email(Request $request){
 
@@ -148,6 +164,7 @@ class COMESA_CONTROLLER extends Controller
                 return response()->json([
                     "status" => TRUE,
                     "message" => "This email has already been Verified, Login into the Supplier Portal",
+                    "AlreadyDone"
                 ]);
            }
 
@@ -242,6 +259,27 @@ class COMESA_CONTROLLER extends Controller
     }
 
 
+
+    public function supplierOTP($otp, $to,$username){
+        $data = [
+            'subject'=>'SUPPLIER OTP',
+            'body'=>'TEST',
+            'otp'=> $otp,
+            'username' => $username,
+        ];
+
+        try {
+            Mail::to($to)->send(new SupplierMail($data));
+
+            return "OTP has been sent";
+        } catch (Exception $th) {
+            return "error";
+        }
+    }
+
+
+    // Supplier Registration Master Function
+
     public function SupplierRegistrationDetails(Request $request)
     {
 
@@ -295,6 +333,7 @@ class COMESA_CONTROLLER extends Controller
             'login_username'=>'required',
             'login_password'=>'required',
             'confirm_password'=>'required',
+            // 'login_username'=>'required|unique:admins',
             // 'login_password'=>  [
             //     'required',
             //     'string',
@@ -306,28 +345,31 @@ class COMESA_CONTROLLER extends Controller
             // ],
             // 'confirm_password'=>'required|same:login_password',
         ]);
-
-
-        // Supplier_reference number 
-            $supplier_reference_number =  $request->input('supplier_reference_number');
            
-
             $login_username =  $request->input('login_username');
             $login_password =  $request->input('login_password');
             
             $original_supplier_email = $request->input('original_supplier_email');
+            $email_verified_already_id =  $request->input('email_verified_already_id');
+           
 
-
-          $random_number_reference = rand(10000, 99999);
-
-          $sup_ref = $login_username.''.$random_number_reference;
-
-        
+        // Supplier_reference number 
+        $random_number_reference = rand(10000, 99999);
+        $sup_ref = $login_username.''.$random_number_reference;
         
         $supplier =  new SupplierLogin;
 
+        if($original_supplier_email){
+               
+            $supplier->email = $original_supplier_email; 
+       }
+       else
+       {
+           $supplier->email = $email_verified_already_id;
+          
+       }
+
         $supplier->username = $login_username;
-        $supplier->email = $original_supplier_email;
         $supplier->password = Hash::make($login_password);
         $supplier->supplier_reference = $sup_ref;
         
@@ -350,6 +392,7 @@ class COMESA_CONTROLLER extends Controller
          $request->country;
         
          $post->Category = $request->Category;
+         $post->supplier_reference_form_no = $sup_ref;
          $post->SubCategory = $request->SubCategory;
          $post->Type_of_Business = $request->Type_of_Business;    
          $informatics = $post->Nature_of_Business = $request->Nature_of_Business;
@@ -424,9 +467,9 @@ class COMESA_CONTROLLER extends Controller
                 "submited_country"=>$country_update,
                 "details" => $details,
                 "unique_id"=>$user_unique_id,
+                // "pass_abc"=>$login_password,
             ]);
         } 
-
     }
 
     
@@ -617,7 +660,8 @@ class COMESA_CONTROLLER extends Controller
 
         $details .= '<tr>';
         $details .= '<td colspan="3"><h3>4.Required Documents</h3></td>';
-        $details .= '<td><a href="/edit-required-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Required Documents</a></t>';
+        $details .= '<td><a href="javascript:void(0);" class="btn btn-primary">Edit Required Documents</a></t>';
+        // $details .= '<td><a href="/edit-required-documents/'.$saved_user_id.'" class="btn btn-primary">Edit Required Documents</a></t>';
         $details .= '</tr>'; 
 
         $details .= '<tr>';
@@ -638,6 +682,8 @@ class COMESA_CONTROLLER extends Controller
       return $details;
 
 } 
+
+        // Edit Business Details : 
 
         public function Edit_Business_Details(Request $request,$id){
 
@@ -691,6 +737,8 @@ class COMESA_CONTROLLER extends Controller
         }
 
 
+        // Update Business Details:
+
         public function updateBusinessSupplierData(Request $request){
 
         $input = $request->all();
@@ -735,6 +783,8 @@ class COMESA_CONTROLLER extends Controller
     }
 
     
+    //  Update Financial Details :
+
     public function updateFinancialSupplierData(Request $request){
 
         $input = $request->all();
@@ -763,6 +813,8 @@ class COMESA_CONTROLLER extends Controller
             ]);
     }
 
+
+    // Update Capacity Details:
 
     public function updateCapacitySupplierData(Request $request){
 
@@ -793,8 +845,9 @@ class COMESA_CONTROLLER extends Controller
     }
 
 
+    // Load Updated Data in the Form:
 
-    public function LoadUpdatedData(Request $request){ //working code
+    public function LoadUpdatedData(Request $request){ 
     
         $input = $request->all();
         $user_id = $input['user_id'];
@@ -818,6 +871,8 @@ class COMESA_CONTROLLER extends Controller
               ]);
              
     }
+
+    // Load Financial Form data Updated Data:
 
     public function LoadFinancialUpdatedData(Request $request){
     
@@ -854,6 +909,8 @@ class COMESA_CONTROLLER extends Controller
     return view('Edits.redirectFinancial',compact(['dynamic_id']));
     }
 
+
+    // Edit financial Data details:
 
     public function Edit_Financial_Details(Request $request,$id){
 
@@ -1032,11 +1089,15 @@ class COMESA_CONTROLLER extends Controller
 
       public function sendMailWithPDF(Request $request)
       {
-        $data["email"] = "test@gmail.com";
-        $data["title"] = "COMESA:E-PROCUREMENT - Successfull Submisson of Supplier Form ";
-        $data["body"] = "Laravel 10 COMESA E-PROCUREMENT";
 
-        $pdf = PDF::loadView('userdata', $data); // The pdf that requires to be dseen the client
+        $data = [
+            'email'         => 'test@gmail.com',
+            'title'      => 'COMESA:E-PROCUREMENT - Successfull Submisson of Supplier Form',
+        ];
+
+
+
+        $pdf = PDF::loadView('userdata', $data); // The pdf that requires to be seen the client
         $pdf_data = PDF::loadView('pdf_mail', $data); //The one Containing the body of the Email
 
 
@@ -1058,6 +1119,10 @@ class COMESA_CONTROLLER extends Controller
 
         $user_id = $input['user_id'];
 
+        // $data = $input['original_supplier_email'];
+        // $exported_original_data = $this->userdata($data);
+
+
         $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
         $post->status = "Accepted";
@@ -1074,7 +1139,15 @@ class COMESA_CONTROLLER extends Controller
     public function userdata($id){
 
 
+        $supp_ref_no =  DB::table('supplier_registration_details_models')->where('id', $id)->value('supplier_reference_form_no');
         $email =  DB::table('supplier_registration_details_models')->where('id', $id)->value('company_email');
+
+
+        $user_pp =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('password');
+        // dd($user_pp);
+
+        $email_send_on =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('email');
+        $username_send_on =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('username');
         
         $saved_data =  DB::table('supplier_registration_details_models')->where('company_email', $email)->get();
         $saved_user_id =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('id');
@@ -1082,6 +1155,8 @@ class COMESA_CONTROLLER extends Controller
         $T_O_B =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Type_of_Business');
 
         $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+
+        $ref =  DB::table('supplier_registration_details_models')->where('company_email', $email)->value('Reference');
 
 
         foreach($saved_data as $data){
@@ -1096,8 +1171,7 @@ class COMESA_CONTROLLER extends Controller
     
             $type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
         
-           
-            // $data->SubCategory
+
             $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
 
             $details = "";
@@ -1157,7 +1231,8 @@ class COMESA_CONTROLLER extends Controller
                 ];
               
 
-                $data["email"] = $email;                
+                $data["email"] = $email_send_on;          
+                $data["username"] = $username_send_on;       
                 $data["title"] = "COMESA:E-PROCUREMENT - Successfull Submisson of Supplier Form ";
                 $data["body"] = "Laravel 10 COMESA E-PROCUREMENT";
         
@@ -1173,8 +1248,6 @@ class COMESA_CONTROLLER extends Controller
                 });
         
                 echo "email send successfully !!";
-
-                // return $pdf->stream('userdata.pdf');
 
                 return redirect('supplier-login');
             }
@@ -1272,13 +1345,13 @@ class COMESA_CONTROLLER extends Controller
         $user_otp_check_db = DB::table('supplier_logins')->where('email', $user_id_email_check)->value('temp_otp');
 
         if($data_otp == $user_otp_check_db){
-
+            
             return redirect('supplier-dashboard');
         }
         else{
 
             return response()->json([
-                "status"=>FALSE,
+                "status"=>True,
                 "message"=>"Invalid OTP being entered",
             ]);
         }
@@ -1299,11 +1372,6 @@ class COMESA_CONTROLLER extends Controller
         return view('portal.supplier.supplier-dashboard',$data);
     }
 
-
-    public function supplier_login_test(){
-
-        return view('TestAdmin');
-    }
 
 
     public function admin_register(){
@@ -1346,6 +1414,8 @@ class COMESA_CONTROLLER extends Controller
 
         return view('Login.SupplierOTP');
     }
+
+    // Admin Functions Credentials
 
     public function admin_login(){
 
@@ -1437,7 +1507,6 @@ class COMESA_CONTROLLER extends Controller
 
     public function admin_dashboard(){
 
-
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
         return view('portal.admin.admin-dashboard',$data);
     }
@@ -1456,7 +1525,7 @@ class COMESA_CONTROLLER extends Controller
 
     public function ReloadCaptcha(){
 
-        return response()->json(['captcha'=>captcha_img()]);
+        return response()->json(['captcha'=>captcha_img('flat')]);
     }
 
 
@@ -1658,6 +1727,62 @@ class COMESA_CONTROLLER extends Controller
             "message"=>"This supplier application request has been cancelled",
         ]);
     }
-    
+
+    public function approved_supplier_db(){
+
+        return response()->json([
+            "status" => True,
+            "message"=>"This supplier application request has been cancelled",
+        ]);
+    }
+
+    // modifications and changes 
+
+    public function welcomeHome(){
+
+        return view('welcome');
+    }
+
+
+
+    public function excel_upload(Request $request){
+
+        return view('excelupload');
+    }
+
+    public function upload_excel(Request $request){
+
+        // ** Original Format without validation try and cotch **
+
+        // Excel::import(new LegitImport, $request->file); 
+
+        try {
+                Excel::import(new LegitImport, $request->file); 
+                return redirect()->back()->with('success','Data has been saved successfully');
+
+
+        }
+         catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+             $failures = $e->failures();
+             
+
+             dd($failures);
+             
+             return redirect()->back()->with('import_errors',$failures);
+
+            //  foreach ($failures as $failure) {
+            //      $failure->row(); // row that went wrong
+            //      $failure->attribute(); // either heading key (if using heading row concern) or column index
+            //      $failure->errors(); // Actual error messages from Laravel validator
+            //      $failure->values(); // The values of the row that has failed.
+            //  }
+        }
+
+
+
+        
+
+        
+    }
 
 }

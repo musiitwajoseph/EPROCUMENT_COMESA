@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Gebo Admin v3.1</title>
+        <title>Edit Capacity Details:</title>
 
         <!-- Bootstrap framework -->
             <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />

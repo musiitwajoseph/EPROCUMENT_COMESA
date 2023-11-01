@@ -160,7 +160,7 @@
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
-    @include('includes.side-bar')
+    @include('includes.supplier-side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-migrate.min.js"></script>

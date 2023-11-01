@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('suppplier_registration_details_models', function (Blueprint $table) {
-            $table->text('approved_email')->default('Null');
+        Schema::create('legits', function (Blueprint $table) {
+            $table->id();
+            $table->text('first_name');
+            $table->text('last_name');
+            $table->text('email')->unique();
+            $table->text('mobile_number');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('suppplier_registration_details_models', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('legits');
     }
 };

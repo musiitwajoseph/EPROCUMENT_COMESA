@@ -39,7 +39,7 @@
 
                             <div class="mb-3 col-md-12">
                                 <label>Enter OTP for validation : <span class="text-danger">*</span></label>
-                                <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP Sent" value="{{old('otp')}}" required>
+                                <input type="number" name="otp" id="otp" class="form-control" placeholder="Enter OTP Sent" value="{{old('otp')}}" required>
                                 <span class="text-danger">@error('otp'){{$message}}@enderror</span>
                             </div>
 
