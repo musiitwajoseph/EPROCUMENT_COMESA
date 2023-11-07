@@ -121,7 +121,7 @@
                                     @endif
 
 
-                                    <form action="{{route('upload-procurement')}}" method="POST" class="stepy-wizzard form-horizontal">
+                                    <form action="{{route('upload-procurement')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
                                     
                                         @csrf
                                         
@@ -130,7 +130,7 @@
                                                 <label class="col-md-2 control-label"
                                                     style="text-align: center">Upload Procurement Plan:</label>
                                                 <div class="col-md-10">
-                                                    <input type="file" id="procurement_data" class="input-sm form-control">
+                                                    <input type="file" name="procurement_data" id="procurement_data" class="input-sm form-control">
                                                 </div>
                                             </div>
 
@@ -163,12 +163,11 @@
             $(document).ready(function(){
                 $('#upload_procurement_plan').click(function(){
                   
-                    var procurement_data = $('#procurement_data').prop('files')[0];
+                    var procurement_data = $('#procurement_data')[0].files[0];
 
                     var form_data = new FormData();
 
                     form_data.append('procurement_data', procurement_data);
-
 
                     $.ajax({
 								type: "post",

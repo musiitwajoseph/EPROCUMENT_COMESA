@@ -132,8 +132,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
 
    //  Testing the upload data using excel sheet
-
-
+   
    Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
    Route::post('upload-excel',[COMESA_CONTROLLER::class,'upload_excel'])->name('upload-excel');
 

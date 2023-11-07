@@ -17,6 +17,9 @@ use App\Models\Admin;
 use Validator;
 
 
+use App\Imports\ProcurementImport;
+
+
 use App\Imports\LegitImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
@@ -1752,36 +1755,19 @@ class COMESA_CONTROLLER extends Controller
 
     public function upload_excel(Request $request){
 
-        // ** Original Format without validation try and cotch **
-
-        // Excel::import(new LegitImport, $request->file); 
-
         try {
-                Excel::import(new LegitImport, $request->file); 
+
+                // $data = \Excel::import(new ProcurementImport, $request->file);
+                $data = Excel::import(new LegitImport, $request->file); 
+
+                
                 return redirect()->back()->with('success','Data has been saved successfully');
-
-
         }
          catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
              $failures = $e->failures();
              
-
-             dd($failures);
-             
              return redirect()->back()->with('import_errors',$failures);
-
-            //  foreach ($failures as $failure) {
-            //      $failure->row(); // row that went wrong
-            //      $failure->attribute(); // either heading key (if using heading row concern) or column index
-            //      $failure->errors(); // Actual error messages from Laravel validator
-            //      $failure->values(); // The values of the row that has failed.
-            //  }
         }
-
-
-
-        
-
         
     }
 
