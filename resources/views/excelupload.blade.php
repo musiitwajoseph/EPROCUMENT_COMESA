@@ -33,7 +33,7 @@
         <form action="{{route('upload-excel')}}" method="POST"  enctype="multipart/form-data" >
             @csrf
         
-            <input type="file" name="file"> <br> <br>
+            <input type="file" name="file1"> <br> <br>
         
             <button type="submit">submit</button>
             {{-- <input type="submit"  value="submit"> --}}

@@ -24,6 +24,14 @@ use App\Imports\LegitImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+
+
 class COMESA_CONTROLLER extends Controller
 {
     
@@ -1753,22 +1761,156 @@ class COMESA_CONTROLLER extends Controller
         return view('excelupload');
     }
 
+    // public function upload_excel(Request $request){
+      
+    //         $request->validate([
+    //             'file1' => 'required|mimes:xlsx'
+    //         ]);
+
+    //         $the_file = $request->file('file1');
+
+    //         try{
+     
+    //             $spreadsheet = IOFactory::load($the_file->getRealPath());
+    //             $sheet        = $spreadsheet->getActiveSheet();
+    //             $row_limit    = $sheet->getHighestDataRow();
+    //             $column_limit = $sheet->getHighestDataColumn();
+    //             $row_range    = range( 2, $row_limit );
+    //             $column_range = range( 'D', $column_limit );
+    //             $startcount = 2;
+     
+    //             $data = array();
+
+    //             foreach ( $row_range as $row ) {
+     
+    //                 $first_name = $sheet->getCell( 'A' . $row )->getValue();
+
+    //                 if($first_name == null){
+    //                     dd("Null values are not allowed");
+    //                 }
+
+    //                 $data[] = [
+
+    //                     'first_name' =>$first_name,
+    //                     'last_name' => $sheet->getCell( 'B' . $row )->getValue(),
+    //                     'email' => $sheet->getCell( 'C' . $row )->getValue(),
+    //                     'mobile_number' => $sheet->getCell( 'D' . $row )->getValue(),
+    //                 ];
+     
+    //                 $startcount++;
+    //             }
+     
+    //             DB::table('legits')->insert($data);
+     
+    //         } catch (Exception $e) {
+     
+    //             $error_code = $e->errorInfo[1];
+     
+    //             return back()->withErrors('There was a problem uploading the data!');
+    //         }
+    // }
+
+
     public function upload_excel(Request $request){
+      
+        $request->validate([
+            'file1' => 'required|mimes:xlsx'
+        ]);
 
-        try {
+        $the_file = $request->file('file1');
 
-                $data = \Excel::import(new ProcurementImport, $request->file);
-                // $data = Excel::import(new LegitImport, $request->file); 
+        try{
 
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet        = $spreadsheet->getActiveSheet();
+            $row_limit    = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range    = range( 2, $row_limit );
+            $column_range = range( 'AG', $column_limit );
+            $startcount = 2;
+
+            $chunkSize = 10;
+
+            
+
+            $spreadsheetData = $sheet->rangeToArray('A2:' . $column_limit . $row_limit, null, true, false);
+            
+           
+
+            $chunks = array_chunk($spreadsheetData, $chunkSize);
+
+            // dd($chunks);
+
+            $data = array();
+
+            foreach ($chunks as $chunk) {
                 
-                return redirect()->back()->with('success','Data has been saved successfully');
+                foreach ($row_range as $row ) {
+
+                    $crt_no = $sheet->getCell( 'A' . $row )->getValue();
+                    $desription_of_goods = $sheet->getCell( 'B' . $row )->getValue();
+                    $category_of_procurement = $sheet->getCell( 'C' . $row )->getValue();
+                    $qty = $sheet->getCell( 'D' . $row )->getValue();
+    
+                    if($crt_no == null){
+                            $crt_no = "null";
+                        }
+    
+                        if($desription_of_goods == null){
+                            $desription_of_goods = "null";
+                        }
+    
+    
+                        if($category_of_procurement == null){
+                            $category_of_procurement = "null";
+                        }
+    
+                        if($qty == null){
+                            $qty = "null";
+                        }
+    
+    
+                    // $unit_of_measure = $sheet->getCell( 'E' . $row )->getValue();
+                    // $Procurement_method = $sheet->getCell( 'F' . $row )->getValue();
+                    // $type_of_contract = $sheet->getCell( 'G' . $row )->getValue();
+                    // $allocated_amount = $sheet->getCell( 'H' . $row )->getValue();
+                    // $currency = $sheet->getCell( 'I' . $row )->getValue();
+                    // $source_of_funding = $sheet->getCell( 'J' . $row )->getValue();
+                    // $procuring_unit = $sheet->getCell( 'K' . $row )->getValue();
+                    // $requisition_unit = $sheet->getCell( 'L' . $row )->getValue();
+    
+    
+                    $data[] = [
+                        
+                        'firstname'=>$crt_no,
+                        'last_name'=>$desription_of_goods,
+                        'email'=>$category_of_procurement,
+                        'mobile_number'=>$qty,
+                        // 'crt_no' =>$crt_no,
+                        // 'description_of_goods_works_and_services' => $desription_of_goods,
+                        // 'category_of_procurement' => $category_of_procurement,
+                        // 'qty' => $qty,
+                        // 'unit_of_measure'=>$unit_of_measure,
+                        // 'Procurement_method'=>$Procurement_method,
+                        // 'type_of_contract'=>$type_of_contract,
+                        // 'allocated_amount'=>$allocated_amount,
+                        // 'currency'=>$currency,
+                        // 'source_of_funding'=>$source_of_funding,
+                        // 'procuring_unit'=>$procuring_unit,
+                        // 'requisition_unit'=>$requisition_unit,
+                    ];
+                    $startcount++;
+                }
+     
+                DB::table('legits')->insert($data);
+            }
+ 
+        } catch (Exception $e) {
+ 
+            $error_code = $e->errorInfo[1];
+ 
+            return back()->withErrors('There was a problem uploading the data!');
         }
-         catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-             $failures = $e->failures();
-             
-             return redirect()->back()->with('import_errors',$failures);
-        }
-        
-    }
+}
 
 }
