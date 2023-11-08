@@ -34,7 +34,7 @@ class COMESA_CONTROLLER extends Controller
         $countrylist = DB::select('select Name,PhoneCode from Countries');
 
         //getting categories
-        $categories = DB::table("master_data")
+        $categories = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',3)
         ->whereNotNull('md_description')
@@ -42,13 +42,13 @@ class COMESA_CONTROLLER extends Controller
         ->get();
 
         //getting business types
-        $Type_of_Business = DB::table("master_data")
+        $Type_of_Business = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',6)
         ->get();
 
         //getting business types
-        $Documents = DB::table("master_data")
+        $Documents = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',1032)
         ->get();
@@ -287,7 +287,7 @@ class COMESA_CONTROLLER extends Controller
     {
 
         //getting business types
-        $Documents = DB::table("master_data")
+        $Documents = DB::table("master_datas")
         ->select('md_name')
         ->where('md_master_code_id',1032)
         ->get();
@@ -497,14 +497,14 @@ class COMESA_CONTROLLER extends Controller
 
 
         $user_id = $data->Category;
-        $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
+        $category = DB::table('master_datas')->where('md_id',$user_id)->value('md_name');
         
 
-        $type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+        $type_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
     
        
         // $data->SubCategory
-        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
 
 
 
@@ -702,20 +702,20 @@ class COMESA_CONTROLLER extends Controller
             
         $db_category =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
         
-        $user_selected_category = DB::table('master_data')->where('md_id',$db_category)->value('md_name');
+        $user_selected_category = DB::table('master_datas')->where('md_id',$db_category)->value('md_name');
        
 
         $db_sub_category =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
         
-        $user_selected_sub_category = DB::table('master_data')->select('md_code')->where('md_id','=',$db_sub_category)->value('md_name');
+        $user_selected_sub_category = DB::table('master_datas')->select('md_code')->where('md_id','=',$db_sub_category)->value('md_name');
             
         $db_type_of_business =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
-        $user_selected_type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$db_type_of_business)->value('md_name');
+        $user_selected_type_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$db_type_of_business)->value('md_name');
       
         
 
         //getting categories
-        $categories = DB::table("master_data")
+        $categories = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',3)
         ->whereNotNull('md_description')
@@ -723,13 +723,13 @@ class COMESA_CONTROLLER extends Controller
         ->get();
 
         //getting business types
-        $Type_of_Business = DB::table("master_data")
+        $Type_of_Business = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',6)
         ->get();
 
         //getting business types
-        $Documents = DB::table("master_data")
+        $Documents = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',1032)
         ->get();
@@ -922,7 +922,7 @@ class COMESA_CONTROLLER extends Controller
         $Accessed_user =  DB::table('supplier_registration_details_models')->where('id', $id)->get();
 
         //getting categories
-        $categories = DB::table("master_data")
+        $categories = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',3)
         ->whereNotNull('md_description')
@@ -930,13 +930,13 @@ class COMESA_CONTROLLER extends Controller
         ->get();
 
         //getting business types
-        $Type_of_Business = DB::table("master_data")
+        $Type_of_Business = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',6)
         ->get();
 
         //getting business types
-        $Documents = DB::table("master_data")
+        $Documents = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',1032)
         ->get();
@@ -954,7 +954,7 @@ class COMESA_CONTROLLER extends Controller
         public function Edit_Required_Details()
          {
 
-        $Documents = DB::table("master_data")
+        $Documents = DB::table("master_datas")
         ->select('md_id','md_name')
         ->where('md_master_code_id',1032)
         ->get();
@@ -983,9 +983,9 @@ class COMESA_CONTROLLER extends Controller
         $input = $request->all();
         $category = $input['Category'];
 
-        $md_code = DB::table('master_data')->select('md_code')->where('md_id','=',$category)->value('md_code');
+        $md_code = DB::table('master_datas')->select('md_code')->where('md_id','=',$category)->value('md_code');
 
-        $list =  DB::table("master_data")
+        $list =  DB::table("master_datas")
         ->where('md_master_code_id',3)
         ->where('md_code',$md_code)
         ->where('md_description','=','')
@@ -1008,7 +1008,7 @@ class COMESA_CONTROLLER extends Controller
             $Accessed_user =  DB::table('supplier_registration_details_models')->where('id', $id)->get();
     
             //getting categories
-            $categories = DB::table("master_data")
+            $categories = DB::table("master_datas")
             ->select('md_id','md_name')
             ->where('md_master_code_id',3)
             ->whereNotNull('md_description')
@@ -1016,13 +1016,13 @@ class COMESA_CONTROLLER extends Controller
             ->get();
     
             //getting business types
-            $Type_of_Business = DB::table("master_data")
+            $Type_of_Business = DB::table("master_datas")
             ->select('md_id','md_name')
             ->where('md_master_code_id',6)
             ->get();
     
             //getting business types
-            $Documents = DB::table("master_data")
+            $Documents = DB::table("master_datas")
             ->select('md_id','md_name')
             ->where('md_master_code_id',1032)
             ->get();
@@ -1038,7 +1038,7 @@ class COMESA_CONTROLLER extends Controller
 
             $md_master_code_id = 1032;
 
-            $Documents = DB::table("master_data")
+            $Documents = DB::table("master_datas")
             ->select('md_id','md_name')
             ->where('md_master_code_id',$md_master_code_id)
             ->get();
@@ -1169,13 +1169,13 @@ class COMESA_CONTROLLER extends Controller
     
     
             $user_id = $data->Category;
-            $category = DB::table('master_data')->where('md_id',$user_id)->value('md_name');
+            $category = DB::table('master_datas')->where('md_id',$user_id)->value('md_name');
             
     
-            $type_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+            $type_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
         
 
-            $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
+            $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$user_id)->value('md_name');
 
             $details = "";
 
@@ -1576,13 +1576,13 @@ class COMESA_CONTROLLER extends Controller
         $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
         $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
-        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
         
         $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
-        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
 
         $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
-        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+        $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
 
 
         $info = SupplierRegistrationDetailsModel::find($id);
@@ -1608,13 +1608,13 @@ class COMESA_CONTROLLER extends Controller
         $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
         $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
-        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
         
         $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
-        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
 
         $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
-        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+        $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
 
 
         $info = SupplierRegistrationDetailsModel::find($id);
@@ -1640,13 +1640,13 @@ class COMESA_CONTROLLER extends Controller
         $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
 
         $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
-        $category = DB::table('master_data')->where('md_id',$category_id)->value('md_name');
+        $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
         
         $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
-        $subcategory = DB::table('master_data')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
 
         $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
-        $Types_of_business = DB::table('master_data')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+        $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
 
 
         $info = SupplierRegistrationDetailsModel::find($id);
@@ -1757,8 +1757,8 @@ class COMESA_CONTROLLER extends Controller
 
         try {
 
-                // $data = \Excel::import(new ProcurementImport, $request->file);
-                $data = Excel::import(new LegitImport, $request->file); 
+                $data = \Excel::import(new ProcurementImport, $request->file);
+                // $data = Excel::import(new LegitImport, $request->file); 
 
                 
                 return redirect()->back()->with('success','Data has been saved successfully');
