@@ -1916,14 +1916,41 @@ class COMESA_CONTROLLER extends Controller
 
     public function specific_table(){
 
-        $endpoint = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INFRASTRUCTURE DIVISION ')
+
+         // STRATEGIC PLANNING  -SPR TABLE
+
+        $endpoint1 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INFRASTRUCTURE DIVISION ')
         ->value('id');
         
+       $table1 =  DB::select("SELECT * FROM procurement_plans where technical_requirements_receipt_of_final_technical_requirements_date !=
+       'NULL' AND id Between 3 AND $endpoint1;");
+
+         // INFRASTRUCTURE DIVISION TABLE
+        $startpoint2 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','SATSD ')
+        ->value('id');
+
+        $endpoint2 = DB::table('procurement_plans')->where('description_of_goods_works_and_services',' RIFF PROJECT ')
+        ->value('id');
+
+        $startpoint2 = $startpoint2+3;
+        $endpoint2 = $endpoint2-1;
+
+        $table2 =  DB::select("SELECT * FROM procurement_plans where id Between $startpoint2 AND $endpoint2;");
+
+         //  RIFF PROJECT TABLE
+
+         $startpoint4 = DB::table('procurement_plans')->where('description_of_goods_works_and_services',' RIFF PROJECT ')
+         ->value('id');
+
+         $endpoint4 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','CORPORATE COMMUNICATION UNIT - PR ')
+         ->value('id');
+ 
+         $startpoint4 = $startpoint4+3;
+         $endpoint4 = $endpoint4-1;
+         
+         $table3 =  DB::select("SELECT * FROM procurement_plans where description_of_goods_works_and_services != 'NULL' AND  id Between $startpoint4 AND $endpoint4;");
+        
+         dd($table3);
     
-       $users =  DB::select("SELECT * FROM procurement_plans where description_of_goods_works_and_services !=
-       'INFRASTRUCTURE DIVISION ' AND id Between 2 AND $endpoint;");
-
-       dd($users);
-
-    }
+        }
 }
