@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\otp;
 use App\Models\Document;
+use App\Models\Procurement_plan;
 use Mail;
 use App\Mail\SupplierMail;
 use App\Models\SupplierRegistrationDetailsModel;
@@ -29,6 +30,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 
 
@@ -1819,98 +1821,109 @@ class COMESA_CONTROLLER extends Controller
 
         $the_file = $request->file('file1');
 
-        try{
+        $spreadsheet = IOFactory::load($the_file->getRealPath());
+        $sheetData       = $spreadsheet->getActiveSheet()->toArray();
 
-            $spreadsheet = IOFactory::load($the_file->getRealPath());
-            $sheet        = $spreadsheet->getActiveSheet();
-            $row_limit    = $sheet->getHighestDataRow();
-            $column_limit = $sheet->getHighestDataColumn();
-            $row_range    = range( 2, $row_limit );
-            $column_range = range( 'AG', $column_limit );
-            $startcount = 2;
+        // $chunkSize = 50;
+        // $chunks = array_chunk($sheetData, $chunkSize);
 
-            $chunkSize = 10;
+        // foreach ($chunks as $chunk) {
+            if (!empty($sheetData)) {
+                for ($i=1; $i<count($sheetData); $i++) {
 
-            
+                    $crt_no = $sheetData[$i][0];
+                    $desription_of_goods = $sheetData[$i][1];
+                    $category_of_procurement = $sheetData[$i][2];
+                    $qty = $sheetData[$i][3];
+                    $unit_of_measure  = $sheetData[$i][4];
+                    $Procurement_method = $sheetData[$i][5];
+                    $type_of_contract = $sheetData[$i][6];
+                    $allocated_amount = $sheetData[$i][7];
+                    $currency  = $sheetData[$i][8];
+                    $source_of_funding = $sheetData[$i][9];
+                    $procuring_unit = $sheetData[$i][10];
+                    $requisition_unit = $sheetData[$i][11];
+                    $end_user_requisition_date = $sheetData[$i][12];
+                    $technical_requirements_receipt_of_final_technical_requirements_date = $sheetData[$i][13];
+                    $technical_requirements_preparation_of_tender_document = $sheetData[$i][14];
+                    $publication_of_tender_documents_publication_date = $sheetData[$i][15];
+                    $publication_of_tender_documents_closing_date  = $sheetData[$i][16];
+                    $tender_openning = $sheetData[$i][17];
+                    $tender_evaluation_shortlisting_report_start_date = $sheetData[$i][18];
+                    $tender_evaluation_shortlisting_Report_end_date = $sheetData[$i][19];
+                    $short_list_notice_publication  = $sheetData[$i][20];
+                    $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date = $sheetData[$i][21];
+                    $invitation_to_shortlisted_firms_to_submit_proposals_closing_date = $sheetData[$i][22];
+                    $evaluation_of_bids_under_shortlist_method_start_date = $sheetData[$i][23];
+                    $evaluation_of_bids_under_shortlist_method_end_date = $sheetData[$i][24];
+                    $purchase_contracts_committee_approval  = $sheetData[$i][25];
+                    $secretary_general_approval_of_pc_cc_reports_submission_date = $sheetData[$i][26];
+                    $secretary_general_approval_of_pc_cc_reports_approval_date = $sheetData[$i][27];
+                    $contract_vetting_submission_date = $sheetData[$i][28];
+                    $contract_vetting_approval_date  = $sheetData[$i][29];
+                    $contract_amount  = $sheetData[$i][30];
+                    $sg_asg_a_and_f_dhra_approval = $sheetData[$i][31];
+                    $contract_signing_date = $sheetData[$i][32];
+                    $contract_duration_date = $sheetData[$i][33];
+                    $contract_end_date  = $sheetData[$i][34];
 
-            $spreadsheetData = $sheet->rangeToArray('A2:' . $column_limit . $row_limit, null, true, false);
-            
-           
 
-            $chunks = array_chunk($spreadsheetData, $chunkSize);
-
-            // dd($chunks);
-
-            $data = array();
-
-            foreach ($chunks as $chunk) {
-                
-                foreach ($row_range as $row ) {
-
-                    $crt_no = $sheet->getCell( 'A' . $row )->getValue();
-                    $desription_of_goods = $sheet->getCell( 'B' . $row )->getValue();
-                    $category_of_procurement = $sheet->getCell( 'C' . $row )->getValue();
-                    $qty = $sheet->getCell( 'D' . $row )->getValue();
     
-                    if($crt_no == null){
-                            $crt_no = "null";
-                        }
-    
-                        if($desription_of_goods == null){
-                            $desription_of_goods = "null";
-                        }
-    
-    
-                        if($category_of_procurement == null){
-                            $category_of_procurement = "null";
-                        }
-    
-                        if($qty == null){
-                            $qty = "null";
-                        }
-    
-    
-                    // $unit_of_measure = $sheet->getCell( 'E' . $row )->getValue();
-                    // $Procurement_method = $sheet->getCell( 'F' . $row )->getValue();
-                    // $type_of_contract = $sheet->getCell( 'G' . $row )->getValue();
-                    // $allocated_amount = $sheet->getCell( 'H' . $row )->getValue();
-                    // $currency = $sheet->getCell( 'I' . $row )->getValue();
-                    // $source_of_funding = $sheet->getCell( 'J' . $row )->getValue();
-                    // $procuring_unit = $sheet->getCell( 'K' . $row )->getValue();
-                    // $requisition_unit = $sheet->getCell( 'L' . $row )->getValue();
-    
-    
-                    $data[] = [
-                        
-                        'firstname'=>$crt_no,
-                        'last_name'=>$desription_of_goods,
-                        'email'=>$category_of_procurement,
-                        'mobile_number'=>$qty,
-                        // 'crt_no' =>$crt_no,
-                        // 'description_of_goods_works_and_services' => $desription_of_goods,
-                        // 'category_of_procurement' => $category_of_procurement,
-                        // 'qty' => $qty,
-                        // 'unit_of_measure'=>$unit_of_measure,
-                        // 'Procurement_method'=>$Procurement_method,
-                        // 'type_of_contract'=>$type_of_contract,
-                        // 'allocated_amount'=>$allocated_amount,
-                        // 'currency'=>$currency,
-                        // 'source_of_funding'=>$source_of_funding,
-                        // 'procuring_unit'=>$procuring_unit,
-                        // 'requisition_unit'=>$requisition_unit,
-                    ];
-                    $startcount++;
+                    DB::table('procurement_plans')->insert(
+                        array(
+                          
+                        'crt_no' =>$crt_no,
+                        'description_of_goods_works_and_services' => $desription_of_goods,
+                        'category_of_procurement' => $category_of_procurement,
+                        'qty' => $qty,
+                        'unit_of_measure'=>$unit_of_measure,
+                        'Procurement_method'=>$Procurement_method,
+                        'type_of_contract'=>$type_of_contract,
+                        'allocated_amount'=>$allocated_amount,
+                        'currency'=>$currency,
+                        'source_of_funding'=>$source_of_funding,
+                        'procuring_unit'=>$procuring_unit,
+                        'requisition_unit'=>$requisition_unit,
+                        'end_user_requisition_date'=>$end_user_requisition_date,
+                        'technical_requirements_receipt_of_final_technical_requirements_date'=>$technical_requirements_receipt_of_final_technical_requirements_date,
+                        'technical_requirements_preparation_of_tender_document'=>$technical_requirements_preparation_of_tender_document,
+                        'publication_of_tender_documents_publication_date'=>$publication_of_tender_documents_publication_date,
+                        'publication_of_tender_documents_closing_date'=>$publication_of_tender_documents_closing_date,
+                        'tender_openning'=>$tender_openning,
+                        'tender_evaluation_shortlisting_report_start_date'=>$tender_evaluation_shortlisting_report_start_date,
+                        'tender_evaluation_shortlisting_Report_end_date'=>$tender_evaluation_shortlisting_Report_end_date,
+                        'short_list_notice_publication' =>$short_list_notice_publication,
+                        'invitation_to_shortlisted_firms_to_submit_proposals_invitation_date' => $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date,
+                        'invitation_to_shortlisted_firms_to_submit_proposals_closing_date' => $invitation_to_shortlisted_firms_to_submit_proposals_closing_date,
+                        'evaluation_of_bids_under_shortlist_method_start_date' => $evaluation_of_bids_under_shortlist_method_start_date,
+                        'evaluation_of_bids_under_shortlist_method_end_date'=>$evaluation_of_bids_under_shortlist_method_end_date,
+                        'purchase_contracts_committee_approval'=>$purchase_contracts_committee_approval,
+                        'secretary_general_approval_of_pc_cc_reports_submission_date'=>$secretary_general_approval_of_pc_cc_reports_submission_date,
+                        'secretary_general_approval_of_pc_cc_reports_approval_date'=>$secretary_general_approval_of_pc_cc_reports_approval_date,
+                        'contract_vetting_submission_date'=>$contract_vetting_submission_date,
+                        'contract_vetting_approval_date'=>$contract_vetting_approval_date,
+                        'contract_amount'=>$contract_amount,
+                        'sg_asg_a_and_f_dhra_approval'=>$sg_asg_a_and_f_dhra_approval,
+                        'contract_signing_date'=>$contract_signing_date,
+                        'contract_duration_date'=>$contract_duration_date,
+                        'contract_end_date'=>$contract_end_date,
+                        )
+                   );
                 }
-     
-                DB::table('legits')->insert($data);
             }
- 
-        } catch (Exception $e) {
- 
-            $error_code = $e->errorInfo[1];
- 
-            return back()->withErrors('There was a problem uploading the data!');
         }
-}
+    
 
+    public function specific_table(){
+
+        $endpoint = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INFRASTRUCTURE DIVISION ')
+        ->value('id');
+        
+    
+       $users =  DB::select("SELECT * FROM procurement_plans where description_of_goods_works_and_services !=
+       'INFRASTRUCTURE DIVISION ' AND id Between 2 AND $endpoint;");
+
+       dd($users);
+
+    }
 }

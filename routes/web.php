@@ -137,6 +137,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::post('upload-excel',[COMESA_CONTROLLER::class,'upload_excel'])->name('upload-excel');
 
 
+   Route::get('specific_record',[COMESA_CONTROLLER::class,'specific_table']);
+
    // Procurement Plan Controller Route
 
 
