@@ -105,17 +105,19 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::get('admin-dashboard',[COMESA_CONTROLLER::class,'admin_dashboard'])->name('admin-dashboard');
     Route::get('approve-dashboard',[COMESA_CONTROLLER::class,'approve_dashboard'])->name('approve-dashboard');
 
-   //  Procurement plan Routes :
+    //  Procurement plan Routes :
 
    Route::get('procurement',[ProcurementPlan::class,'procuring'])->name('procurement');
 
- });
+   Route::get('procurement-records',[ProcurementPlan::class,'procurement_records'])->name('procurement-records');
 
-      // Procurement Plan Routes
-
-      Route::post('upload-procurement',[ProcurementPlan::class,'upload_procurement_plan'])->name('upload-procurement');
+});
 
 
+   //  Procurement plan Routes :
+
+   Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
+   Route::post('upload-excel',[ProcurementPlan::class,'upload_excel'])->name('upload-excel');
       
    //  Admin Middleware Routes Continuation
 
@@ -127,19 +129,13 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::post('admin-verify-otp',[COMESA_CONTROLLER::class,'admin_verify_otp'])->name('admin-verify-otp');
     Route::post('cancel_approving',[COMESA_CONTROLLER::class,'cancel_approving_supplier']);
 
+   //  Testing routes to be deleted later
     Route::get('welcome',[COMESA_CONTROLLER::class,'welcomeHome']);
 
 
-
-   //  Testing the upload data using excel sheet
    
-   Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
-   Route::post('upload-excel',[COMESA_CONTROLLER::class,'upload_excel'])->name('upload-excel');
 
 
-   Route::get('specific_record',[COMESA_CONTROLLER::class,'specific_table']);
-
-   // Procurement Plan Controller Route
 
 
   

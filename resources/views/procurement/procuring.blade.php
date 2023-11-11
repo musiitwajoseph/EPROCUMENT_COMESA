@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA ADMIN DASHBOARD </title>
+    <title>COMESA PROCUREMENT DASHBOARD </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -50,11 +50,6 @@
   
 
         <header>
-
-
-
-            {{-- @include('includes.TopNavTest'); --}}
-
 
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
@@ -121,7 +116,7 @@
                                     @endif
 
 
-                                    <form action="{{route('upload-procurement')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
+                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
                                     
                                         @csrf
                                         
@@ -130,12 +125,12 @@
                                                 <label class="col-md-2 control-label"
                                                     style="text-align: center">Upload Procurement Plan:</label>
                                                 <div class="col-md-10">
-                                                    <input type="file" name="procurement_data" id="procurement_data" class="input-sm form-control">
+                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control">
                                                 </div>
                                             </div>
 
 
-                                        <button type="button" id="upload_procurement_plan" class=" btn btn-primary"><i
+                                        <button type="submit"  class=" btn btn-primary"><i
                                                 class="glyphicon glyphicon-ok"></i> Upload</button>
                                     </form>
                                 </div>
