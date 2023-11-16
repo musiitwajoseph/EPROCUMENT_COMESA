@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use DB;
+use Carbon;
 use App\Imports\ProcurementImport;
 use App\Http\Controllers\Controller;
+use App\Models\master_data;
+use App\Models\master_code;
+use Session;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -14,13 +18,21 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ProcurementPlan extends Controller
 {
 
     public function procuring()
     {
+
+        $procurement_categories = DB::select('select * from master_datas where md_master_code_id = 53');
+
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
-        return view('procurement.procuring',$data);
+
+
+        return view('procurement.procuring',$data,compact('procurement_categories'));
     }
 
 
@@ -30,6 +42,11 @@ class ProcurementPlan extends Controller
             'file1' => 'required|mimes:xlsx'
         ]);
 
+
+
+        $year_of_procurement = $request->year_of_procurement;
+        $procurement_category = $request->category_id;
+
         // return $request->all();
         $the_file = $request->file('file1');
 
@@ -38,7 +55,9 @@ class ProcurementPlan extends Controller
 
             if (!empty($sheetData)) {
                 for ($i=1; $i<count($sheetData); $i++) {
+                    if($i>1){
 
+                    
                     $crt_no = $sheetData[$i][0];
                     $desription_of_goods = $sheetData[$i][1];
                     $category_of_procurement = $sheetData[$i][2];
@@ -74,7 +93,7 @@ class ProcurementPlan extends Controller
                     $contract_signing_date = $sheetData[$i][32];
                     $contract_duration_date = $sheetData[$i][33];
                     $contract_end_date  = $sheetData[$i][34];
-
+               
 
     
                     DB::table('procurement_plans')->insert(
@@ -114,13 +133,15 @@ class ProcurementPlan extends Controller
                         'sg_asg_a_and_f_dhra_approval'=>$sg_asg_a_and_f_dhra_approval,
                         'contract_signing_date'=>$contract_signing_date,
                         'contract_duration_date'=>$contract_duration_date,
-                        'contract_end_date'=>$contract_end_date,
+                        'year_of_procurement'=>$year_of_procurement,
+                        'category_id'=>$procurement_category,
                         )
                    );
                 }
             }
+        }
 
-            // return redirect('')
+            return back()->with('success','Procurement plan has been upload successfully');
         }
 
 
@@ -128,396 +149,340 @@ class ProcurementPlan extends Controller
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
-        // GENERAL QUERY
-        // $table1 =  DB::select("SELECT * FROM procurement_plans where description_of_goods_works_and_services != 'NULL'");
-         // STRATEGIC PLANNING  -SPR TABLE
-
-        $first_element =  DB::select("SELECT TOP 1 id from procurement_plans");
-
-        $startpoint = (int)$first_element + 2;
-
-        $endpoint1 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INFRASTRUCTURE DIVISION ')
-        ->value('id');
-        
-        $table1 =  DB::select("SELECT * FROM procurement_plans where technical_requirements_receipt_of_final_technical_requirements_date !=
-       'NULL' AND id Between $startpoint AND $endpoint1;");
+        // SPR TABLE Category
+        $spr_table = DB::table('procurement_plans')->where('category_id', 1329)->get();
 
 
+        // INFRASTRUCTURE DIVISION 
+        $infrastructure = DB::table('procurement_plans')->where('category_id', 1330)->get();
 
-        // INFRASTRUCTURE DIVISION TABLE
+        // SATSD DIVISION 
+        $SATSD = DB::table('procurement_plans')->where('category_id', 1331)->get();
 
-        $startpoint_db_1 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INFRASTRUCTURE DIVISION ')
-        ->value('id');
-
-        $startend_db_2 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','SATSD ')
-        ->value('id');
-
-        // $startpoint_db_1 = $startpoint_db_1+3; Special point to edit the increment value
-
-        $startpoint_db_1 = $startpoint_db_1+4;
-        $startend_db_2 = $startend_db_2-1;
-
-        $table_point_db =  DB::select("SELECT * FROM procurement_plans where id Between $startpoint_db_1 AND $startend_db_2;");
+        // RIFF PROJECT 
+         $RIFF = DB::table('procurement_plans')->where('category_id', 1332)->get();
 
         
-         // SATSD 
-        $startpoint2 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','SATSD ')
-        ->value('id');
+         // CORPORATE COMMUNICATION UNIT - PR
+        $CORPORATE_COMMUNICATION = DB::table('procurement_plans')->where('category_id', 1332)->get();
 
-        $endpoint2 = DB::table('procurement_plans')->where('description_of_goods_works_and_services',' RIFF PROJECT ')
-        ->value('id');
+        
+        // LEGAL DIVISION
+        $LEGAL_DIVISION = DB::table('procurement_plans')->where('category_id', 1333)->get();
 
-        $startpoint2 = $startpoint2+3;
-        $endpoint2 = $endpoint2-1;
+         // REARESA DIVISION
+         $REARESA = DB::table('procurement_plans')->where('category_id', 1333)->get();
 
-        $table2 =  DB::select("SELECT * FROM procurement_plans where id Between $startpoint2 AND $endpoint2;");
+         // REARESA DIVISION
+         $REARESA = DB::table('procurement_plans')->where('category_id', 1333)->get();
 
-
-         //  RIFF PROJECT TABLE
-
-         $startpoint4 = DB::table('procurement_plans')->where('description_of_goods_works_and_services',' RIFF PROJECT ')
-         ->value('id');
-
-         $endpoint4 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','CORPORATE COMMUNICATION UNIT - PR ')
-         ->value('id');
- 
-         $startpoint4 = $startpoint4+3;
-         $endpoint4 = $endpoint4-1;
-         
-         $table4 =  DB::select("SELECT * FROM procurement_plans where description_of_goods_works_and_services != 'NULL' AND  id Between $startpoint4 AND $endpoint4;");
-
-         
-        //  CORPORATE COMMUNICATION UNIT - PR TABLE
-
-        $startpoint5 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','CORPORATE COMMUNICATION UNIT - PR ')
-         ->value('id');
-
-         $endpoint5 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','LEGAL DIVISION')
-         ->value('id');
-         
-         $startpoint5 = $startpoint5+3;
-         $endpoint5 = $endpoint5-1;
-
-        $table5 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint5 AND $endpoint5;");
-
-
-        // LEGAL DIVISION TABLE
-
-        $startpoint6 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','LEGAL DIVISION')
-        ->value('id');
-
-        $endpoint6 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','REARESA')
-        ->value('id');
-
-        $startpoint6 = $startpoint6+3;
-        $endpoint6 = $endpoint6-1;
-
-        $table6 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint6 AND $endpoint6;");
-
-        // REARESA Table
-
-        $startpoint7 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','REARESA')
-        ->value('id');
-
-        $endpoint7 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','BRUSSELS LIASON OFFICE (BLO)')
-        ->value('id');
-
-        $startpoint7 = $startpoint7+3;
-        $endpoint7 = $endpoint7-1;
-
-        $table7 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint7 AND $endpoint7;");
-
-        // BRUSSELS LIASON OFFICE (BLO) Table
-
-        $startpoint8 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','BRUSSELS LIASON OFFICE (BLO)')
-        ->value('id');
-
-        $endpoint8 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','ECOSOCC')
-        ->value('id');
-
-        $startpoint8 = $startpoint8+3;
-        $endpoint8 = $endpoint8-1;
-
-        $table8 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint8 AND $endpoint8;");
+         // BRUSSELS LIASON OFFICE (BLO)
+         $BRUSSELS_LIASON = DB::table('procurement_plans')->where('category_id', 1334)->get();
 
         // ECOSOCC
+        $ECOSOCC = DB::table('procurement_plans')->where('category_id', 1335)->get();
 
-        $startpoint9 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','ECOSOCC')
-        ->value('id');
+         // Governance Peace & Security  -
+         $Governance_Peace_and_Security = DB::table('procurement_plans')->where('category_id', 1335)->get();
 
-        $endpoint9 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Governance Peace & Security  - GPS')
-        ->value('id');
+                 //GPS - CLIMATE CHANGE
+                $GPS_CLIMATE_CHANGE = DB::table('procurement_plans')->where('category_id', 1337)->get();
 
-        $startpoint9 = $startpoint9+3;
-        $endpoint9 = $endpoint9-1;
+                  // INTERNAL AUDIT  -
+                $internal_audit = DB::table('procurement_plans')->where('category_id', 1351)->get();
 
-        $table9 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint9 AND $endpoint9;");
+                 // ESTATES  -
+                $ESTATES = DB::table('procurement_plans')->where('category_id', 1352)->get();
 
+                 // IRC  -
+                $IRC = DB::table('procurement_plans')->where('category_id', 1353)->get();
 
-        // Governance Peace & Security  - GPS 
+                // TRADE_AND_CUSTOMS  -
+                 $TRADE_AND_CUSTOMS = DB::table('procurement_plans')->where('category_id', 1354)->get();
 
-        $startpoint10 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Governance Peace & Security  - GPS')
-        ->value('id');
+                // TRADE_COM_11  -
+                $TRADE_COM_11 = DB::table('procurement_plans')->where('category_id', 1355)->get();
 
-        $endpoint10 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','GPS - CLIMATE CHANGE')
-        ->value('id');
+                // EDF11  TFP  -
+                $EDF11_TFP = DB::table('procurement_plans')->where('category_id', 1356)->get();
 
-        $startpoint10 = $startpoint10+3;
-        $endpoint10 = $endpoint10-1;
+                // TRADE IN SERVICES  -
+                $TRADE_IN_SERVICES = DB::table('procurement_plans')->where('category_id', 1357)->get();
 
-        $table10 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint10 AND $endpoint10;");
-
-        // GPS - CLIMATE CHANGE
-
-
-        $startpoint11 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','GPS - CLIMATE CHANGE')
-        ->value('id');
-
-
-        $endpoint11 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INTERNAL AUDIT')
-        ->value('id');
+                  // SSCBT1 -
+                  $SSCBT1 = DB::table('procurement_plans')->where('category_id', 1338)->get();
 
 
-        $startpoint11 = $startpoint11+3;
-        $endpoint11 = $endpoint11-1;
+                   // TCPB11 -
+                   $TCPB11 = DB::table('procurement_plans')->where('category_id', 1339)->get();
 
-        $table11 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint11 AND $endpoint11;");
+                    // GENDER_AND_SOCIAL_AFFAIRS_DIVISION -
+                    $GENDER_AND_SOCIAL_AFFAIRS_DIVISION = DB::table('procurement_plans')->where('category_id', 1340)->get();
 
-        // INTERNAL AUDIT
+                    // IT_DIVISION -
+                    $IT_DIVISION = DB::table('procurement_plans')->where('category_id', 1341)->get();
 
-        $startpoint12 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','INTERNAL AUDIT')
-        ->value('id');
+                      // IT_DIVISION -
+                      $HUMAN_RESOURCE  = DB::table('procurement_plans')->where('category_id', 1342)->get();
+                      
 
-        $endpoint12 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','ESTATES')
-        ->value('id');
+                      $Finance_and_Budgeting   = DB::table('procurement_plans')->where('category_id', 1343)->get();
 
-        $startpoint12 = $startpoint12+3;
-        $endpoint12 = $endpoint12-1;
+                      
 
-        $table12 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint12 AND $endpoint12;");
+                      $Industry_and_Agriculture   = DB::table('procurement_plans')->where('category_id', 1344)->get();
 
-        // ESTATES
+                      
 
-        $startpoint13 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','ESTATES')
-        ->value('id');
+                      $Procurement_and_Supplies   = DB::table('procurement_plans')->where('category_id', 1345)->get();
 
-        $endpoint13 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','IRC')
-        ->value('id');
+                      $Statistics   = DB::table('procurement_plans')->where('category_id', 1346)->get();
 
-
-        $startpoint13 = $startpoint13+3;
-        $endpoint13 = $endpoint13-1;
-
-        $table13 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint13 AND $endpoint13;");
-
-        // IRC
-
-        $startpoint14 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','IRC')
-        ->value('id');
-
-        $endpoint14 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE AND CUSTOMS')
-        ->value('id');
-
-        $startpoint14 = $startpoint14+3;
-        $endpoint14 = $endpoint14-1;
-
-        $table14 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint14 AND $endpoint14;");
-
-        // TRADE AND CUSTOMS TABLE
-
-        $startpoint15 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE AND CUSTOMS')
-        ->value('id');
-
-        $endpoint15 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE COM 11')
-        ->value('id');
-
-        $startpoint15 = $startpoint15+3;
-        $endpoint15 = $endpoint15-1;
-
-        $table15 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint15 AND $endpoint15;");
-
-        // TRADE COM 
-
-        $startpoint16 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE COM 11')
-        ->value('id');
-
-        $endpoint16 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','EDF11  TFP')
-        ->value('id');
-
-        $startpoint16 = $startpoint16+3;
-        $endpoint16 = $endpoint16-1;
-
-        $table16 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint16 AND $endpoint16;");
-
-        // EDF11  TFP TABLE
-
-        $startpoint17 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','EDF11  TFP')
-        ->value('id');
-
-        $endpoint17 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE IN SERVICES')
-        ->value('id');
-
+                      $year   = DB::table('procurement_plans')->where('category_id', 1346)->value('year_of_procurement');
         
-        $startpoint17 = $startpoint17+3;
-        $endpoint17 = $endpoint17-1;
-
-        $table17 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint17 AND $endpoint17;");
-
-        // TRADE IN SERVICES TABLE
-
-        $startpoint18 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TRADE IN SERVICES')
-        ->value('id');
-
-        $endpoint18 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','SSCBT1')
-        ->value('id');
-
-        $startpoint18 = $startpoint18+3;
-        $endpoint18 = $endpoint18-1;
-
-        $table18 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint18 AND $endpoint18;");
-
-        // SSCBT1 TABLE
-
-        $startpoint19 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','SSCBT1')
-        ->value('id');
-
-        $endpoint19 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TCPB11')
-        ->value('id');
-
-        $startpoint19 = $startpoint19+3;
-        $endpoint19 = $endpoint19-1;
-
-        $table19 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint19 AND $endpoint19;");
-
-        // TCPB11
-
-        $startpoint20 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','TCPB11')
-        ->value('id');
-
-        $endpoint20 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','GENDER AND SOCIAL AFFAIRS DIVISION ')
-        ->value('id');
-
-        $startpoint20 = $startpoint20+3;
-        $endpoint20 = $endpoint20-1;
-
-        $table20 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint20 AND $endpoint20;");
-
-        // GENDER AND SOCIAL AFFAIRS DIVISION
-
-        $startpoint21 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','GENDER AND SOCIAL AFFAIRS DIVISION ')
-        ->value('id');
-
-        $endpoint21 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','IT DIVISION')
-        ->value('id');
-
-        $startpoint21 = $startpoint21+3;
-        $endpoint21 = $endpoint21-1;
-
-        $table21 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint21 AND $endpoint21;");
-
-        //IT DIVISION TABLE 
-
-        $startpoint22 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','IT DIVISION')
-        ->value('id');
-
-        $endpoint22 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','HUMAN RESOURCE')
-        ->value('id');
-
-        $startpoint22 = $startpoint22+3;
-        $endpoint22 = $endpoint22-1;
-
-        $table22 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint22 AND $endpoint22;");
-
-        // HUMAN RESOURCE
-
-        $startpoint23 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','HUMAN RESOURCE')
-        ->value('id');
-
-        $endpoint23 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Finance and Budgeting')
-        ->value('id');
-
-        $startpoint23 = $startpoint23+3;
-        $endpoint23 = $endpoint23-1;
-
-        $table23 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint23 AND $endpoint23;");
-
-        // Finance and Budgeting
-            
-        $startpoint24 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Finance and Budgeting')
-        ->value('id');
-
-        $endpoint24 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Industry and Agriculture')
-        ->value('id');
-
-        $startpoint24 = $startpoint24+3;
-        $endpoint24 = $endpoint24-1;
-
-        $table24 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint24 AND $endpoint24;");
-        
-        // Industry and Agriculture Table
-
-        $startpoint25 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Industry and Agriculture')
-        ->value('id');
-
-        $endpoint25 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Procurement & Supplies Unit')
-        ->value('id');
-
-        $startpoint25 = $startpoint25+3;
-        $endpoint25 = $endpoint25-1;
-
-        $table25 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint25 AND $endpoint25;");
-
-        // Procurement & Supplies Unit Table
-
-        $startpoint26 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Procurement & Supplies Unit')
-        ->value('id');
-
-        $endpoint26 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Statistics')
-        ->value('id');
-
-        $startpoint26 = $startpoint26+3;
-        $endpoint26 = $endpoint26-1;
-
-        $table26 =  DB::select("SELECT * FROM procurement_plans where  id Between $startpoint26 AND $endpoint26;");
-
-        // Statistics
-
-        $startpoint27 = DB::table('procurement_plans')->where('description_of_goods_works_and_services','Statistics')
-        ->value('id');
-
-        $startpoint27 = $startpoint27+3;
-
-        $table27 =  DB::select("SELECT * FROM procurement_plans where  id >= $startpoint27;");
-
 
         return view('procurement.ProcurementRecords',$data)
-                    ->with('table1',$table1)
-                    ->with('table2',$table2)
-                    ->with('table4',$table4)
-                    ->with('table5',$table5)
-                    ->with('table6',$table6)
-                    ->with('table7',$table7)
-                    ->with('table8',$table8)
-                    ->with('table9',$table9)
-                    ->with('table10',$table10)
-                    ->with('table11',$table11)
-                    ->with('table12',$table12)
-                    ->with('table13',$table13)
-                    ->with('table14',$table14)
-                    ->with('table15',$table15)
-                    ->with('table16',$table16)
-                    ->with('table17',$table17)
-                    ->with('table18',$table18)
-                    ->with('table19',$table19)
-                    ->with('table20',$table20)
-                    ->with('table21',$table21)
-                    ->with('table22',$table22)
-                    ->with('table23',$table23)
-                    ->with('table24',$table24)
-                    ->with('table25',$table25)
-                    ->with('table26',$table26)
-                    ->with('table27',$table27)
-                    ->with('table_point_db',$table_point_db);
+
+                    ->with('year',$year)
+                    ->with('infrastructure',$infrastructure)
+                    ->with('SATSD',$SATSD)
+                    ->with('RIFF',$RIFF)
+                    ->with('EDF11_TFP',$EDF11_TFP)
+                    ->with('CORPORATE_COMMUNICATION',$CORPORATE_COMMUNICATION)
+                    ->with('LEGAL_DIVISION',$LEGAL_DIVISION)
+                    ->with('REARESA',$REARESA)
+                    ->with('BRUSSELS_LIASON',$BRUSSELS_LIASON)
+                    ->with('ECOSOCC',$ECOSOCC)
+                    ->with('Governance_Peace_and_Security',$Governance_Peace_and_Security)
+                    ->with('GPS_CLIMATE_CHANGE',$GPS_CLIMATE_CHANGE)
+                    ->with('internal_audit',$internal_audit)
+                    ->with('ESTATES',$ESTATES)
+                    ->with('IRC',$IRC)
+                    ->with('TRADE_AND_CUSTOMS',$TRADE_AND_CUSTOMS)
+                    ->with('TRADE_COM_11',$TRADE_COM_11)
+                    ->with('TRADE_IN_SERVICES',$TRADE_IN_SERVICES)
+                    ->with('SSCBT1',$SSCBT1)
+                    ->with('TCPB11',$TCPB11)
+                    ->with('GENDER_AND_SOCIAL_AFFAIRS_DIVISION',$GENDER_AND_SOCIAL_AFFAIRS_DIVISION)
+                    ->with('IT_DIVISION',$IT_DIVISION)
+                    ->with('HUMAN_RESOURCE',$HUMAN_RESOURCE)
+                    ->with('Finance_and_Budgeting',$Finance_and_Budgeting)
+                    ->with('Industry_and_Agriculture',$Industry_and_Agriculture)
+                    ->with('Procurement_and_Supplies',$Procurement_and_Supplies)
+                    ->with('Statistics',$Statistics)
+                    ->with('spr_table',$spr_table);     
     }   
+
+    // Master data 
+
+    public function master_table(){
+
+        // $all_data =  master_data::all();
+        $mc_code = DB::select('select * from master_codes,master_datas where master_codes.id = md_master_code_id');
+
+        // dd($mc_code);
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+
+        return view('master_data',$data ,compact(['mc_code']));
+    }
+
+    public function edit_record($md_id){
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $tb_record =  DB::table('master_datas')->where('md_id', $md_id)->get();
+
+        return view('editrecord',$data,compact(['tb_record']));
+    }
+
+    public function updatemdrecord(Request $request){
+
+        $md_id = $request->md_id;
+
+        $data = Session::get($md_id);
+        $date = time();
+
+
+        // $session = $request->user_id;
+         $session = 2;
+
+        DB::table('master_datas')
+        ->where('md_id',$md_id)
+        ->update(['md_master_code_id' => $request->md_master_code_id,'md_code' => $request->md_code,'md_name' => $request->md_name,
+        'md_description' => $request->md_description,'md_date_added' =>$date,
+        'md_added_by'=> $session]);
+
+        return back()->with('success','Data has been updated successfully');
+
+
+        $save = $post->save();
+
+        if($save){
+            dd("Data has been saved successfully");
+        }
+
+        return $request->all();
+    }
+
+
+    public function delete_record($md_id){
+
+        DB::table('master_datas')->where('md_id', $md_id)->delete();
+
+        return back()->with('success','Record has been deleted successfully');
+    }
+
+    public function addrecordmaster(Request $request){
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $selected = DB::select('select id, mc_name from master_codes');
+
+        return view('addrecordmaster',$data,compact(['selected']));
+    }
+
+
+    public function addnewrecord(Request $request){
+
+        // $data = $request->all();
+
+        $recordsave = new master_data;
+
+        $date = time();
+        $session = $request->user_id;
+
+
+        $recordsave->md_master_code_id = $request->master_code_id;
+        $recordsave->md_code = $request->md_code;
+        $recordsave->md_name = $request->md_name;
+        $recordsave->md_description = $request->md_description;
+        $recordsave->md_date_added = $date;
+        $recordsave->md_added_by = $session;
+
+        // DB::unprepared('SET IDENTITY_INSERT master_datas ON');
+        $save = $recordsave->save();
+
+        return back()->with('success','Record has been added successfully');
+    }
+
+
+    // Master Code routes
+
+    public function master_code(){
+
+        $all_data =  DB::table('master_codes')->get();
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('master_code',$data ,compact(['all_data']));
+    }
+
+    public function add_master_code(){
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        return view('addmastercode',$data);
+    }
+
+    public function send_master_code(Request $request){
+
+       $post = new master_code;
+
+       $date = time();
+       $session = $request->user_id;
+
+
+       $values = array('mc_id' => $request->mc_code,'mc_code' => $request->mc_code,'mc_name' => $request->mc_name,
+       'mc_description' => $request->mc_description,'mc_date_added' =>$date,
+       'mc_added_by'=> $session);
+
+
+       DB::table('master_codes')->insert($values);
+      
+      return back()->with('success','New data record has been added');
+    }
+
+
+    public function edit_code($mc_id){
+
+        $record_code =  DB::table('master_codes')->where('mc_id', $mc_id)->get();
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('editmastercode',$data,compact(['record_code']));
+
+    }
+
+
+    public function delete_code($mc_id){
+        
+        DB::table('master_codes')->where('mc_id', $mc_id)->delete();
+
+        return back()->with('success','Record has been deleted successfully');
+    }
+
+    public function updatemdcode(Request $request){
+
+        $mc_id = $request->mc_id;
+        $post = DB::table('master_codes')->where('mc_id',$mc_id)->value('mc_id');
+
+
+       $date = time();
+       $session = $request->user_id;
+
+        DB::table('master_codes')
+                ->where('mc_id',$mc_id)
+                ->update(['mc_id' => $request->mc_code,'mc_code' => $request->mc_code,'mc_name' => $request->mc_name,
+                'mc_description' => $request->mc_description,'mc_date_added' =>$date,
+                'mc_added_by'=> $session]);
+
+        return back()->with('success','Data has been updated successfully');
+    }
+
+    public function uploadSupplierDetails(){
+
+    $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+      return view('procurement.ImportSupplier',$data);
+    }
+
+    public function send_supplier_uploaded_data(Request $request){
+
+        $request->validate([
+            'file1' => 'required|mimes:xlsx'
+        ]);
+
+        $the_file = $request->file('file1');
+
+        $spreadsheet = IOFactory::load($the_file->getRealPath());
+        $sheetData       = $spreadsheet->getActiveSheet()->toArray();
+
+        if (!empty($sheetData)) {
+            for ($i=1; $i<count($sheetData); $i++) {
+                if($i>1){
+                
+                $token = rand(10000, 99999);
+
+                $supplier_name = $sheetData[$i][0];
+                $telephone = $sheetData[$i][1];
+                $email = $sheetData[$i][2];
+                $status = $sheetData[$i][3];
+
+                    DB::table('otps')->insert(
+                        array(
+                        
+                        'supplier_name' =>$supplier_name,
+                        'telephone' => $telephone,
+                        'email' => $email,
+                        'otp_token' => $token,
+                        'status' => $status,
+                        )
+                    );
+                }
+            }
+        }
+
+        return back()->with('success','Supplier details has been uploaded successfully');
+    }
 
 }

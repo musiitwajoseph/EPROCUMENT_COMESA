@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA PROCUREMENT DASHBOARD </title>
+    <title>Master Data TABLE </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,15 +41,20 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}"
+    
+    {{-- <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 </head>
 
 <body class="full_width">
-  
+    
+    <div id="maincontainer" class="clearfix">
 
         <header>
+
+            {{-- @include('includes.TopNavTest'); --}}
+
 
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
@@ -78,6 +83,7 @@
             </nav>
 
 
+
         </header>
         <div id="contentwrapper">
             <div class="main_content">
@@ -93,142 +99,116 @@
                     </ul>
                 </div>
 
+
                 <div class="row">
-                    <div class="col-sm-12">
+
+                    @if (Session::get('success'))
+                    <div class="alert alert-success">
+                     {{Session::get('success')}}
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Procurement Plan</h3>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success">
-                                            {{Session::get('success')}}
-                                        </div>
-                                    @endif
+                 @endif
 
 
-                                    @if (Session::get('fail'))
-                                        <div class="alert alert-danger">
-                                            {{Session::get('fail')}}
-                                        </div>
-                                    @endif
+                    <div class="col-sm-12 col-md-12">
+                        <section id="Approved_suppliers">
+                            <h3 class="heading" style="color: rgb(26, 239, 54)">Master Data TABLE</h3>
 
+                            <a href="{{ route('add-record') }}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i>Add a record </a>  <br> <br>
 
-                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
-                                    
-                                        @csrf
+                            <div class="table-responsive">
+
+                            <table class="table table-bordered table-striped" id="smpl_tbl">
+                                <thead>
+                                    <tr>
                                         
-                                            <legend class="hide">Lorem ipsum dolor…</legend>
-                                            <div class="formSep form-group">
-                                                
-                                                <div class="col-md-3">
-                                                    <label  control-labelq"
-                                                    style="">Upload Procurement Plan:</label>
-                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
+                                        <th>Master code</th>
+                                        <th>Data code</th>
+                                        <th>Data name</th>
+                                        <th>Data description</th>
+                                        <th>Date added</th>
+                                        <th>Added by</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    @foreach ($mc_code as $item)
 
-                                               
-                                                    
-                                               
-                                                <div class="col-md-3">
-                                                    <label class="control-labelq" >Category </label> 
-                                                    <select name="category_id" id="category_id" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement Category</option>
-                                                        @foreach ($procurement_categories as $item)
-                                                        <option value="{{$item->md_id}}">{{$item->md_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                               
+                                    <?php
+                                        $i =1;
+                                    ?>
+
+
+                                        <tr>
                                             
-                                                <div class="col-md-3">
-                                                  <label class="control-labelq" >Year: </label>
-                                                    <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement year</option>
-                                                        <option value="2021">2023</option>
-                                                        <option value="2022">2023</option>
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025">2025</option>
-                                                        <option value="2026">2026</option>
-                                                        <option value="2027">2027</option>
-                                                        <option value="2028">2028</option>
-                                                        <option value="2029">2029</option>
-                                                        <option value="2030">2030</option>
-                                                        <option value="2031">2031</option>
-                                                        <option value="2032">2032</option>
-                                                        <option value="2033">2033</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-                                        <button type="submit"  class=" btn btn-primary"><i
-                                                class="glyphicon glyphicon-ok"></i> Upload</button>
-                                    </form>
-                                </div>
-                            </div>
+                                            {{-- <td>{{ $item->id}} </td> --}}
+                                            <td>{{ $item->mc_code}}</td>
+                                            <td>{{ $item->md_code}}</td>
+                                            <td>{{ $item->md_name}}</td>
+                                            <td>{{ $item->md_description}}</td>
+                                            <td>{{ $item->md_date_added }}</td>
+                                            <td>{{ $item->md_added_by }}</td>
+                                            <td style="text-align:center;width:100px">
+                                                <a href="{{'edit-record/'.$item->md_id}}" class="btn btn-xs btn-primary"></i>Edit</a>
+                                                <a href="{{'delete-record/'.$item->md_id}}" class="btn btn-xs btn-danger"></i>Delete</a>
+                                                {{-- <button class="btn btn-danger btn-xs" id="delete_btn" value="{{$item->md_id}}">Delete</button> --}}
+                                                
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                           
 
+                            <style>
+                                .w-5 {
+                                    display: none;
+                                }
+                            </style>
+
+                        </section>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
 
     </div>
-
-    <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right"
-        data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
 
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
+        // Jquery entering here
 
 
             $(document).ready(function(){
-                $('#upload_procurement_plan').click(function(){
-                  
-                    var procurement_data = $('#procurement_data')[0].files[0];
+					$('#delete_btn').click(function(){
 
-                    var form_data = new FormData();
+                    var username = $('#delete_btn').val();
 
-                    form_data.append('procurement_data', procurement_data);
+                    alert(username);
 
-                    $.ajax({
+					$.ajax({
 								type: "post",
 								processData: false,
 								contentType: false,
 								cache: false,
-								data		: form_data,	
-								url			:'/upload-procurement',							
+								data		: "",	
+								url			:'/edit-record/'+username,							
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 								success		:function(data){
-                                    // alert('data has been upload successfully');
-                                    alert(data.success);
-									// $('#SubCategory').html(data);
-								},
-                                error: function(data)
-								{
-									$('body').html(data.responseText);
+                                    if(data.status){
+										alert(data.message);
+									}
 								}
 					});
-			}); 
-        });
-        
+				});
+            });
+
+
     </script>
     
-
-
-
-
-
-
-
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->
@@ -276,9 +256,8 @@
     <script src="/assets/js/jquery.mediaTable.min.js"></script>
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
-    <!-- charts -->
-  
-   
+
+
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

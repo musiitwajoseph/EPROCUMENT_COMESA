@@ -99,6 +99,9 @@
 
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
+                        <h2 class="heading" style="color: blue">Procurement Plan {{$year}}</h2>
+
+                
                         <section id="Approved_suppliers">
                             <h3 class="heading" style="color: rgb(26, 239, 54)">SPR TABLE</h3>
 
@@ -129,14 +132,14 @@
                                         <th colspan="2">Evaluation of Bids under Shortlist Method</th>
                                         <th>Purchase / Contracts Committee Approval</th>
                                         <th colspan="2">Secretary General (SGs) Approval of PC /CC Reports</th>
-                                        <th colspan="3">Contract Vetting</th>
+                                        <th colspan="4">Contract Vetting</th>
                                         <th>SG/ASG(A&F)/ DHRA Approval</th>
                                         <th>Contract Signing Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table1 as $item)
+                                    @foreach ($spr_table as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -232,7 +235,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table_point_db as $item)
+                                    @foreach ($infrastructure as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -321,14 +324,14 @@
                                         <th colspan="2">Evaluation of Bids under Shortlist Method</th>
                                         <th>Purchase / Contracts Committee Approval</th>
                                         <th colspan="2">Secretary General (SGs) Approval of PC /CC Reports</th>
-                                        <th colspan="3">Contract Vetting</th>
+                                        <th colspan="4">Contract Vetting</th>
                                         <th>SG/ASG(A&F)/ DHRA Approval</th>
                                         <th>Contract Signing Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table2 as $item)
+                                    @foreach ($SATSD as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -417,14 +420,14 @@
                                         <th colspan="2">Evaluation of Bids under Shortlist Method</th>
                                         <th>Purchase / Contracts Committee Approval</th>
                                         <th colspan="2">Secretary General (SGs) Approval of PC /CC Reports</th>
-                                        <th colspan="3">Contract Vetting</th>
+                                        <th colspan="4">Contract Vetting</th>
                                         <th>SG/ASG(A&F)/ DHRA Approval</th>
                                         <th>Contract Signing Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table4 as $item)
+                                    @foreach ($RIFF as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -513,14 +516,14 @@
                                         <th colspan="2">Evaluation of Bids under Shortlist Method</th>
                                         <th>Purchase / Contracts Committee Approval</th>
                                         <th colspan="2">Secretary General (SGs) Approval of PC /CC Reports</th>
-                                        <th colspan="3">Contract Vetting</th>
+                                        <th colspan="4">Contract Vetting</th>
                                         <th>SG/ASG(A&F)/ DHRA Approval</th>
                                         <th>Contract Signing Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table5 as $item)
+                                    @foreach ($CORPORATE_COMMUNICATION as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -616,7 +619,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table6 as $item)
+                                    @foreach ($LEGAL_DIVISION as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -712,7 +715,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table7 as $item)
+                                    @foreach ($REARESA as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -809,7 +812,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table8 as $item)
+                                    @foreach ($BRUSSELS_LIASON as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -908,7 +911,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table9 as $item)
+                                    @foreach ($ECOSOCC as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -965,7 +968,7 @@
                 </div>
 
 
-              <div class="row">
+                <div class="row">
                     <div class="col-sm-12 col-md-12">
 
                         <section id="Approved_suppliers">
@@ -1005,7 +1008,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table10 as $item)
+                                    @foreach ($Governance_Peace_and_Security as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1101,7 +1104,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table11 as $item)
+                                    @foreach ($GPS_CLIMATE_CHANGE as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1155,7 +1158,7 @@
 
                         </section>
                     </div>
-                </div>
+             </div>
 
 
                 <div class="row">
@@ -1198,7 +1201,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table12 as $item)
+                                    @foreach ($internal_audit as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1295,7 +1298,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table13 as $item)
+                                    @foreach ($ESTATES as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1392,7 +1395,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table14 as $item)
+                                    @foreach ($IRC as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1489,7 +1492,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table15 as $item)
+                                    @foreach ($TRADE_AND_CUSTOMS as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1546,7 +1549,7 @@
                 </div>
 
 
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-sm-12 col-md-12">
 
                         <section id="Approved_suppliers">
@@ -1586,7 +1589,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table16 as $item)
+                                    @foreach ($TRADE_COM_11 as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1640,7 +1643,7 @@
 
                         </section>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
@@ -1682,7 +1685,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table17 as $item)
+                                    @foreach ($TRADE_COM_11 as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1778,7 +1781,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table17 as $item)
+                                    @foreach ($EDF11_TFP as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1874,7 +1877,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table18 as $item)
+                                    @foreach ($TRADE_IN_SERVICES as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -1970,7 +1973,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table19 as $item)
+                                    @foreach ($SSCBT1 as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2066,7 +2069,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table20 as $item)
+                                    @foreach ($TCPB11 as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2163,7 +2166,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table21 as $item)
+                                    @foreach ($GENDER_AND_SOCIAL_AFFAIRS_DIVISION as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2260,7 +2263,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table22 as $item)
+                                    @foreach ($IT_DIVISION as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2357,7 +2360,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table23 as $item)
+                                    @foreach ($HUMAN_RESOURCE as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2454,7 +2457,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table24 as $item)
+                                    @foreach ($Finance_and_Budgeting as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2550,7 +2553,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table25 as $item)
+                                    @foreach ($Industry_and_Agriculture as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2646,7 +2649,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table26 as $item)
+                                    @foreach ($Procurement_and_Supplies as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>
@@ -2742,7 +2745,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($table27 as $item)
+                                    @foreach ($Statistics as $item)
                                         <tr>
                                             <td>{{ $item->crt_no }}</td>
                                             <td>{{ $item->description_of_goods_works_and_services }}</td>

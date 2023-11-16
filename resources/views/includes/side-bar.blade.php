@@ -15,21 +15,23 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseTwo" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
-                            <i class="glyphicon glyphicon-th"></i> Approvals
+                            <i class="glyphicon glyphicon-th"></i> Supplier
                         </a>
                     </div>
 
                     <div class="accordion-body collapse" id="collapseTwo">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a id="approved_btn_supppliers" href="javascript:void(0);">Approved Suppliers</a></li>
-                                <li><a id="pending_btn_supppliers" href="javascript:void(0);">Pending Supplier</a></li>
-                                <li><a id="rejected_btn_supppliers" href="javascript:void(0);">Rejected Suppliers</a></li>
+                                <li><a id="approved_btn_supppliers" href="{{ route('approve-dashboard')}}">Approved Suppliers</a></li>
+                                <li><a id="pending_btn_supppliers" href="j{{ route('approve-dashboard')}}">Pending Supplier</a></li>
+                                <li><a id="rejected_btn_supppliers" href="{{ route('approve-dashboard')}}">Rejected Suppliers</a></li>
+                                <li><a id="rejected_btn_supppliers" href="{{ route('upload-supplier-details')}}">Import Suppliers Records</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
+                
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseThree" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -41,15 +43,24 @@
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href=" {{route('procurement')}}">Upload Procurement Plan</a></li>
                                 <li><a href="{{ route('procurement-records')}} ">View Procurement Records</a></li>
-                            </ul>
-
+                            </ul>   
                         </div>
                     </div>
                 </div>
-                
-                
-                
-                
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseLong" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-leaf"></i> Master Data
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse" id="collapseLong">
+                        <div class="panel-body">
+                                <li><a href=" {{route('master-table')}}">View master Data</a></li>
+                                <li><a href=" {{route('master-code')}}">View master Code</a></li>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div> 

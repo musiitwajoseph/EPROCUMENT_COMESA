@@ -98,7 +98,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Procurement Plan</h3>
+                            <h3 class="heading">Supplier Upload</h3>
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
 
@@ -116,51 +116,17 @@
                                     @endif
 
 
-                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
+                                    <form action="{{route('send-supplier-uploaded-data')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
                                     
                                         @csrf
                                         
                                             <legend class="hide">Lorem ipsum dolor…</legend>
                                             <div class="formSep form-group">
                                                 
-                                                <div class="col-md-3">
+                                                <div class="col-md-9">
                                                     <label  control-labelq"
-                                                    style="">Upload Procurement Plan:</label>
-                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
-
-                                               
-                                                    
-                                               
-                                                <div class="col-md-3">
-                                                    <label class="control-labelq" >Category </label> 
-                                                    <select name="category_id" id="category_id" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement Category</option>
-                                                        @foreach ($procurement_categories as $item)
-                                                        <option value="{{$item->md_id}}">{{$item->md_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                               
-                                            
-                                                <div class="col-md-3">
-                                                  <label class="control-labelq" >Year: </label>
-                                                    <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement year</option>
-                                                        <option value="2021">2023</option>
-                                                        <option value="2022">2023</option>
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025">2025</option>
-                                                        <option value="2026">2026</option>
-                                                        <option value="2027">2027</option>
-                                                        <option value="2028">2028</option>
-                                                        <option value="2029">2029</option>
-                                                        <option value="2030">2030</option>
-                                                        <option value="2031">2031</option>
-                                                        <option value="2032">2032</option>
-                                                        <option value="2033">2033</option>
-                                                    </select>
+                                                    style="">Upload Supplier Infomation:</label>
+                                                    <input type="file" name="file1" class="input-sm form-control" required>
                                                 </div>
                                             </div>
 
@@ -190,35 +156,35 @@
     <script type="text/javascript">
 
 
-            $(document).ready(function(){
-                $('#upload_procurement_plan').click(function(){
+            // $(document).ready(function(){
+            //     $('#upload_procurement_plan').click(function(){
                   
-                    var procurement_data = $('#procurement_data')[0].files[0];
+            //         var procurement_data = $('#procurement_data')[0].files[0];
 
-                    var form_data = new FormData();
+            //         var form_data = new FormData();
 
-                    form_data.append('procurement_data', procurement_data);
+            //         form_data.append('procurement_data', procurement_data);
 
-                    $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,	
-								url			:'/upload-procurement',							
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								success		:function(data){
-                                    // alert('data has been upload successfully');
-                                    alert(data.success);
-									// $('#SubCategory').html(data);
-								},
-                                error: function(data)
-								{
-									$('body').html(data.responseText);
-								}
-					});
-			}); 
-        });
+            //         $.ajax({
+			// 					type: "post",
+			// 					processData: false,
+			// 					contentType: false,
+			// 					cache: false,
+			// 					data		: form_data,	
+			// 					url			:'/upload-procurement',							
+			// 					headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+			// 					success		:function(data){
+            //                         // alert('data has been upload successfully');
+            //                         alert(data.success);
+			// 						// $('#SubCategory').html(data);
+			// 					},
+            //                     error: function(data)
+			// 					{
+			// 						$('body').html(data.responseText);
+			// 					}
+			// 		});
+			//     }); 
+            //  });
         
     </script>
     

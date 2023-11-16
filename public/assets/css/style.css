@@ -934,3 +934,11 @@
 		 #backText{
 			display: none !important;
 		 }
+
+		 .margTp{
+			padding-top: 2rem;
+		 }
+
+		 .BtnTp{
+			padding-top: 4.3rem;
+		 }

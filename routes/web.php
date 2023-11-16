@@ -108,16 +108,39 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     //  Procurement plan Routes :
 
    Route::get('procurement',[ProcurementPlan::class,'procuring'])->name('procurement');
-
    Route::get('procurement-records',[ProcurementPlan::class,'procurement_records'])->name('procurement-records');
+   Route::get('master-table',[ProcurementPlan::class,'master_table'])->name('master-table');
+   Route::get('edit-record/{id}',[ProcurementPlan::class,'edit_record']);
+   Route::get('delete-record/{id}',[ProcurementPlan::class,'delete_record']);
+   Route::get('add-record',[ProcurementPlan::class,'addrecordmaster'])->name('add-record');
+
+   // Master Code routes :
+
+   Route::get('master-code',[ProcurementPlan::class,'master_code'])->name('master-code');
+   Route::get('add-master-code',[ProcurementPlan::class,'add_master_code'])->name('add-master-code');
+   Route::get('edit-code/{id}',[ProcurementPlan::class,'edit_code']);
+   Route::get('delete-code/{id}',[ProcurementPlan::class,'delete_code']);
+
+
+
+   Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
+
+   // 
+
+   Route::post('add-new-record',[ProcurementPlan::class,'addnewrecord'])->name('add-new-record');
+   Route::post('update-md-record',[ProcurementPlan::class,'updatemdrecord'])->name('update-md-record');
+   Route::post('update-md-code',[ProcurementPlan::class,'updatemdcode'])->name('update-md-code');
+
+    //  Procurement plan Routes :
+
+    Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
+    Route::post('upload-excel',[ProcurementPlan::class,'upload_excel'])->name('upload-excel');
 
 });
 
 
-   //  Procurement plan Routes :
-
-   Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
-   Route::post('upload-excel',[ProcurementPlan::class,'upload_excel'])->name('upload-excel');
+   Route::get('upload-supplier-details',[ProcurementPlan::class,'uploadSupplierDetails'])->name('upload-supplier-details');
+   Route::post('send-supplier-uploaded-data',[ProcurementPlan::class,'send_supplier_uploaded_data'])->name('send-supplier-uploaded-data');
       
    //  Admin Middleware Routes Continuation
 
@@ -131,6 +154,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
    //  Testing routes to be deleted later
     Route::get('welcome',[COMESA_CONTROLLER::class,'welcomeHome']);
+
+
 
 
    

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA PROCUREMENT DASHBOARD </title>
+    <title>Add a new record </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,15 +41,19 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}"
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 </head>
 
 <body class="full_width">
-  
+    
+    <div id="maincontainer" class="clearfix">
 
         <header>
+
+            {{-- @include('includes.TopNavTest'); --}}
+
 
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
@@ -78,6 +82,7 @@
             </nav>
 
 
+
         </header>
         <div id="contentwrapper">
             <div class="main_content">
@@ -92,143 +97,135 @@
                         </li>
                     </ul>
                 </div>
+                <h3 class="heading" style="color: rgb(26, 239, 54)">Add a new record</h3>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Procurement Plan</h3>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success">
-                                            {{Session::get('success')}}
-                                        </div>
-                                    @endif
-
-
-                                    @if (Session::get('fail'))
-                                        <div class="alert alert-danger">
-                                            {{Session::get('fail')}}
-                                        </div>
-                                    @endif
-
-
-                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
-                                    
-                                        @csrf
-                                        
-                                            <legend class="hide">Lorem ipsum dolor…</legend>
-                                            <div class="formSep form-group">
-                                                
-                                                <div class="col-md-3">
-                                                    <label  control-labelq"
-                                                    style="">Upload Procurement Plan:</label>
-                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
-
-                                               
-                                                    
-                                               
-                                                <div class="col-md-3">
-                                                    <label class="control-labelq" >Category </label> 
-                                                    <select name="category_id" id="category_id" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement Category</option>
-                                                        @foreach ($procurement_categories as $item)
-                                                        <option value="{{$item->md_id}}">{{$item->md_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                               
-                                            
-                                                <div class="col-md-3">
-                                                  <label class="control-labelq" >Year: </label>
-                                                    <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement year</option>
-                                                        <option value="2021">2023</option>
-                                                        <option value="2022">2023</option>
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025">2025</option>
-                                                        <option value="2026">2026</option>
-                                                        <option value="2027">2027</option>
-                                                        <option value="2028">2028</option>
-                                                        <option value="2029">2029</option>
-                                                        <option value="2030">2030</option>
-                                                        <option value="2031">2031</option>
-                                                        <option value="2032">2032</option>
-                                                        <option value="2033">2033</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-                                        <button type="submit"  class=" btn btn-primary"><i
-                                                class="glyphicon glyphicon-ok"></i> Upload</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                @if (Session::get('success'))
+                <div class="alert alert-success">
+                 {{Session::get('success')}}
                 </div>
+                 @endif
+
+                 
+                <form action="{{ route('add-new-record')}}" method="POST"> 
+
+                    @csrf
+                     <div class="formSep">
+
+                    <div class="row">
+
+                        <input type="hidden" name="user_id" id="user_id" value="{{$LoggedUserAdmin['id']}}" >
+
+                        <div class="col-sm-3 col-md-3">
+                            <label for="">Master code</label>
+                           <select name="master_code_id" id="master_code_id" class="form-control">
+                            @foreach ($selected as $item)
+                            <option value="{{$item->id}}">{{$item->mc_name}}</option>
+                            @endforeach
+                           
+                           </select>
+                           
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3">
+                            <label for="">master data code</label>
+                            <input class="form-control" type="text" name="md_code" id="md_code" required>
+                           
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3">
+                            <label for="mask_product"> code name</label>
+                            <input class="form-control" type="text" name="md_name" id="md_name" required>
+                           
+                        </div>
+
+                        <div class="col-sm-3 col-md-3 ">
+                            <label for="">Code Description</label>
+                            <textarea class="form-control" name="md_description" id="md_description" required></textarea>
+                            {{-- <input class="form-control"  type="text" name="md_description" id="md_description"> --}}
+                           
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3 margTp" style="display: none">
+                            <label for="">md_date_added</label>
+                            <input class="form-control" type="text" name="md_date_added" id="md_date_added">
+                           
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3 margTp" style="display: none">
+                            <label for="mask_product">md_added_by</label>
+                            <input class="form-control" type="text" name="md_added_by" id="md_added_by">
+                           
+                        </div>
+
+                       
+                        <div class="clearfix"></div>
+                        <br> 
+                        <div class="col-sm-3 col-md-3">
+                           <button class="btn btn-primary" id="add_new_data" >submit</button>
+                        </div>
+
+                </form>
+
+                    </div>
+                </div>
+
+
+                </div>  
             </div>
-
         </div>
-    </div>
 
     </div>
-
-    <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right"
-        data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
 
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
-
+        // Jquery entering here
 
             $(document).ready(function(){
-                $('#upload_procurement_plan').click(function(){
-                  
-                    var procurement_data = $('#procurement_data')[0].files[0];
+					$('#add_new_data').click(function(){
 
+
+                    var master_code_id = $('#master_code_id').val();
+                    var md_code = $('#md_code').val();
+                    var md_name = $('#md_name').val();
+                    var md_description = $('#md_description').val();
+                    var user_id = $('#user_id').val();
+
+                    // alert(master_code_id);
                     var form_data = new FormData();
 
-                    form_data.append('procurement_data', procurement_data);
+                    form_data.append('master_code_id', master_code_id);
+                    form_data.append('md_code', md_code);
+                    form_data.append('user_id', user_id);
+                    form_data.append('md_name', md_name);
+                    form_data.append('md_description', md_description);
 
-                    $.ajax({
+					$.ajax({
 								type: "post",
 								processData: false,
 								contentType: false,
 								cache: false,
-								data		: form_data,	
-								url			:'/upload-procurement',							
+								data		: form_data,
+								url			:'/add-new-record,							
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 								success		:function(data){
-                                    // alert('data has been upload successfully');
-                                    alert(data.success);
-									// $('#SubCategory').html(data);
-								},
-                                error: function(data)
-								{
-									$('body').html(data.responseText);
+                                    if(data.status){
+										alert(data.message);
+									}
 								}
 					});
-			}); 
-        });
-        
+				
+            });
+         });
+
+
     </script>
     
-
-
-
-
-
-
-
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->
@@ -276,9 +273,8 @@
     <script src="/assets/js/jquery.mediaTable.min.js"></script>
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
-    <!-- charts -->
-  
-   
+
+
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

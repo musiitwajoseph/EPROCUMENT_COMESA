@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('supplier_registration_details_models', function (Blueprint $table) {
-            $table->text('approved_email')->default('Null');
+        Schema::table('procurement_plans', function (Blueprint $table) {
+            $table->text('year_of_procurement')->default('NULL');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('suppplier_registration_details_models', function (Blueprint $table) {
+        Schema::table('procurement_plans', function (Blueprint $table) {
             //
         });
     }
