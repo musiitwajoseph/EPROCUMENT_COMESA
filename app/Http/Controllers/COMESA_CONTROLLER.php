@@ -1896,4 +1896,7 @@ class COMESA_CONTROLLER extends Controller
 
             return view('Users.edit_user_previledges',$data,compact(['all_user_all','total_count']));
         }
+
+        public function edit_user_previledges_all(){
+        }
 }
