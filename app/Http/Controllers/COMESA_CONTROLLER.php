@@ -15,6 +15,7 @@ use PDF;
 use Illuminate\Support\Facades\Hash;
 use App\Models\SupplierLogin;
 use App\Models\Admin;
+use App\Models\user_role;
 use Validator;
 
 
@@ -1763,55 +1764,136 @@ class COMESA_CONTROLLER extends Controller
         return view('excelupload');
     }
 
-    // public function upload_excel(Request $request){
-      
-    //         $request->validate([
-    //             'file1' => 'required|mimes:xlsx'
-    //         ]);
+        // USER MODULE AND USER RIGHTS AND PREVILEDGES
 
-    //         $the_file = $request->file('file1');
+        public function add_user_view(){
 
-    //         try{
-     
-    //             $spreadsheet = IOFactory::load($the_file->getRealPath());
-    //             $sheet        = $spreadsheet->getActiveSheet();
-    //             $row_limit    = $sheet->getHighestDataRow();
-    //             $column_limit = $sheet->getHighestDataColumn();
-    //             $row_range    = range( 2, $row_limit );
-    //             $column_range = range( 'D', $column_limit );
-    //             $startcount = 2;
-     
-    //             $data = array();
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            return view('Users.adduser',$data);
+        }
 
-    //             foreach ( $row_range as $row ) {
-     
-    //                 $first_name = $sheet->getCell( 'A' . $row )->getValue();
+        public function add_user_role(Request $request){
 
-    //                 if($first_name == null){
-    //                     dd("Null values are not allowed");
-    //                 }
+            $number = rand(10000, 99999);
 
-    //                 $data[] = [
+            $post = new user_role;
 
-    //                     'first_name' =>$first_name,
-    //                     'last_name' => $sheet->getCell( 'B' . $row )->getValue(),
-    //                     'email' => $sheet->getCell( 'C' . $row )->getValue(),
-    //                     'mobile_number' => $sheet->getCell( 'D' . $row )->getValue(),
-    //                 ];
-     
-    //                 $startcount++;
-    //             }
-     
-    //             DB::table('legits')->insert($data);
-     
-    //         } catch (Exception $e) {
-     
-    //             $error_code = $e->errorInfo[1];
-     
-    //             return back()->withErrors('There was a problem uploading the data!');
-    //         }
-    // }
+            $post->user_id = $number;
+            $post->user_name = $request->user_role;
+            $post->ur_added_by = $request->user_id;
+           
+            $save = $post->save();
 
+            if($save){
+                
+                return back()->with('success','New user has been created');
+            }
+            else{
+                return back()->with('fail','Something wrong with the input');
+            }
+        }
+        
+
+        public function view_user_details(){
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            $user_data = user_role::all();
+            $array_size = count($user_data);
+
+            return view('Users.view_user_roles',$data, compact(['user_data','array_size']));
+        }
+
+        public function import_user_view(){
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+            return view('Users.importuser_role',$data);
+        }
+        public function edit_user_role($id){
+
+            $information = user_role::find($id);
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            return view('Users.edit_user_roles',$data,compact(['information']));
+
+        }
+
+        public function edit_user_role_record(Request $request){
+
+            $user_info =  $request->user_role_id;
+
+            $post = user_role::find($user_info);
+
+            $post->user_id = $request->user_role_id;
+            $post->user_name = $request->user_role;
+            $post->ur_added_by = $request->user_added_by;
+
+            $save = $post->save();
+
+            return redirect('/view-user')->with('success', 'Data has been updated successfully!');
+          
+        }
+        
+        public function delete_user_role($id){
+
+            $data = user_role::find($id);
+            $data->delete();
+
+            return back()->with('success','user record has been deleted successfully');
+        }
+
+        public function import_user_role_file(Request $request){
+           
+            $request->validate([
+                'file1' => 'required|mimes:xlsx'
+            ]);
             
-}
+            $the_file = $request->file('file1');
     
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheetData       = $spreadsheet->getActiveSheet()->toArray();
+
+            if (!empty($sheetData)) {
+
+                for ($i=1; $i<count($sheetData); $i++) {
+                
+                    $number = rand(10000, 99999);
+
+                    $user_role_name = $sheetData[$i][0];
+                    
+                        DB::table('user_roles')->insert(
+                            array(
+                            
+                            'user_id' =>$number,
+                            'user_name' => $user_role_name,
+                            'ur_added_by'=>$request->user_id,
+                            )
+                        );
+                    }
+                }
+        
+            return redirect('view-user')->with('success','User role data has been imported successfully');
+        }
+
+        public function user_right_priveledges(){
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+    
+            $all_user_all = user_role::all();
+            $total_count = count($all_user_all);
+            
+            // return response()->json();
+            return view('Users.user_rights_and_priveledges',$data,compact(['all_user_all','total_count']));
+    
+        }
+
+        public function edit_user_previledges(){
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+            $all_user_all = user_role::all();
+            $total_count = count($all_user_all);
+
+            return view('Users.edit_user_previledges',$data,compact(['all_user_all','total_count']));
+        }
+}

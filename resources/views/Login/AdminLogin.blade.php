@@ -22,7 +22,7 @@
                 <div class="signup-form">
                     <form action="{{ route('admin.check') }}" class="mt-5 border p-4 bg-light shadow" method="POST">
                         @csrf
-                        <h2 class="mb-2 text-primary" style="text-align: center">COMESA ADMIN PORTAL</h2>
+                        <h2 class="mb-2 text-primary" style="text-align: center">COMESA E-PROCUREMENT SYSTEM</h2>
                         
                         @if (Session::get('fail'))
                            <div class="alert alert-danger">

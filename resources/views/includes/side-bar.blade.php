@@ -62,6 +62,36 @@
                     </div>
                 </div>
 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseuser" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-plus"></i> User Data
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse" id="collapseuser">
+                        <div class="panel-body">
+                            <li><a href=" {{route('add-user')}}">Add User Role</a></li>
+                            <li><a href=" {{route('view-user')}}">View User Role</a></li>
+                            <li><a href=" {{route('import-user')}}">Import user Role</a></li>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#collapseuser_rights" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="splashy-view_table"></i> User Rights and Priveledges
+                        </a>
+                    </div>
+
+                    <div class="accordion-body collapse" id="collapseuser_rights">
+                        <div class="panel-body">
+                            <li><a href=" {{route('user-rights-priveledges')}}">User Rights</a></li>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div> 
     </div>
