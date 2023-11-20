@@ -134,7 +134,8 @@
                               
                                 @foreach ($all_user_all as  $key => $item)
                                 <div class="col-sm-8 col-md-8">
-                                    <h3 id="{{$item->user_name}}">{{$key+1}}.  {{$item->user_name}}</h3> <br>
+
+                                 <a href="{{'edit-user-priveledges/'.$item->user_name}}">   <h3 id="{{$item->user_name}}">{{$key+1}}.  {{$item->user_name}}</h3></a> <br>
 
                                     <table class="table">
                                         <thead>

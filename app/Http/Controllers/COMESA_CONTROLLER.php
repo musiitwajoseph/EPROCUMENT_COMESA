@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\otp;
+use App\Models\user_right;
+use App\Models\user_previledge;
 use App\Models\Document;
 use App\Models\Procurement_plan;
 use Mail;
@@ -17,6 +19,7 @@ use App\Models\SupplierLogin;
 use App\Models\Admin;
 use App\Models\user_role;
 use Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 use App\Imports\ProcurementImport;
@@ -1882,12 +1885,13 @@ class COMESA_CONTROLLER extends Controller
             $all_user_all = user_role::all();
             $total_count = count($all_user_all);
             
-            // return response()->json();
+           
             return view('Users.user_rights_and_priveledges',$data,compact(['all_user_all','total_count']));
     
         }
 
-        public function edit_user_previledges(){
+        public function edit_user_previledges($id){
+
 
             $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
@@ -1897,6 +1901,46 @@ class COMESA_CONTROLLER extends Controller
             return view('Users.edit_user_previledges',$data,compact(['all_user_all','total_count']));
         }
 
-        public function edit_user_previledges_all(){
+        public function add_user_previledges(){
+
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            $selected = DB::select('select user_id, user_name from user_roles');
+            $user_rights = DB::select('select user_right from user_rights');
+
+            return view('Users.add_user_previledge',$data,compact(['selected','user_rights']));
         }
+
+        public function add_user_right()
+        {
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            return view('Users.add_user_right',$data);
+        }
+
+        public function store_user_right(Request $request){
+
+           $post = new user_right;
+
+           $post->user_right = $request->user_right;
+           $post->save();
+
+           Alert::success('Success', 'New User right has been added');
+
+           return back();
+           
+        }
+
+        public function store_user_previledges(Request $request){
+
+            $post = new user_previledge;
+
+            $post->user_user_id = $request->user_role;
+            $post->previledge_name = $request->user_rights;
+            $post->save();
+ 
+            Alert::success('Success', 'New User previledge has been added');
+ 
+            return back();
+
+        }
+
 }

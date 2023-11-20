@@ -87,7 +87,9 @@
 
                     <div class="accordion-body collapse" id="collapseuser_rights">
                         <div class="panel-body">
-                            <li><a href=" {{route('user-rights-priveledges')}}">User Rights</a></li>
+                            <li><a href=" {{route('user-rights-priveledges')}}">View User Rights</a></li>
+                            <li><a href=" {{route('add-user-previledges')}}">Assign User previledges</a></li>
+                            <li><a href=" {{route('add-user-right')}}">Add new User Rights</a></li>
                         </div>
                     </div>
                 </div>

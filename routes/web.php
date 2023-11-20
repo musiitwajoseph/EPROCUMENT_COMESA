@@ -143,7 +143,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('import-user',[COMESA_CONTROLLER::class,'import_user_view'])->name('import-user');
    Route::get('view-user',[COMESA_CONTROLLER::class,'view_user_details'])->name('view-user');
    Route::get('user-rights-priveledges',[COMESA_CONTROLLER::class,'user_right_priveledges'])->name('user-rights-priveledges');
-   Route::get('edit-user-priveledges',[COMESA_CONTROLLER::class,'edit_user_previledges'])->name('edit-user-priveledges');
+   Route::get('edit-user-priveledges/{id}',[COMESA_CONTROLLER::class,'edit_user_previledges']);
 
    Route::get('edit-user-role/{id}',[COMESA_CONTROLLER::class,'edit_user_role']);
    Route::get('delete-user-role/{id}',[COMESA_CONTROLLER::class,'delete_user_role']);
@@ -151,6 +151,13 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::post('add-user-role',[COMESA_CONTROLLER::class,'add_user_role'])->name('add-user-role');
    Route::post('import-user-role',[COMESA_CONTROLLER::class,'import_user_role_file'])->name('import-user-role');
    Route::post('edit-user-role-record',[COMESA_CONTROLLER::class,'edit_user_role_record'])->name('edit-user-role-record');
+
+
+   Route::get('add-user-previledges',[COMESA_CONTROLLER::class,'add_user_previledges'])->name('add-user-previledges');
+   Route::post('store-user-previledges',[COMESA_CONTROLLER::class,'store_user_previledges'])->name('store-user-previledges');
+
+   Route::get('add-user-right',[COMESA_CONTROLLER::class,'add_user_right'])->name('add-user-right');
+   Route::post('store-user-right',[COMESA_CONTROLLER::class,'store_user_right'])->name('store-user-right');
 });
 
 
