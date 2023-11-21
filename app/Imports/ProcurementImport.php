@@ -13,8 +13,6 @@ class ProcurementImport implements  ToModel,WithHeadingRow
             public function model(array $row)
             {
 
-                dd($row['Qty']);
-
                 return new Procurement_plan([
                     'crt_no' => $row['welcome'],
                     'description_of_goods_works_and_services' => $row['TT'],

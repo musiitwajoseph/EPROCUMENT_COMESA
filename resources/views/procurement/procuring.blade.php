@@ -123,44 +123,12 @@
                                             <legend class="hide">Lorem ipsum dolor…</legend>
                                             <div class="formSep form-group">
                                                 
-                                                <div class="col-md-3">
+                                                @include('sweetalert::alert')
+                                                <div class="col-md-6">
+                                                
                                                     <label  control-labelq"
                                                     style="">Upload Procurement Plan:</label>
                                                     <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
-
-                                               
-                                                    
-                                               
-                                                <div class="col-md-3">
-                                                    <label class="control-labelq" >Category </label> 
-                                                    <select name="category_id" id="category_id" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement Category</option>
-                                                        @foreach ($procurement_categories as $item)
-                                                        <option value="{{$item->md_id}}">{{$item->md_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                               
-                                            
-                                                <div class="col-md-3">
-                                                  <label class="control-labelq" >Year: </label>
-                                                    <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                        <option value="">Select Procurement year</option>
-                                                        <option value="2021">2023</option>
-                                                        <option value="2022">2023</option>
-                                                        <option value="2023">2023</option>
-                                                        <option value="2024">2024</option>
-                                                        <option value="2025">2025</option>
-                                                        <option value="2026">2026</option>
-                                                        <option value="2027">2027</option>
-                                                        <option value="2028">2028</option>
-                                                        <option value="2029">2029</option>
-                                                        <option value="2030">2030</option>
-                                                        <option value="2031">2031</option>
-                                                        <option value="2032">2032</option>
-                                                        <option value="2033">2033</option>
-                                                    </select>
                                                 </div>
                                             </div>
 

@@ -11,14 +11,15 @@ use App\Http\Controllers\Controller;
 use App\Models\master_data;
 use App\Models\master_code;
 use Session;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Reader\Exception;
+// use PhpOffice\PhpSpreadsheet\Writer\Xls;
+// use PhpOffice\PhpSpreadsheet\IOFactory;
+// use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use PhpOffice\PhpSpreadsheet\Writer\Xls;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use RealRashid\SweetAlert\Facades\Alert;
 
-use App\Imports\UsersImport;
+use App\Imports\Procurementdata;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProcurementPlan extends Controller
@@ -36,113 +37,126 @@ class ProcurementPlan extends Controller
     }
 
 
-    public function upload_excel(Request $request){
+    // public function upload_excel(Request $request){
       
-        $request->validate([
-            'file1' => 'required|mimes:xlsx'
-        ]);
+    //     $request->validate([
+    //         'file1' => 'required|mimes:xlsx'
+    //     ]);
 
+    //     $procurement_category = $request->category_id;
 
+        // $the_file = $request->file('file1');
 
-        $year_of_procurement = $request->year_of_procurement;
-        $procurement_category = $request->category_id;
+    
+        // $spreadsheet = IOFactory::load($the_file->getRealPath());
+        // $sheetData       = $spreadsheet->getActiveSheet()->toArray();
 
-        // return $request->all();
-        $the_file = $request->file('file1');
-
-        $spreadsheet = IOFactory::load($the_file->getRealPath());
-        $sheetData       = $spreadsheet->getActiveSheet()->toArray();
-
-            if (!empty($sheetData)) {
-                for ($i=1; $i<count($sheetData); $i++) {
-                    if($i>1){
+        //     if (!empty($sheetData)) {
+        //         for ($i=1; $i<count($sheetData); $i++) {
+        //             if($i>1){
 
                     
-                    $crt_no = $sheetData[$i][0];
-                    $desription_of_goods = $sheetData[$i][1];
-                    $category_of_procurement = $sheetData[$i][2];
-                    $qty = $sheetData[$i][3];
-                    $unit_of_measure  = $sheetData[$i][4];
-                    $Procurement_method = $sheetData[$i][5];
-                    $type_of_contract = $sheetData[$i][6];
-                    $allocated_amount = $sheetData[$i][7];
-                    $currency  = $sheetData[$i][8];
-                    $source_of_funding = $sheetData[$i][9];
-                    $procuring_unit = $sheetData[$i][10];
-                    $requisition_unit = $sheetData[$i][11];
-                    $end_user_requisition_date = $sheetData[$i][12];
-                    $technical_requirements_receipt_of_final_technical_requirements_date = $sheetData[$i][13];
-                    $technical_requirements_preparation_of_tender_document = $sheetData[$i][14];
-                    $publication_of_tender_documents_publication_date = $sheetData[$i][15];
-                    $publication_of_tender_documents_closing_date  = $sheetData[$i][16];
-                    $tender_openning = $sheetData[$i][17];
-                    $tender_evaluation_shortlisting_report_start_date = $sheetData[$i][18];
-                    $tender_evaluation_shortlisting_Report_end_date = $sheetData[$i][19];
-                    $short_list_notice_publication  = $sheetData[$i][20];
-                    $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date = $sheetData[$i][21];
-                    $invitation_to_shortlisted_firms_to_submit_proposals_closing_date = $sheetData[$i][22];
-                    $evaluation_of_bids_under_shortlist_method_start_date = $sheetData[$i][23];
-                    $evaluation_of_bids_under_shortlist_method_end_date = $sheetData[$i][24];
-                    $purchase_contracts_committee_approval  = $sheetData[$i][25];
-                    $secretary_general_approval_of_pc_cc_reports_submission_date = $sheetData[$i][26];
-                    $secretary_general_approval_of_pc_cc_reports_approval_date = $sheetData[$i][27];
-                    $contract_vetting_submission_date = $sheetData[$i][28];
-                    $contract_vetting_approval_date  = $sheetData[$i][29];
-                    $contract_amount  = $sheetData[$i][30];
-                    $sg_asg_a_and_f_dhra_approval = $sheetData[$i][31];
-                    $contract_signing_date = $sheetData[$i][32];
-                    $contract_duration_date = $sheetData[$i][33];
-                    $contract_end_date  = $sheetData[$i][34];
+        //             $crt_no = $sheetData[$i][0];
+        //             $desription_of_goods = $sheetData[$i][1];
+        //             $category_of_procurement = $sheetData[$i][2];
+        //             $qty = $sheetData[$i][3];
+        //             $unit_of_measure  = $sheetData[$i][4];
+        //             $Procurement_method = $sheetData[$i][5];
+        //             $type_of_contract = $sheetData[$i][6];
+        //             $allocated_amount = $sheetData[$i][7];
+        //             $currency  = $sheetData[$i][8];
+        //             $source_of_funding = $sheetData[$i][9];
+        //             $procuring_unit = $sheetData[$i][10];
+        //             $requisition_unit = $sheetData[$i][11];
+        //             $end_user_requisition_date = $sheetData[$i][12];
+        //             $technical_requirements_receipt_of_final_technical_requirements_date = $sheetData[$i][13];
+        //             $technical_requirements_preparation_of_tender_document = $sheetData[$i][14];
+        //             $publication_of_tender_documents_publication_date = $sheetData[$i][15];
+        //             $publication_of_tender_documents_closing_date  = $sheetData[$i][16];
+        //             $tender_openning = $sheetData[$i][17];
+        //             $tender_evaluation_shortlisting_report_start_date = $sheetData[$i][18];
+        //             $tender_evaluation_shortlisting_Report_end_date = $sheetData[$i][19];
+        //             $short_list_notice_publication  = $sheetData[$i][20];
+        //             $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date = $sheetData[$i][21];
+        //             $invitation_to_shortlisted_firms_to_submit_proposals_closing_date = $sheetData[$i][22];
+        //             $evaluation_of_bids_under_shortlist_method_start_date = $sheetData[$i][23];
+        //             $evaluation_of_bids_under_shortlist_method_end_date = $sheetData[$i][24];
+        //             $purchase_contracts_committee_approval  = $sheetData[$i][25];
+        //             $secretary_general_approval_of_pc_cc_reports_submission_date = $sheetData[$i][26];
+        //             $secretary_general_approval_of_pc_cc_reports_approval_date = $sheetData[$i][27];
+        //             $contract_vetting_submission_date = $sheetData[$i][28];
+        //             $contract_vetting_approval_date  = $sheetData[$i][29];
+        //             $contract_amount  = $sheetData[$i][30];
+        //             $sg_asg_a_and_f_dhra_approval = $sheetData[$i][31];
+        //             $contract_signing_date = $sheetData[$i][32];
+        //             $contract_duration_date = $sheetData[$i][33];
+        //             $contract_end_date  = $sheetData[$i][34];
                
 
     
-                    DB::table('procurement_plans')->insert(
-                        array(
+        //             DB::table('procurement_plans')->insert(
+        //                 array(
                           
-                        'crt_no' =>$crt_no,
-                        'description_of_goods_works_and_services' => $desription_of_goods,
-                        'category_of_procurement' => $category_of_procurement,
-                        'qty' => $qty,
-                        'unit_of_measure'=>$unit_of_measure,
-                        'Procurement_method'=>$Procurement_method,
-                        'type_of_contract'=>$type_of_contract,
-                        'allocated_amount'=>$allocated_amount,
-                        'currency'=>$currency,
-                        'source_of_funding'=>$source_of_funding,
-                        'procuring_unit'=>$procuring_unit,
-                        'requisition_unit'=>$requisition_unit,
-                        'end_user_requisition_date'=>$end_user_requisition_date,
-                        'technical_requirements_receipt_of_final_technical_requirements_date'=>$technical_requirements_receipt_of_final_technical_requirements_date,
-                        'technical_requirements_preparation_of_tender_document'=>$technical_requirements_preparation_of_tender_document,
-                        'publication_of_tender_documents_publication_date'=>$publication_of_tender_documents_publication_date,
-                        'publication_of_tender_documents_closing_date'=>$publication_of_tender_documents_closing_date,
-                        'tender_openning'=>$tender_openning,
-                        'tender_evaluation_shortlisting_report_start_date'=>$tender_evaluation_shortlisting_report_start_date,
-                        'tender_evaluation_shortlisting_Report_end_date'=>$tender_evaluation_shortlisting_Report_end_date,
-                        'short_list_notice_publication' =>$short_list_notice_publication,
-                        'invitation_to_shortlisted_firms_to_submit_proposals_invitation_date' => $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date,
-                        'invitation_to_shortlisted_firms_to_submit_proposals_closing_date' => $invitation_to_shortlisted_firms_to_submit_proposals_closing_date,
-                        'evaluation_of_bids_under_shortlist_method_start_date' => $evaluation_of_bids_under_shortlist_method_start_date,
-                        'evaluation_of_bids_under_shortlist_method_end_date'=>$evaluation_of_bids_under_shortlist_method_end_date,
-                        'purchase_contracts_committee_approval'=>$purchase_contracts_committee_approval,
-                        'secretary_general_approval_of_pc_cc_reports_submission_date'=>$secretary_general_approval_of_pc_cc_reports_submission_date,
-                        'secretary_general_approval_of_pc_cc_reports_approval_date'=>$secretary_general_approval_of_pc_cc_reports_approval_date,
-                        'contract_vetting_submission_date'=>$contract_vetting_submission_date,
-                        'contract_vetting_approval_date'=>$contract_vetting_approval_date,
-                        'contract_amount'=>$contract_amount,
-                        'sg_asg_a_and_f_dhra_approval'=>$sg_asg_a_and_f_dhra_approval,
-                        'contract_signing_date'=>$contract_signing_date,
-                        'contract_duration_date'=>$contract_duration_date,
-                        'year_of_procurement'=>$year_of_procurement,
-                        'category_id'=>$procurement_category,
-                        )
-                   );
-                }
-            }
-        }
+        //                 'crt_no' =>$crt_no,
+        //                 'description_of_goods_works_and_services' => $desription_of_goods,
+        //                 'category_of_procurement' => $category_of_procurement,
+        //                 'qty' => $qty,
+        //                 'unit_of_measure'=>$unit_of_measure,
+        //                 'Procurement_method'=>$Procurement_method,
+        //                 'type_of_contract'=>$type_of_contract,
+        //                 'allocated_amount'=>$allocated_amount,
+        //                 'currency'=>$currency,
+        //                 'source_of_funding'=>$source_of_funding,
+        //                 'procuring_unit'=>$procuring_unit,
+        //                 'requisition_unit'=>$requisition_unit,
+        //                 'end_user_requisition_date'=>$end_user_requisition_date,
+        //                 'technical_requirements_receipt_of_final_technical_requirements_date'=>$technical_requirements_receipt_of_final_technical_requirements_date,
+        //                 'technical_requirements_preparation_of_tender_document'=>$technical_requirements_preparation_of_tender_document,
+        //                 'publication_of_tender_documents_publication_date'=>$publication_of_tender_documents_publication_date,
+        //                 'publication_of_tender_documents_closing_date'=>$publication_of_tender_documents_closing_date,
+        //                 'tender_openning'=>$tender_openning,
+        //                 'tender_evaluation_shortlisting_report_start_date'=>$tender_evaluation_shortlisting_report_start_date,
+        //                 'tender_evaluation_shortlisting_Report_end_date'=>$tender_evaluation_shortlisting_Report_end_date,
+        //                 'short_list_notice_publication' =>$short_list_notice_publication,
+        //                 'invitation_to_shortlisted_firms_to_submit_proposals_invitation_date' => $invitation_to_shortlisted_firms_to_submit_proposals_invitation_date,
+        //                 'invitation_to_shortlisted_firms_to_submit_proposals_closing_date' => $invitation_to_shortlisted_firms_to_submit_proposals_closing_date,
+        //                 'evaluation_of_bids_under_shortlist_method_start_date' => $evaluation_of_bids_under_shortlist_method_start_date,
+        //                 'evaluation_of_bids_under_shortlist_method_end_date'=>$evaluation_of_bids_under_shortlist_method_end_date,
+        //                 'purchase_contracts_committee_approval'=>$purchase_contracts_committee_approval,
+        //                 'secretary_general_approval_of_pc_cc_reports_submission_date'=>$secretary_general_approval_of_pc_cc_reports_submission_date,
+        //                 'secretary_general_approval_of_pc_cc_reports_approval_date'=>$secretary_general_approval_of_pc_cc_reports_approval_date,
+        //                 'contract_vetting_submission_date'=>$contract_vetting_submission_date,
+        //                 'contract_vetting_approval_date'=>$contract_vetting_approval_date,
+        //                 'contract_amount'=>$contract_amount,
+        //                 'sg_asg_a_and_f_dhra_approval'=>$sg_asg_a_and_f_dhra_approval,
+        //                 'contract_signing_date'=>$contract_signing_date,
+        //                 'contract_duration_date'=>$contract_duration_date,
+        //                 'category_id'=>$procurement_category,
+        //                 )
+        //            );
+        //         }
+        //     }
+        // }
+            // Alert::success('Success', 'New User right has been added');
 
-            return back()->with('success','Procurement plan has been upload successfully');
-        }
+            // return back()->with('success','Procurement plan has been upload successfully');
+        // }
+
+
+        public function upload_excel(Request $request){
+      
+                $request->validate([
+                    'file1' => 'required|mimes:xlsx'
+                ]);
+
+                Excel::import(new Procurementdata, $request->file('file1'));
+                Alert::success('Success', 'Procurement plan has been uploaded successfully');
+
+                return back();
+
+        // return redirect('/')->with('success', 'All good!');
+
+        }   
 
 
     public function procurement_records(){
@@ -238,7 +252,7 @@ class ProcurementPlan extends Controller
 
                       $Statistics   = DB::table('procurement_plans')->where('category_id', 1346)->get();
 
-                      $year   = DB::table('procurement_plans')->where('category_id', 1346)->value('year_of_procurement');
+                    //   $year   = DB::table('procurement_plans')->where('category_id', 1346)->value('year_of_procurement');
         
 
         return view('procurement.ProcurementRecords',$data)
