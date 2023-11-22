@@ -121,8 +121,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('edit-code/{id}',[ProcurementPlan::class,'edit_code']);
    Route::get('delete-code/{id}',[ProcurementPlan::class,'delete_code']);
 
-
-
+   Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
    Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
 
    // 
@@ -177,6 +176,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    //  Testing routes to be deleted later
     Route::get('welcome',[COMESA_CONTROLLER::class,'welcomeHome']);
 
+   
 
 
 

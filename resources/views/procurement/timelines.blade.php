@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA PROCUREMENT DASHBOARD </title>
+    <title>COMESA ADMIN DASHBOARD </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,15 +41,17 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}"
-
+    
 </head>
 
 <body class="full_width">
-  
+    
+    <div id="maincontainer" class="clearfix">
 
         <header>
+
+            {{-- @include('includes.TopNavTest'); --}}
+
 
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
@@ -78,6 +80,7 @@
             </nav>
 
 
+
         </header>
         <div id="contentwrapper">
             <div class="main_content">
@@ -93,80 +96,52 @@
                     </ul>
                 </div>
 
+
                 <div class="row">
-                    <div class="col-sm-12">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Procurement Plan</h3>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-12">
 
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success">
-                                            {{Session::get('success')}}
-                                        </div>
-                                    @endif
+                        <section id="Approved_suppliers">
+                            <h3 class="heading" style="color: rgb(26, 239, 54)">Time Lines</h3>
 
+                            <div class="table-responsive">
 
-                                    @if (Session::get('fail'))
-                                        <div class="alert alert-danger">
-                                            {{Session::get('fail')}}
-                                        </div>
-                                    @endif
+                            <table class="table table-bordered table-striped" id="smpl_tbl">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Procurement stage</th>
+                                       <th>Timeline</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                    <form action="">
+                                    @foreach ($timelines as $key => $item)
+                                    <tr>
+                                            <td>{{$key+1}}</td>
+                                            <td style="width: 500px;">{{$item->md_name}}</td>
+                                            <td style="width: 500px"><input type="text" id="" style="width: 100%"></td>
+                                        </tr>
+                                    @endforeach
+                                </form>
+                                </tbody>
+                            </table>
 
-                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
-                                    
-                                        @csrf
-                                        
-                                            <legend class="hide">Lorem ipsum dolor…</legend>
-                                            <div class="formSep form-group">
-                                                
-                                                @include('sweetalert::alert')
-                                                <div class="col-md-6">
-                                                
-                                                    <label  control-labelq"
-                                                    style="">Upload Procurement Plan:</label>
-                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <label class="control-labelq" >Year: </label>
-                                                      <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                          <option value="">Select Procurement year</option>
-                                                          <option value="2021">2021</option>
-                                                          <option value="2022">2022</option>
-                                                          <option value="2023">2023</option>
-                                                          <option value="2024">2024</option>
-                                                          <option value="2025">2025</option>
-                                                          <option value="2026">2026</option>
-                                                          <option value="2027">2027</option>
-                                                          <option value="2028">2028</option>
-                                                      </select>
-                                                  </div>
-                                              </div>
-
-                                              <button type="submit"  class=" btn btn-primary"><i
-                                                class="glyphicon glyphicon-ok"></i> Upload</button>
-
-                                                
-                                            </div>
-
-                                            
-
-                                       
-                                    </form>
-                                </div>
                             </div>
-                        </div>
+                            <div class="btn btn-primary" id="btn_save">Save</div>
+
+                            <style>
+                                .w-5 {
+                                    display: none;
+                                }
+                            </style>
+
+                        </section>
                     </div>
-
                 </div>
+ 
             </div>
-
         </div>
-    </div>
 
     </div>
 
@@ -177,40 +152,12 @@
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
-
-
-            $(document).ready(function(){
-                $('#upload_procurement_plan').click(function(){
-                  
-                    var procurement_data = $('#procurement_data')[0].files[0];
-
-                    var form_data = new FormData();
-
-                    form_data.append('procurement_data', procurement_data);
-
-                    $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,	
-								url			:'/upload-procurement',							
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								success		:function(data){
-                                    // alert('data has been upload successfully');
-                                    alert(data.success);
-									// $('#SubCategory').html(data);
-								},
-                                error: function(data)
-								{
-									$('body').html(data.responseText);
-								}
-					});
-			}); 
-        });
-        
+       
+       $('#btn_save').click({
+            alert("tuulo tulllo kwata omwana.....");
+       })
     </script>
-    
+
 
 
 
@@ -266,8 +213,10 @@
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
     <!-- charts -->
-  
-   
+    <script src="/assets/lib/flot/jquery.flot.min.js"></script>
+    <script src="/assets/lib/flot/jquery.flot.resize.min.js"></script>
+    <script src="/assets/lib/flot/jquery.flot.pie.min.js"></script>
+    <script src="/assets/lib/flot.tooltip/jquery.flot.tooltip.min.js"></script>
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

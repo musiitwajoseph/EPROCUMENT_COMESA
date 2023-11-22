@@ -6,20 +6,22 @@ use DB;
 use App\Models\procurement;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
 
-class Procurementdata implements ToModel, WithStartRow, WithValidation
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Events\BeforeImport;
+
+
+class Procurementdata implements ToModel, WithStartRow, WithEvents
 {
+
+    use Importable;
+    use Importable, RegistersEventListeners;
+  
+
     public function model(array $row)
     {
-
-
-        foreach ($row as $key => $value) {
-            if ($value == null) {
-                dd("null encountered");
-                throw new \Exception("Null value encountered in column: {$key}");
-            }
-        }
 
         return new procurement([
             
@@ -29,15 +31,24 @@ class Procurementdata implements ToModel, WithStartRow, WithValidation
             'qty' => $row[3],
             'unit_of_measure' =>  $row[4],
             'procurement_method' => $row[5],
-            'type_of_contract' =>  $row[6],
+
+            $md_contract_name = $row[6],
+            $md_contract_id  = DB::table('master_datas')->where('md_name', $md_contract_name)->value('md_id'),
+
+            'type_of_contract' =>  $md_contract_id,
             'allocated_amount' =>  $row[7],
-            'currency' =>  $row[8],
+
+            $md_contract_name = $row[8],
+            $md_contract_id  = DB::table('master_datas')->where('md_name', $md_contract_name)->value('md_id'),
+
+            'currency' =>  $md_contract_id,
             'source_of_funding' =>  $row[9],
-            'procuring_unit' =>  $row[10],
+            'procuring_unit' =>  $row[10],  
 
             $md_name_pp = $row[11],
             $md_user_id  = DB::table('master_datas')->where('md_name', $md_name_pp)->value('md_id'),
 
+            // dd($md_user_id),
             'requisition_division' => $md_user_id,
             'requisition_unit' => $row[12],
             'end_user_requisition_date' => $row[13],

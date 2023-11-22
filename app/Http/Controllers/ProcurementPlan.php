@@ -10,6 +10,7 @@ use App\Imports\ProcurementImport;
 use App\Http\Controllers\Controller;
 use App\Models\master_data;
 use App\Models\master_code;
+use App\Models\procurement;
 use Session;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -149,12 +150,63 @@ class ProcurementPlan extends Controller
                     'file1' => 'required|mimes:xlsx'
                 ]);
 
+                $request->validate([
+                    'file1' => 'required|mimes:xlsx'
+                ]);
+
+
+                $file =  $request->file('file1');
+                $import = new Procurementdata; 
+                $importedData = Excel::toArray($import, $file);
+
+                foreach ($importedData[0] as $row) {
+
+                    $uniqueIdentifier = $row[11]; 
+                    $requistion_division  = DB::table('master_datas')->where('md_name', $uniqueIdentifier)->value('md_id');
+                   
+                    if ($requistion_division != null) {
+                        continue;
+                    }
+                    else{
+                        Alert::error('Error', 'Procurement plan has been not been uploaded successfully');
+                        return back()->with('fail','Unknown requistion division');
+                    }
+                }
+
+
+                foreach ($importedData[0] as $row) {
+
+                    $unique_identifier = $row[6]; 
+                    $unqiue_contract_type  = DB::table('master_datas')->where('md_name', $unique_identifier)->value('md_id');
+
+                    if ($unqiue_contract_type != null) {
+                        continue;
+                    }
+                    else{
+                        Alert::error('Error', 'Procurement plan has been not been uploaded successfully');
+                        return back()->with('fail','Invalid Contract type');
+                    }
+                }
+
+                foreach ($importedData[0] as $row) {
+
+                    $unique_identifier = $row[8]; 
+                    $unqiue_contract_type  = DB::table('master_datas')->where('md_name', $unique_identifier)->value('md_id');
+
+                    if ($unqiue_contract_type != null) {
+                        continue;
+                    }
+                    else{
+                        Alert::error('Error', 'Procurement plan has been not been uploaded successfully');
+                        return back()->with('fail','Invalid Currency type');
+                    }
+                }
+
+
                 Excel::import(new Procurementdata, $request->file('file1'));
                 Alert::success('Success', 'Procurement plan has been uploaded successfully');
 
                 return back();
-
-        // return redirect('/')->with('success', 'All good!');
 
         }   
 
@@ -162,129 +214,10 @@ class ProcurementPlan extends Controller
     public function procurement_records(){
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
-
-        // SPR TABLE Category
-        $spr_table = DB::table('procurement_plans')->where('category_id', 1329)->get();
-
-
-        // INFRASTRUCTURE DIVISION 
-        $infrastructure = DB::table('procurement_plans')->where('category_id', 1330)->get();
-
-        // SATSD DIVISION 
-        $SATSD = DB::table('procurement_plans')->where('category_id', 1331)->get();
-
-        // RIFF PROJECT 
-         $RIFF = DB::table('procurement_plans')->where('category_id', 1332)->get();
-
-        
-         // CORPORATE COMMUNICATION UNIT - PR
-        $CORPORATE_COMMUNICATION = DB::table('procurement_plans')->where('category_id', 1332)->get();
-
-        
-        // LEGAL DIVISION
-        $LEGAL_DIVISION = DB::table('procurement_plans')->where('category_id', 1333)->get();
-
-         // REARESA DIVISION
-         $REARESA = DB::table('procurement_plans')->where('category_id', 1333)->get();
-
-         // REARESA DIVISION
-         $REARESA = DB::table('procurement_plans')->where('category_id', 1333)->get();
-
-         // BRUSSELS LIASON OFFICE (BLO)
-         $BRUSSELS_LIASON = DB::table('procurement_plans')->where('category_id', 1334)->get();
-
-        // ECOSOCC
-        $ECOSOCC = DB::table('procurement_plans')->where('category_id', 1335)->get();
-
-         // Governance Peace & Security  -
-         $Governance_Peace_and_Security = DB::table('procurement_plans')->where('category_id', 1335)->get();
-
-                 //GPS - CLIMATE CHANGE
-                $GPS_CLIMATE_CHANGE = DB::table('procurement_plans')->where('category_id', 1337)->get();
-
-                  // INTERNAL AUDIT  -
-                $internal_audit = DB::table('procurement_plans')->where('category_id', 1351)->get();
-
-                 // ESTATES  -
-                $ESTATES = DB::table('procurement_plans')->where('category_id', 1352)->get();
-
-                 // IRC  -
-                $IRC = DB::table('procurement_plans')->where('category_id', 1353)->get();
-
-                // TRADE_AND_CUSTOMS  -
-                 $TRADE_AND_CUSTOMS = DB::table('procurement_plans')->where('category_id', 1354)->get();
-
-                // TRADE_COM_11  -
-                $TRADE_COM_11 = DB::table('procurement_plans')->where('category_id', 1355)->get();
-
-                // EDF11  TFP  -
-                $EDF11_TFP = DB::table('procurement_plans')->where('category_id', 1356)->get();
-
-                // TRADE IN SERVICES  -
-                $TRADE_IN_SERVICES = DB::table('procurement_plans')->where('category_id', 1357)->get();
-
-                  // SSCBT1 -
-                  $SSCBT1 = DB::table('procurement_plans')->where('category_id', 1338)->get();
-
-
-                   // TCPB11 -
-                   $TCPB11 = DB::table('procurement_plans')->where('category_id', 1339)->get();
-
-                    // GENDER_AND_SOCIAL_AFFAIRS_DIVISION -
-                    $GENDER_AND_SOCIAL_AFFAIRS_DIVISION = DB::table('procurement_plans')->where('category_id', 1340)->get();
-
-                    // IT_DIVISION -
-                    $IT_DIVISION = DB::table('procurement_plans')->where('category_id', 1341)->get();
-
-                      // IT_DIVISION -
-                      $HUMAN_RESOURCE  = DB::table('procurement_plans')->where('category_id', 1342)->get();
-                      
-
-                      $Finance_and_Budgeting   = DB::table('procurement_plans')->where('category_id', 1343)->get();
-
-                      
-
-                      $Industry_and_Agriculture   = DB::table('procurement_plans')->where('category_id', 1344)->get();
-
-                      
-
-                      $Procurement_and_Supplies   = DB::table('procurement_plans')->where('category_id', 1345)->get();
-
-                      $Statistics   = DB::table('procurement_plans')->where('category_id', 1346)->get();
-
-                    //   $year   = DB::table('procurement_plans')->where('category_id', 1346)->value('year_of_procurement');
         
 
-        return view('procurement.ProcurementRecords',$data)
-
-                    ->with('year',$year)
-                    ->with('infrastructure',$infrastructure)
-                    ->with('SATSD',$SATSD)
-                    ->with('RIFF',$RIFF)
-                    ->with('EDF11_TFP',$EDF11_TFP)
-                    ->with('CORPORATE_COMMUNICATION',$CORPORATE_COMMUNICATION)
-                    ->with('LEGAL_DIVISION',$LEGAL_DIVISION)
-                    ->with('REARESA',$REARESA)
-                    ->with('BRUSSELS_LIASON',$BRUSSELS_LIASON)
-                    ->with('ECOSOCC',$ECOSOCC)
-                    ->with('Governance_Peace_and_Security',$Governance_Peace_and_Security)
-                    ->with('GPS_CLIMATE_CHANGE',$GPS_CLIMATE_CHANGE)
-                    ->with('internal_audit',$internal_audit)
-                    ->with('ESTATES',$ESTATES)
-                    ->with('IRC',$IRC)
-                    ->with('TRADE_AND_CUSTOMS',$TRADE_AND_CUSTOMS)
-                    ->with('TRADE_COM_11',$TRADE_COM_11)
-                    ->with('TRADE_IN_SERVICES',$TRADE_IN_SERVICES)
-                    ->with('SSCBT1',$SSCBT1)
-                    ->with('TCPB11',$TCPB11)
-                    ->with('GENDER_AND_SOCIAL_AFFAIRS_DIVISION',$GENDER_AND_SOCIAL_AFFAIRS_DIVISION)
-                    ->with('IT_DIVISION',$IT_DIVISION)
-                    ->with('HUMAN_RESOURCE',$HUMAN_RESOURCE)
-                    ->with('Finance_and_Budgeting',$Finance_and_Budgeting)
-                    ->with('Industry_and_Agriculture',$Industry_and_Agriculture)
-                    ->with('Procurement_and_Supplies',$Procurement_and_Supplies)
-                    ->with('Statistics',$Statistics)
-                    ->with('spr_table',$spr_table);     
+        $procurement = procurement::all();
+        return view('procurement.ProcurementRecords',$data,compact('procurement'));
     }   
 
     // Master data 
@@ -497,6 +430,18 @@ class ProcurementPlan extends Controller
         }
 
         return back()->with('success','Supplier details has been uploaded successfully');
+    }
+
+    public function timelines(){
+
+        $db_timeline = 10056;
+        $timelines = DB::table('master_datas')->where('md_master_code_id',$db_timeline)->get();
+
+        // dd($timelines);
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+
+        return view('procurement.timelines',$data,compact('timelines'));
     }
 
 }

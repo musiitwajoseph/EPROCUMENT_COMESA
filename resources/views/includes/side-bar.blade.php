@@ -43,6 +43,7 @@
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a href=" {{route('procurement')}}">Upload Procurement Plan</a></li>
                                 <li><a href="{{ route('procurement-records')}} ">View Procurement Records</a></li>
+                                <li><a href=" {{route('timelines')}}">Timelines</a></li>
                             </ul>   
                         </div>
                     </div>
