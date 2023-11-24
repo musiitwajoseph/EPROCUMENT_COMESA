@@ -272,7 +272,7 @@
         </style>
 		<div class="col-sm-12 tac">
 
-            <h1 style="text-align: center;color:green;margin:3rem;background-color:yellow;">Approved Supplier</h1>
+            <h1 style="text-align: center;color:#FFF;margin:3rem;background-color:blue;">Approved Supplier</h1>
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
 				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>

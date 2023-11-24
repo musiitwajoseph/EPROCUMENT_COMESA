@@ -20,16 +20,10 @@ use App\Models\Admin;
 use App\Models\user_role;
 use Validator;
 use RealRashid\SweetAlert\Facades\Alert;
-
-
 use App\Imports\ProcurementImport;
-
-
 use App\Imports\LegitImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
-
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
@@ -1161,7 +1155,6 @@ class COMESA_CONTROLLER extends Controller
 
 
         $user_pp =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('password');
-        // dd($user_pp);
 
         $email_send_on =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('email');
         $username_send_on =  DB::table('supplier_logins')->where('supplier_reference', $supp_ref_no)->value('username');
@@ -1390,7 +1383,6 @@ class COMESA_CONTROLLER extends Controller
     }
 
 
-
     public function admin_register(){
 
         return view('Login.AdminRegister');
@@ -1612,6 +1604,15 @@ class COMESA_CONTROLLER extends Controller
                                                               ->with('subcategory',$subcategory)->with('category',$category);
     }
 
+    public function submitted_record($id){
+
+
+        $app_status =  DB::table('supplier_registration_details_models')->where('supplier_reference_form_no', $id)->value('approval_status');
+
+        $data = ['LoggedUserInfo'=>SupplierLogin::where('id','=', session('LoggedSupplier'))->first()];
+        
+        return view('portal.supplier.supplier_records',$data , compact(['app_status']));
+    }
 
 
     public function approved_record($id)
@@ -1884,21 +1885,28 @@ class COMESA_CONTROLLER extends Controller
     
             $all_user_all = user_role::all();
             $total_count = count($all_user_all);
-            
-           
-            return view('Users.user_rights_and_priveledges',$data,compact(['all_user_all','total_count']));
+                            
+            return view('Users.user_rights_and_priveledges',$data,compact(['total_count','all_user_all']));
     
         }
 
         public function edit_user_previledges($id){
 
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            $specific_user = DB::table('user_previledges')->where('user_user_id', $id)->get();
+            $user_role = DB::table('user_roles')->where('user_id', $id)->value('user_name');
+
+            return view('Users.edit_user_previledges',$data,compact(['specific_user','user_role']));
+        }
+
+        public function view_user_previledges($id){
 
             $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            $specific_user = DB::table('user_previledges')->where('user_user_id', $id)->get();
+            $user_role = DB::table('user_roles')->where('user_id', $id)->value('user_name');
 
-            $all_user_all = user_role::all();
-            $total_count = count($all_user_all);
+            return view('Users.view_user_previledges',$data,compact(['specific_user','user_role']));
 
-            return view('Users.edit_user_previledges',$data,compact(['all_user_all','total_count']));
         }
 
         public function add_user_previledges(){
@@ -1941,6 +1949,80 @@ class COMESA_CONTROLLER extends Controller
  
             return back();
 
+        }
+
+
+        public function access_supplier_records(Request $request){
+
+            $user_data = $request->user_reference;
+           
+            $id = DB::table('supplier_registration_details_models')->where('supplier_reference_form_no',$user_data)->value('id');
+            $report_status =  DB::table('supplier_registration_details_models')->where('id', $id)->value('approval_status');
+
+            return response()->json([
+                "status" => True,
+                "user_id"=>$id,
+                "approval_status"=>$report_status,
+                "message"=>"This supplier application request has been cancelled",
+            ]);
+        
+        }
+
+        public function supplier_record($id)
+        {
+            $id = (int)$id;
+    
+
+            $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+            $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+    
+            $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+            $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
+            
+            $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+            $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+    
+            $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+            $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+    
+    
+            $info = SupplierRegistrationDetailsModel::find($id);
+            $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+            $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+            
+            $data = ['LoggedUserInfo'=>SupplierLogin::where('id','=', session('LoggedSupplier'))->first()];
+    
+            return view('portal.supplier.supplier_submitted_information',$data)->with('info',$info)
+                                                                  ->with('saved_documents',$saved_documents)
+                                                                  ->with('Types_of_business',$Types_of_business)
+                                                                  ->with('id',$id)->with('country_name',$country_name)
+                                                                  ->with('subcategory',$subcategory)->with('category',$category);
+        }
+
+        // Store in User Rights Table
+
+        public function store_user_previledges_db(Request $request)
+        {
+
+            $selectedColumns = $request->input('columns', []);
+            $users = user_previledge::all();
+
+            foreach ($users as $user) {
+                foreach ($selectedColumns as $column) {
+
+                    // var_dump($column);
+                    if ($column == 'A') {
+                           dd("hello");
+                        $user->name = 'New Name';
+                    } 
+                    elseif  ($column == 'email')
+                     {
+                        $user->email = 'new@email.com';
+                    }
+                }
+                dd();
+                $user->save();
+            }
         }
 
 }

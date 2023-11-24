@@ -115,7 +115,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard')}}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -123,7 +123,7 @@
 								<li class="divider-vertical hidden-sm hidden-xs"></li>                                                              
                                                                                                                                                                                                             
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserInfo['username']}}<b class="caret"></b></a>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:void(0);">My Profile</a></li>
 										<li class="divider"></li>
@@ -272,10 +272,10 @@
         </style>
 		<div class="col-sm-12 tac">
 
-            <h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Cancelled Supplier</h1>
+            <h1 style="text-align: center;color:#FFF;margin:3rem;background-color:blue;">Supplier Submitted Records</h1>
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
-				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
+				{{-- <input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}> --}}
 
 				@csrf
 
@@ -433,24 +433,24 @@
                                                     <a href="{{ url('download/'.$doc->Attachments) }}">{{$doc->Attachments}}</a><br/>
                                                     @endforeach
                                                 </td>
-                                            </tr>			
-											
-												<tr>
-												<td colspan="4"><h3>5.Reason for rejecting Supplier Application</h3></td>
-											   </tr>
+                                           
+                                            </tr>
 
-											   <tr>
+											<tr>
+                                                <td colspan="4"><h3>5.Reason for Accepting Application</h3></td>
+                                            </tr>
+
+											<tr>
                                                 <td colspan="4" style="text-align: left;margin-top:2rem;">{{$info->reason_for_rejection}}</td>
                                             </tr>
+
             </table>
 
+			{{-- <p style="text-align: left;font-weight:bold;">Approved by : {{$info->approved_by}}</p>
+			<p style="text-align: left;font-weight:bold;">Approver Email : {{$info->approved_email}}</p> --}}
+			{{-- <p style="text-align: left;font-weight:bold;">Approved date : {{$info->updated_at}}</p> --}}
 
-			<p style="text-align: left;font-weight:bold;">Rejected by : {{$info->approved_by}}</p>
-			<p style="text-align: left;font-weight:bold;">Rejectors Email : {{$info->approved_email}}</p>
-			<p style="text-align: left;font-weight:bold;">Rejected date : {{$info->updated_at}}</p>
-
-
-
+			
            {{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Cancel Supplier</button>
 
             <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}
@@ -465,7 +465,7 @@
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
-    @include('includes.side-bar')
+    @include('includes.supplier-side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">

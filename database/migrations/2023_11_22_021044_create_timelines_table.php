@@ -15,28 +15,28 @@ return new class extends Migration
     {
         Schema::create('timelines', function (Blueprint $table) {
             $table->id();
-            // $table->text('End user requisition date');
-            // $table->text('Receipt of final technical requirements');
-            // $table->text('Preperation of Tender document RFP/RFQ');
-            // $table->text('Tender publication date');
-            // $table->text('Tender closing date');
-            // $table->text('Tender Opening date');
-            // $table->text('Tender evaluation start date');
-            // $table->text('Tender evaluation enddate');
-            // $table->text('Shortlist notice publication date');
-            // $table->text('Invitation of shortlisted candidate date');
-            // $table->text('Invitation of shortlisted candidate closing date');
-            // $table->text('evaluation of bids under shortlist method start date');
-            // $table->text('evaluation of bids under shortlist method end date');
-            // $table->text('purchase contracts committe Approval date');
-            // $table->text('Evaluation Report Submission Date to SG');
-            // $table->text('Evaluation Report Approval Date by SG');
-            // $table->text('contract vetting submission date');
-            // $table->text('contract vetting approval date');
-            // $table->text('contract amount');
-            // $table->text('contract signing date');
-            // $table->text('sg_asg_a_and_f_dhra_contract_approval_date');
-            // $table->text('contract End Date');
+            $table->text('end_user_requisition_date');
+            $table->text('receipt_of_final_technical_requirements');
+            $table->text('preperation_of_tender_document_rfp_or_rfq');
+            $table->text('tender_publication_date');
+            $table->text('tender_closing_date');
+            $table->text('tender_opening_date');
+            $table->text('tender_evaluation_start_date');
+            $table->text('tender_evaluation_enddate');
+            $table->text('shortlist_notice_publication_date');
+            $table->text('invitation_of_shortlisted_candidate_date');
+            $table->text('invitation_of_shortlisted_candidate_closing_date');
+            $table->text('evaluation_of_bids_under_shortlist_method_start_date');
+            $table->text('evaluation_of_bids_under_shortlist_method_end_date');
+            $table->text('purchase_contracts_committe_approval_date');
+            $table->text('evaluation_report_submission_date_to_sg');
+            $table->text('evaluation_report_approval_date_by_sg');
+            $table->text('contract_vetting_submission_date');
+            $table->text('contract_vetting_approval_date');
+            $table->text('contract_amount');
+            $table->text('contract_signing_date');
+            $table->text('sg_asg_a_and_f_dhra_contract_approval_date');
+            $table->text('contract_end_date');
 
 
             $table->timestamps();

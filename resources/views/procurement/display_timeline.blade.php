@@ -109,23 +109,51 @@
 
                             <table class="table table-bordered table-striped" id="smpl_tbl">
                                 <thead>
+
                                     <tr>
-                                        <th>No.</th>
+                                        {{-- <th>No.</th> --}}
                                         <th>Procurement stage</th>
                                        <th>Timeline</th>
                                     </tr>
+
+
+                                    {{-- <tr>
+                                        <th>End user requisition date</th>
+                                        <th>receipt of final technical requirements</th>
+                                        <th>preperation of tender document rfp or rfq</th>
+                                        <th>Tender publication date</th>
+                                        <th>Tender closing date</th>
+                                        <th>Tender openning date</th>
+                                        <th>Tender evaluation start date</th>
+                                        <th>Tender evaluation end date</th>
+                                        <th>Short list notice publication date</th>
+                                        <th>Invitation of shortlisted candidates date</th>
+                                        <th>Invitation of shortlisetd canditates closing date</th>
+                                        <th>Evaluation of bids under shortlist method start date</th>
+                                        <th>Evaluation of bids under shortlist method end date</th>
+                                        <th>Purchase Contracts Committee Approval Date</th>
+                                        <th>Evaluation report submission date to SG</th>
+                                        <th>Evaluation report approval date by SG</th>
+                                        <th>contract vetting submission date</th>
+                                        <th>contract vetting approval date</th>
+                                        <th>contract amount</th>
+                                        <th>SG/ASG/A&F DHRA Contract Approval Date</th>
+                                        <th>contract signing date</th>
+                                    </tr> --}}
                                 </thead>
                                 <tbody>
 
-                                    <form action="{{ route('store-timeline')}}" method="POST">
-                                        @csrf
-                                    @foreach ($timelines as $key => $item)
-                                    <tr>
-                                            <td>{{$key+1}}</td>
-                                            <td style="width: 500px;">{{$item->md_name}}</td>
-                                            <td style="width: 500px"><input type="number" name="{{$key+1}}" id="{{$key+1}}" style="width: 100%"></td>
-                                        </tr>
-                                    @endforeach
+                                    
+                                            @foreach ($time_data->getAttributes() as $column => $value)
+                                                <tr>
+                                                    @if ($column !== 'id' && $column !== 'created_at' && $column !== 'updated_at')
+                                                    <td style="width: 500px;">{{ $column }}</td>
+                                                    <td style="width: 500px">{{$value}}</td> 
+                                                     @endif
+                                                          
+                                                </tr>
+                                                
+                                            @endforeach
                                 
                                 </tbody>
                             </table>
@@ -133,8 +161,6 @@
 
                             <button type="submit" class="btn btn-primary" id="add_new_data" >Save</button>
                         </form>
-
-
                             <style>
                                 .w-5 {
                                     display: none;
@@ -157,44 +183,6 @@
 
         <script src="/assets/js/jquery.min.js"></script>
         <script type="text/javascript">
-
-            $(document).ready(function(){
-
-					$('#btn_save').click(function(){
-
-                        alert("welcome home....");
-                    // var master_code_id = $('#master_code_id').val();
-                    // var md_code = $('#md_code').val();
-                    // var md_name = $('#md_name').val();
-                    // var md_description = $('#md_description').val();
-                    // var user_id = $('#user_id').val();
-
-                    // // alert(master_code_id);
-                    // var form_data = new FormData();
-
-                    // form_data.append('master_code_id', master_code_id);
-                    // form_data.append('md_code', md_code);
-                    // form_data.append('user_id', user_id);
-                    // form_data.append('md_name', md_name);
-                    // form_data.append('md_description', md_description);
-
-					// $.ajax({
-					// 			type: "post",
-					// 			processData: false,
-					// 			contentType: false,
-					// 			cache: false,
-					// 			data		: form_data,
-					// 			url			:'/store-user-right,							
-					// 			headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-					// 			success		:function(data){
-                    //                 if(data.status){
-					// 					alert(data.message);
-					// 				}
-					// 			}
-					// });
-				
-            });
-         });
 
 
         </script>

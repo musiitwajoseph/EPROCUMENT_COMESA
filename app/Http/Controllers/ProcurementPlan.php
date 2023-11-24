@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\master_data;
 use App\Models\master_code;
 use App\Models\procurement;
+use App\Models\timeline;
 use Session;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -437,11 +438,59 @@ class ProcurementPlan extends Controller
         $db_timeline = 10056;
         $timelines = DB::table('master_datas')->where('md_master_code_id',$db_timeline)->get();
 
-        // dd($timelines);
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
-
         return view('procurement.timelines',$data,compact('timelines'));
+    }
+
+    public function store_timelines(Request $request){
+
+        $post = new timeline;
+
+         $post->end_user_requisition_date = $request->input('1');
+         $post->receipt_of_final_technical_requirements = $request->input('2');
+         $post->preperation_of_tender_document_rfp_or_rfq = $request->input('3');
+         $post->tender_publication_date = $request->input('4');
+         $post->tender_closing_date = $request->input('5');
+         $post->tender_opening_date = $request->input('6');
+         $post->tender_evaluation_start_date = $request->input('7');
+         $post->tender_evaluation_enddate = $request->input('8');
+         $post->shortlist_notice_publication_date = $request->input('9');
+         $post->invitation_of_shortlisted_candidate_date = $request->input('10');
+         $post->invitation_of_shortlisted_candidate_closing_date = $request->input('11');
+         $post->evaluation_of_bids_under_shortlist_method_start_date = $request->input('12'); 
+         $post->evaluation_of_bids_under_shortlist_method_end_date = $request->input('3');
+         $post->purchase_contracts_committe_approval_date = $request->input('4');
+         $post->evaluation_report_submission_date_to_sg = $request->input('15');
+         $post->evaluation_report_approval_date_by_sg = $request->input('16');
+         $post->contract_vetting_submission_date = $request->input('17');
+         $post->contract_vetting_approval_date = $request->input('18');
+         $post->contract_amount = $request->input('19');
+         $post->contract_signing_date = $request->input('20'); 
+         $post->sg_asg_a_and_f_dhra_contract_approval_date = $request->input('21'); 
+         $post->contract_end_date = $request->input('22'); 
+
+         $save = $post->save();
+
+         if($save){
+            Alert::success('Success', 'Timeline information has been added successfully');
+         }
+        
+         return redirect('display-timelines');
+    }
+
+    public function display_timeline()
+    {
+        $db_timeline = 10056;
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $timelines_heading = DB::table('master_datas')->select('md_name')->where('md_master_code_id',$db_timeline)->get();
+        $time_data = timeline::find(1);
+
+        // @foreach ($time_data->getAttributes() as $column => $value)
+
+        return view('procurement.display_timeline',$data,compact('time_data','timelines_heading'));
     }
 
 }

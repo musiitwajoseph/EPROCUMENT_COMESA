@@ -23,6 +23,7 @@
                                 <li class="active"><a href="javascript:void(0)"><i class="glyphicon glyphicon-save-as"></i> Download Supplier Manual V1.0</a></li>
                               
                                 <li class="nav-header">Other Systems/Websites</li>
+                                <li><a href="{{ route('supplier-dashboard')}}">Supplier dashboard</a></li>
                                 <li><a href="javascript:void(0)">Main Website</a></li>
                             </ul>
                         </div>

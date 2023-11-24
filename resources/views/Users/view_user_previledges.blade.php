@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Rigths and Previledges</title>
+    <title>Edit User Rigths and Previledges</title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -115,52 +115,32 @@
                     <div class="row">
 
                         <input type="hidden" name="user_id" id="user_id" value="{{$LoggedUserAdmin['id']}}" >
+                        <h2 style="font-weight:bold;margin-left:2rem;" >Role name : <span style="color:blue;">{{$user_role}}</span> </h2>
 
                         <div class="col-sm-3 col-md-3">
 
-                            <p style="font-weight:bold">Total User Roles: {{$total_count}}</p>
-                            @foreach ($all_user_all as  $key => $item)
-                            {{$key+1}}. <a href="#{{$item->user_name}}">{{$item->user_name}}</a>  <br>
-                            @endforeach
-
                             <br> 
-                            <h3 class="mb-4" style="color: blue;">Roles and Priveledges</h3>
-                            <br>
+                            {{-- <p class="mb-4" >Check Privileges Per Page :</p> --}}
+
 
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
                               
-                                @foreach ($all_user_all as  $key => $item)
                                 <div class="col-sm-8 col-md-8">
+                                    <h3 id=""></h3> 
 
-                                <table class="table">
-                                    <tr>
-                                        <th>Previledge</th>
-                                        <th colspan="2" style="text-align:center;width:100px">Action</th>
-                                    </tr>
-
-                                    <tbody>
-                                        <tr>
-                                            <td> <a >   <h3 id="{{$item->user_name}}">{{$key+1}}.  {{$item->user_name}}</h3></a> <br>
-                                            </td>
-                                            <td style="text-align: center"><a class="btn btn-primary" href="{{'view-user-priveledges/'.$item->user_id}}" >view user right</a></td>
-                                            <td style="text-align: center"><a class="btn btn-info" href="{{'edit-user-priveledges/'.$item->user_id}}">Edit user right</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                </div>
-
-                                    {{-- <table class="table">
+                                    <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
+                                                <th style="width: 5px">No</th>
                                                 <th>Priveledge Name</th>
                                                 <th colspan="7">Previledges</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -172,23 +152,36 @@
                                                 <td>I</td>
                                                 <td>X</td>
                                             </tr>
+                                            {{-- <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                                <td >✔</td>
+                                            </tr> --}}
+                                            @foreach ($specific_user as $key => $item)
+                                            
                                             <tr>
-                                                <td>135</td>
-                                                <td>Anthony Pound</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
-                                                <td >✔</td>
+                                                <td>{{$key+1}}</td>
+                                                <td>{{$item->previledge_name}}</td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox"></td>
                                             </tr>
-                                           
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                            
-                                <br> <br>
+                                
                                 <div class="row sepH_c">
                                     <div class="col-sm-4 col-md-4">
                                       
@@ -244,8 +237,9 @@
                                                 </tbody>
                                             </table>
                                      </div>
-                                </div> --}}
-                                @endforeach
+                                </div>
+                            
+                          
 
                         <div class="clearfix"></div>
                         <br> 
@@ -272,34 +266,29 @@
     <script type="text/javascript">
 
             $(document).ready(function(){
-					$('#add_user_role').click(function(){
-                    
-                    var user_role = $('#user_role').val();
-                    var user_id = $('#user_id').val();
-
-                    var form_data = new FormData();
-
-                    form_data.append('user_role', user_role);
-                    form_data.append('user_id', user_id);
-
-					$.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,
-								url			:'/add-user-role,							
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								success		:function(data){
-                                    if(data.status){
-										alert(data.message);
-									}
-								}
-					});
+					$('#check_all_btn').click(function(){
+                        
+                        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 				
+                        checkboxes.forEach(function (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                    });
             });
          });
 
+
+         $(document).ready(function(){
+					$('#check_row_btn').click(function(){
+                        
+                        var checkboxes = document.querySelectorAll('.first');
+
+                        checkboxes.forEach(function (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                        });
+            });
+         });
+
+         
 
     </script>
     

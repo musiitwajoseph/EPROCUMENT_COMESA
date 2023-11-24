@@ -213,8 +213,9 @@
 									{{-- <input type="text" name="code3" id="code4" class="input-sm form-control" value="+260"> --}}
 
 									<select name="" id=""  class="input-sm form-control">		
+										<option data-countryCode="GB" value="260" >Zambia</option>
 										@foreach ($countrylist as $country)
-										<option data-countryCode="GB" value={{$country->PhoneCode}} Selected>+{{$country->PhoneCode}} {{$country->Name}}</option>
+										<option data-countryCode="GB" value={{$country->PhoneCode}} >{{$country->Name}}</option>
 										@endforeach
 									</select>
 
@@ -525,7 +526,7 @@
 											<input type="number" name="No_of_years_in_business" id="No_of_years_in_business" class="input-sm form-control" required>
 										</div>
 										<div class="col-md-4">
-											<label for="" class="boldTitle padMarg">Number of employees</label>
+											<label for="" class="boldTitle padMarg">Number of permanet employees</label>
 											<input type="number" name="Number_of_employees" id="Number_of_employees" class="input-sm form-control" required>
 										</div>
 		
@@ -543,7 +544,30 @@
 												<div class="mt-4 pt-4 padMarg">
 												<div class="col-md-6">
 													<label for="" class="boldTitle padMarg" style="margin-top: 7rem !important">a)	Relevant specialisation (state a maximum of 3) :</label>
-													<textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea>
+													{{-- <textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea> --}}
+													<table class="table">
+														<thead>
+														  <tr>
+															<th scope="col">Business Name</th>
+															<th scope="col">Specialisation</th>
+														  </tr>
+														</thead>
+														<tbody>
+														  <tr>
+															<td><input type="text" style="width:100%"></td>
+															<td><input type="text" style="width:100%"></td>
+														  </tr>
+														  <tr>
+															<td><input type="text" style="width:100%"></td>
+															<td><input type="text" style="width:100%"></td>
+														  </tr>
+														  <tr>
+															<td><input type="text" style="width:100%"></td>
+															<td><input type="text" style="width:100%"></td>
+														  </tr>
+														 
+														</tbody>
+													  </table>
 												</div>
 
 												<div class="col-md-6">
@@ -576,10 +600,9 @@
 										<div class="col-md-3">								
 											<label for="" class="boldTitle padMarg">Country :</label>  
 													<select name="country" id="country"  class="input-sm form-control">		
-														
+														<option data-countryCode="GB" value="260" >Zambia</option>
 														@foreach ($countrylist as $country)
-					
-														<option data-countryCode="GB" value={{$country->PhoneCode}} Selected>{{$country->Name}}</option>
+														<option data-countryCode="GB" value={{$country->PhoneCode}} >{{$country->Name}}</option>
 														@endforeach
 													</select>
 										</div>
@@ -623,12 +646,7 @@
 		
 												<div class="col-md-3 mt-3 pt-4">
 													<label for="" class="boldTitle padMarg" class="padMarg">Nature of Business :</label>
-													<select type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control">
-														<option value="Cereals">Cereals</option>
-														<option value="saab">Cosmetics</option>
-														<option value="mercedes">Mercedes</option>
-														<option value="audi">Audi</option>
-													</select>
+													<input type="text" name="Nature_of_Business" id="Nature_of_Business" class="input-sm form-control" required>
 												</div>
 		
 												<div class="col-md-3">
@@ -688,7 +706,7 @@
 										<div class="col-md-6 mt-3 pt-4 padMarg">
 											<label for="" class="boldTitle">Company Telephone number : </label>
 											<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
-												<input type="text" name="code2" id="code2" class="input-sm form-control" value="+256">
+												<input type="text" name="code2" id="code2" class="input-sm form-control" value="+260">
 											</div>
 											<div class="col-md-10 mt-3 pt-4 " style="padding:0; margin:0;">
 												<input type="text" name="company_telephone" id="company_telephone" class="input-sm form-control"  required>
@@ -698,7 +716,7 @@
 										<div class="col-md-6 mt-3 pt-4 padMarg">
 											<label for="" class="boldTitle">Contact telephone number : </label>
 											<div class="col-md-2 mt-0 pt-0 mr-0 pr-0" style="padding:0; margin:0;">
-												<input type="text" name="code3" id="code3" class="input-sm form-control" value="+256">
+												<input type="text" name="code3" id="code3" class="input-sm form-control" value="+260">
 											</div>
 											<div class="col-md-10" style="padding:0; margin:0;">
 												<input type="text" name="contact_person_telephone" id="contact_person_telephone" class="input-sm form-control" required>

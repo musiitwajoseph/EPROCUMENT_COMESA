@@ -43,6 +43,7 @@
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
+
 </head>
 
 <body class="full_width">
@@ -128,7 +129,7 @@
                             <li class="divider-vertical hidden-sm hidden-xs"></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
-                                        src="img/user_avatar.png" alt=""
+                                        src="/assets/img/user_avatar.png" alt=""
                                         class="user_avatar">{{ $LoggedUserInfo['username'] }} <b
                                         class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
@@ -160,20 +161,39 @@
                 </div>
 
                 <input type="hidden" name="user_reference" id="user_reference"
-                value="{{ $LoggedUserInfo['supplier_reference'] }}">
+                    value="{{ $LoggedUserInfo['supplier_reference'] }}">
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <ul class="dshb_icoNav clearfix">
-                            <li><a href="{{'submitted-record/'.$LoggedUserInfo['supplier_reference']}}"
-                                    style="background-image: url(/assets/img/gCons/edit.png);"><span
-                                        class="label label-info"></span> Applications</a></li>
+                    <div class="col-sm-12 tac">
+                        <ul class="ov_boxes">
+
+                            <li>
+                                <a class="btn" id="btn_select"  style="color: black">
+                                    <div class="p_bar_down p_canvas"><span>20,15,18,14,10,13,9,7</span></div>
+                                    <div class="ov_text">
+                                        <strong>Application Form</strong>
+                                        <p> click to view submitted records</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="btn" style="color: black">
+                                <div class="p_line_up p_canvas"><span>3,5,9,7,12,8,16</span></div>
+                                <div class="ov_text" style="color: black">
+                                    <strong>Application Status</strong>
+                                   
+                                    <p id="application_status" style="color: blue">{{$app_status}}</p>
+                                </div>
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
-
     </div>
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right"
@@ -181,15 +201,17 @@
 
     @include('includes.supplier-side-bar')
 
+    
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
     
     $(document).ready(function(){
 
-        $('#btn_selected_record').click(function(){
+        $('#btn_select').click(function(){
 
             var user_reference = $('#user_reference').val();
 
+            // alert(user_reference);
             var form_data = new FormData();
 
             form_data.append('user_reference', user_reference);
@@ -200,12 +222,12 @@
 								contentType: false,
 								cache: false,
 								data		: form_data,
-								url			:'/submitted-record',							
+								url			:'/access-supplier-records',							
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
 								success		:function(data){
                                     if(data.status){
-										// alert(data.message);
-                                        location.replace('/userdata/'+data.user_id);
+                                        location.replace('/supplier-record/'+data.user_id);
+                                        $('#application_status').html(data.approval_status);
 									}
 								},
 								error: function(data)
@@ -218,7 +240,7 @@
     });
 
     </script>
-
+    
 
 
     <script src="/assets/js/jquery.min.js"></script>

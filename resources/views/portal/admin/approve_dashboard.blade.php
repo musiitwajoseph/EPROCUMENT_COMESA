@@ -41,6 +41,8 @@
         <!-- favicon -->
             <link rel="shortcut icon" href="/assets/favicon.ico" />
 
+            <meta name="csrf-token" content="{{ csrf_token() }}"/>
+
  </head>
     <body class="full_width">
         <div class="style_switcher">

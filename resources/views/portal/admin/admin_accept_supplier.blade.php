@@ -265,7 +265,7 @@
 		<div class="col-sm-12 tac">
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
-				<h1 style="text-align: center;color:green;margin:3rem;background-color:yellow;">Pending Supplier</h1>
+				<h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Pending Supplier</h1>
 
 				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
 

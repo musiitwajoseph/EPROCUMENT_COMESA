@@ -87,8 +87,10 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
  Route::group(['middleware'=>['SupplierCheck']], function(){
 
     Route::get('supplier-dashboard',[COMESA_CONTROLLER::class, 'supplierDashboard'])->name('supplier-dashboard');
+    Route::get('status',[COMESA_CONTROLLER::class,'status'])->name('status');
+    Route::get('submitted-record/{id}',[COMESA_CONTROLLER::class, 'submitted_record']);
+    Route::get('supplier-record/{id}',[COMESA_CONTROLLER::class,'supplier_record']);
  });
-
 
 
 //  Admin Middleware Routes
@@ -121,7 +123,13 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('edit-code/{id}',[ProcurementPlan::class,'edit_code']);
    Route::get('delete-code/{id}',[ProcurementPlan::class,'delete_code']);
 
+   // Time lines
+
+   Route::get('display-timelines',[ProcurementPlan::class,'display_timeline'])->name('display-timelines');
    Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
+   Route::post('store-timeline',[ProcurementPlan::class,'store_timelines'])->name('store-timeline');
+
+
    Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
 
    // 
@@ -143,6 +151,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('view-user',[COMESA_CONTROLLER::class,'view_user_details'])->name('view-user');
    Route::get('user-rights-priveledges',[COMESA_CONTROLLER::class,'user_right_priveledges'])->name('user-rights-priveledges');
    Route::get('edit-user-priveledges/{id}',[COMESA_CONTROLLER::class,'edit_user_previledges']);
+   Route::get('view-user-priveledges/{id}',[COMESA_CONTROLLER::class,'view_user_previledges']);
 
    Route::get('edit-user-role/{id}',[COMESA_CONTROLLER::class,'edit_user_role']);
    Route::get('delete-user-role/{id}',[COMESA_CONTROLLER::class,'delete_user_role']);
@@ -157,12 +166,16 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
    Route::get('add-user-right',[COMESA_CONTROLLER::class,'add_user_right'])->name('add-user-right');
    Route::post('store-user-right',[COMESA_CONTROLLER::class,'store_user_right'])->name('store-user-right');
+
+
+   Route::post('store-previledge-db',[COMESA_CONTROLLER::class,'store_user_previledges_db'])->name('store-previledge-db');
 });
 
 
    Route::get('upload-supplier-details',[ProcurementPlan::class,'uploadSupplierDetails'])->name('upload-supplier-details');
    Route::post('send-supplier-uploaded-data',[ProcurementPlan::class,'send_supplier_uploaded_data'])->name('send-supplier-uploaded-data');
-      
+   Route::post('access-supplier-records',[COMESA_CONTROLLER::class,'access_supplier_records'])->name('access-supplier-records'); 
+
    //  Admin Middleware Routes Continuation
 
     Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('admin-login');
@@ -175,6 +188,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
    //  Testing routes to be deleted later
     Route::get('welcome',[COMESA_CONTROLLER::class,'welcomeHome']);
+
+
 
    
 
