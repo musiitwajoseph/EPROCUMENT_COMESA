@@ -437,7 +437,7 @@
                                             </tr>
 
 											<tr>
-                                                <td colspan="4"><h3>5.Reason for Accepting Application</h3></td>
+                                                <td colspan="4"><h3>5.Reason for Accepting or Rejecting Application</h3></td>
                                             </tr>
 
 											<tr>

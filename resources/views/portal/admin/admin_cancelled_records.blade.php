@@ -272,9 +272,10 @@
         </style>
 		<div class="col-sm-12 tac">
 
-            <h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Cancelled Supplier</h1>
+            <h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Recommended for Cancellation </h1>
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
+				
 				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
 
 				@csrf
@@ -436,27 +437,30 @@
                                             </tr>			
 											
 												<tr>
-												<td colspan="4"><h3>5.Reason for rejecting Supplier Application</h3></td>
+												<td colspan="4"><h3>5.Reason for rejecting this Supplier Application</h3></td>
 											   </tr>
 
 											   <tr>
                                                 <td colspan="4" style="text-align: left;margin-top:2rem;">{{$info->reason_for_rejection}}</td>
                                             </tr>
+
+											<input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
+											<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
             </table>
 
+			<button class="btn btn-danger pull-left" id="disapproving_btn">Fully Reject</button>
 
-			<p style="text-align: left;font-weight:bold;">Rejected by : {{$info->approved_by}}</p>
-			<p style="text-align: left;font-weight:bold;">Rejectors Email : {{$info->approved_email}}</p>
-			<p style="text-align: left;font-weight:bold;">Rejected date : {{$info->updated_at}}</p>
+            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button>
 
-
-
-           {{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Cancel Supplier</button>
-
-            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}
 		</div>
 	</div>
-                 
+
+		<div style="padding-top: 1rem;">
+			<p style="text-align: left;font-weight:bold;" >Reviewed by : {{$info->approved_by}}</p>
+			<p style="text-align: left;font-weight:bold;">Approval Officer Email: {{$info->approved_email}}</p>
+			<p style="text-align: left;font-weight:bold;">Reviewed date : {{$info->updated_at}}</p>
+		</div>
+
     </div>
           
 </div>
@@ -471,6 +475,39 @@
     <script type="text/javascript">
 
 
+$(document).ready(function(){
+				
+				var hidden_role = $('#hidden_role').val();
+				var hidden_status = $('#hidden_status').val();
+
+				if(hidden_role == "Approval Officer" && hidden_status == "null")
+				{
+					$('#special_supplier').hide();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+					$('#disapproving_btn').hide();
+					$('#approving_btn').hide();
+				}
+				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
+				{
+					$('#special_supplier').show();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+					$('#disapproving_btn').hide();
+					$('#approving_btn').hide();
+				}
+				
+	 });
+
+
             $(document).ready(function(){
                 $('#approving_btn').click(function(){
                     if (confirm('Are you sure you want to Approve this Supplier ?')) {
@@ -479,6 +516,7 @@
 						var id_hidden  = $('#id_hidden').val();
 
 						var form_data = new FormData();
+
 						form_data.append('id_hidden', id_hidden);
 
 
@@ -489,7 +527,7 @@
 								cache: false,
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								url			:'/approving',
+								url			:'/fully-approve',
 								success		:function(data){
 									if(data.status){		
                                         alert(data.message);	
@@ -514,15 +552,13 @@
 
             $(document).ready(function(){
                 $('#disapproving_btn').click(function(){
-                    if (confirm('Are you sure you want to cancel this Supplier Application ?')) {
+                    if (confirm('Are you sure you want to reject this Supplier Application ?')) {
                         
-
 						var id_hidden  = $('#id_hidden').val();
 
 						var form_data = new FormData();
+
 						form_data.append('id_hidden', id_hidden);
-
-
 
                             $.ajax({
 								type: "POST",
@@ -531,7 +567,7 @@
 								cache: false,
 								data		: form_data,								
 								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								url			:'/cancel_approving',
+								url			:'/fully-cancel',
 								success		:function(data){
 									if(data.status){		
                                         alert(data.message);	

@@ -10,15 +10,15 @@
     <title>..:: Admin - Register Portal ::..</title>
 </head>
 <body>
-    <div class="img-centre">
-      <a href="#"><img src="/assets/img/logo.jpg" alt="COMESA_logo" class="responsive"></a>  
+    <div class="img-centre-two">
+      <a href="#"><img src="/assets/img/logo.jpg" ></a>  
     </div>
    
     <div class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="signup-form">
-                    <form action="{{ route('admin.save') }}" class="mt-5 border p-4 bg-light shadow" method="POST">
+                    <form action="{{ route('admin.save') }}" class="mt-3 border p-4 bg-light shadow" method="POST">
                         @csrf
                         <h2 class="mb-5 text-primary" style="text-align: center">COMESA ADMIN REGISTER PORTAL</h2>
 
@@ -43,7 +43,16 @@
                                 <span class="text-danger">@error('username'){{$message}}@enderror</span>
                             </div>
 
-
+                            <div class="mb-3 col-md-12">
+                                <label>User Role<span class="text-danger">*</span></label>
+                                <select name="user_role" id="user_role" class="form-control">
+                                    @foreach ($user_roles as $user_role)
+                                    <option  value="{{$user_role->user_name}}">{{$user_role->user_name}}</option>    
+                                    @endforeach
+                                </select>
+                                {{-- <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{old('username')}}" required> --}}
+                                <span class="text-danger">@error('username'){{$message}}@enderror</span>
+                            </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Email<span class="text-danger">*</span></label>
@@ -81,6 +90,7 @@
         var username = $('#username').val();
         var email = $('#email').val();
         var password = $('#password').val();
+        var user_role = $('#user_role').val();
         
 
         var form_data = new FormData();
@@ -88,7 +98,7 @@
         form_data.append('email',email);
         form_data.append('username',username);
         form_data.append('password',password);
-        
+        form_data.append('user_role',user_role);
 
                     $ajax({
                      type: "post",

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA PROCUREMENT DASHBOARD </title>
+    <title>Assign Officer </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,15 +41,19 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}"
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 </head>
 
 <body class="full_width">
-  
+    
+    <div id="maincontainer" class="clearfix">
 
         <header>
+
+            {{-- @include('includes.TopNavTest'); --}}
+
 
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
@@ -78,6 +82,7 @@
             </nav>
 
 
+
         </header>
         <div id="contentwrapper">
             <div class="main_content">
@@ -92,71 +97,74 @@
                         </li>
                     </ul>
                 </div>
+                <h3 class="heading" style="color: rgb(26, 239, 54)">Assign Officer</h3>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Supplier Upload</h3>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success">
-                                            {{Session::get('success')}}
-                                        </div>
-                                    @endif
-
-
-                                    @if (Session::get('fail'))
-                                        <div class="alert alert-danger">
-                                            {{Session::get('fail')}}
-                                        </div>
-                                    @endif
-
-
-                                    <form action="{{route('send-supplier-uploaded-data')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
-                                    
-                                        @csrf
-                                        
-                                            <legend class="hide">Lorem ipsum dolor…</legend>
-                                            <div class="formSep form-group">
-                                                
-                                                <div class="col-md-9">
-                                                    <label  control-labelq"
-                                                    style="">Upload Supplier Infomation:</label>
-                                                    <input type="file" name="file1" class="input-sm form-control" required>
-                                                </div>
-                                            </div>
-
-                                            <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
-                                            <input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
-
-                                        <button type="submit"  class=" btn btn-primary"><i
-                                                class="glyphicon glyphicon-ok"></i> Upload</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                @if (Session::get('success'))
+                <div class="alert alert-success">
+                 {{Session::get('success')}}
                 </div>
+                 @endif
+
+                 @include('sweetalert::alert')
+
+                <form action="{{ route('store-assign-officer')}}" method="POST"> 
+
+                    @csrf
+                     <div class="formSep">
+
+                    <div class="row">
+
+                        <input type="hidden" name="user_id" id="user_id" value="{{$LoggedUserAdmin['id']}}" >
+
+                        <div class="col-sm-3 col-md-3">
+                            <label for="">Officer Name</label>
+                           <select name="assigned" id="assigned" class="form-control">
+                            @foreach ($approval_officer as $item)
+                            <option value="{{$item->id}}">{{$item->username}}</option>
+                            @endforeach
+                           
+                           </select>
+                           
+                        </div>
+
+
+                        <div class="col-sm-3 col-md-3">
+                            <label for="">Role</label>
+                            <input class="form-control" type="text" name="user_role" id="user_role" value="{{$item->user_role}}" required>
+                           
+                        </div>
+
+                       
+                        <div class="clearfix"></div>
+                        <br> 
+                        <div class="col-sm-3 col-md-3">
+
+                            <button type="submit" class="btn btn-primary">Assign</button>
+                            {{-- <input type="submit" class="btn btn-primary" value="Assign"> --}}
+                           {{-- <button class="btn btn-primary" id="add_new_data" >Assign</button> --}}
+                        </div>
+
+                </form>
+
+                    </div>
+                </div>
+
+                <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
+				<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
+
+
+                </div>  
             </div>
-
         </div>
-    </div>
 
     </div>
-
-    <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right"
-        data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
 
     @include('includes.side-bar')
-
+    
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
         
+
             $(document).ready(function(){
 				
 					var hidden_role = $('#hidden_role').val();
@@ -187,12 +195,6 @@
 
 
     </script>
-    
-
-
-
-
-
 
 
     <script src="/assets/js/jquery-migrate.min.js"></script>
@@ -242,9 +244,8 @@
     <script src="/assets/js/jquery.mediaTable.min.js"></script>
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
-    <!-- charts -->
-  
-   
+
+
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

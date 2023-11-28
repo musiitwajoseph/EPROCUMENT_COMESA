@@ -488,9 +488,70 @@ class ProcurementPlan extends Controller
         $timelines_heading = DB::table('master_datas')->select('md_name')->where('md_master_code_id',$db_timeline)->get();
         $time_data = timeline::find(1);
 
-        // @foreach ($time_data->getAttributes() as $column => $value)
-
         return view('procurement.display_timeline',$data,compact('time_data','timelines_heading'));
     }
 
+    public function assign_officer(){
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+
+        return view('procurement.assign_officer',$data,compact('approval_officer'));
+
+    }
+
+    public function store_assign_officer(Request $request){
+
+        // $user_id = DB::table('admins')->where('md_master_code_id',$db_timeline)->value('id');
+        $user_id = $request->assigned;  
+        
+        DB::table('admins')
+        ->where('id',$user_id)
+        ->update(['user_status' => "Assigned"]);
+
+        Alert::success('Success', 'Approver Officer has been Assigned');
+
+        return back();
+    }
+
+    public function checkapprovalofficer($id)
+    {
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Invalid OTP being entered",
+        ]);
+    }
+
+
+    public function fully_cancel(Request $request){
+
+        $user_id = $request->id_hidden;
+
+        DB::table('supplier_registration_details_models')
+        ->where('id',$user_id)
+        ->update(['approval_status' => "Cancelled",
+        'fully' => "fully",]);
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Supplier has been Cancelled",
+        ]);
+    }
+
+
+    public function fully_approve(Request $request){
+
+        $user_id = $request->id_hidden;
+
+        
+        DB::table('supplier_registration_details_models')
+        ->where('id',$user_id)
+        ->update(['approval_status' => "Approved",
+        'fully' => "fully",]);
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Supplier has been Approved",
+        ]);
+    }
 }

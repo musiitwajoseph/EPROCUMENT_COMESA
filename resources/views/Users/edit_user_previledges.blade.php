@@ -106,8 +106,9 @@
                 </div>
                  @endif
 
+                 @include('sweetalert::alert')
 
-                <form id="updateForm" action="{{ route('store-previledge-db') }}" method="POST"> 
+                <form id="updateForm" action="{{ url('store-previledge-db/'.$user_db_id) }}" method="POST"> 
 
                     @csrf
                      <div class="formSep">
@@ -157,28 +158,29 @@
                                             <tr>
                                                 <td  style="width: 5px"></td>
                                                 <td style="color: blue;">CHECK COLUMN</td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="A" value="A" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="V" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="E" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="D" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="P" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="I" name="columns[]"></td>
-                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox" id="X" name="columns[]"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>
+                                                <td class="table_checkbox" style="background-color:yellow;"><input type="checkbox"></td>                                               
                                                 <td style="text-align: center;background-color:rgb(255, 255, 255);color:#fff;"> </td>
                                             </tr>
 
+                                            <input type="hidden" name="user_db_id" id="user_db_id" value="{{$user_db_id}}">
                                             @foreach ($specific_user as $key => $item)
                                             
                                             <tr>
                                                 <td>{{$key+1}}</td>
                                                 <td>{{$item->previledge_name}}</td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox8"  class="first" data-row="1" data-col="7"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox9"  class="first" data-row="1" data-col="6"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox10" class="first" data-row="1" data-col="6"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox11" class="first" data-row="1" data-col="6"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox12" class="first" data-row="1" data-col="6"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox13" class="first" data-row="1" data-col="6"></td>
-                                                <td class="table_checkbox"><input type="checkbox" id="checkbox14" class="first" data-row="1" data-col="6"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="A" value="A" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="V" value="V" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="E" value="E" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="D" value="D" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="P" value="P" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="I" value="I" class="TT" name="columns[]"></td>
+                                                <td class="table_checkbox"><input type="checkbox" id="X" value="X" class="TT" name="columns[]"></td>
                                             <td style="width: 4px;height:4px; background-color:yellow;text-align:center;"><div class="btn btn-sm btn-primary" id="check_row_btn">check</div></td>
                                             </tr>
                                             @endforeach
@@ -267,20 +269,26 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
 
+                        $(document).ready(function(){
+                                            $('#check_all_btn').click(function(){
+
+                                                var checkboxes = document.querySelectorAll('.TT');
+                                        
+                                                checkboxes.forEach(function (checkbox) {
+                                                checkbox.checked = !checkbox.checked;
+                                            });
+                                    });
+                                });
+
+
                             $(document).ready(function(){
                                 $('#add_user_previledge_db').click(function(){
-                                    
-                                //     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                            
-                                //     checkboxes.forEach(function (checkbox) {
-                                //         checkbox.checked = !checkbox.checked;
-                                // });
 
                                 var formData = new FormData(document.getElementById('updateForm'));
 
                                 $.ajax({
                                 type: 'POST',
-                                url: '/store-previledge-db',
+                                url: '/store-previledge-db/user_db_id',
                                 data: formData,
                                 processData: false,
                                 contentType: false,
@@ -296,16 +304,7 @@
                       });            
 
 
-            $(document).ready(function(){
-					$('#check_all_btn').click(function(){
-                        
-                        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-				
-                        checkboxes.forEach(function (checkbox) {
-                            checkbox.checked = !checkbox.checked;
-                    });
-            });
-         });
+            
 
 
          $(document).ready(function(){

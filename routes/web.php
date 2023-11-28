@@ -101,6 +101,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::get('pending-record/{id}',[COMESA_CONTROLLER::class,'pending_record']);
     Route::get('approved-record/{id}',[COMESA_CONTROLLER::class,'approved_record']);
     Route::get('cancelled-record/{id}',[COMESA_CONTROLLER::class,'cancelled_record']);
+    Route::get('fully-cancelled/{id}',[COMESA_CONTROLLER::class,'fully_cancelled_record']);
+    Route::get('fully-approved/{id}',[COMESA_CONTROLLER::class,'fully_approved_record']);
     Route::get('user-data',[COMESA_CONTROLLER::class,'get_user_data'])->name('user-data');
     Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
     Route::get('OTP-validation',[COMESA_CONTROLLER::class,'OTP_Validation'])->name('OTP-validation');
@@ -115,6 +117,17 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('edit-record/{id}',[ProcurementPlan::class,'edit_record']);
    Route::get('delete-record/{id}',[ProcurementPlan::class,'delete_record']);
    Route::get('add-record',[ProcurementPlan::class,'addrecordmaster'])->name('add-record');
+
+   Route::get('assign-officer',[ProcurementPlan::class,'assign_officer'])->name('assign-officer');
+   Route::post('store-assign-officer',[ProcurementPlan::class,'store_assign_officer'])->name('store-assign-officer');
+   Route::post('check-approval-officer/{id}',[ProcurementPlan::class,'checkapprovalofficer'])->name('check-approval-officer');
+
+   // WORK FLOW PROCUREMENT PLAN
+
+   Route::post('fully-cancel',[ProcurementPlan::class,'fully_cancel'])->name('fully-cancel');
+   Route::post('fully-approve',[ProcurementPlan::class,'fully_approve'])->name('fully-approve');
+
+
 
    // Master Code routes :
 
@@ -168,7 +181,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::post('store-user-right',[COMESA_CONTROLLER::class,'store_user_right'])->name('store-user-right');
 
 
-   Route::post('store-previledge-db',[COMESA_CONTROLLER::class,'store_user_previledges_db'])->name('store-previledge-db');
+   Route::post('store-previledge-db/{id}',[COMESA_CONTROLLER::class,'store_user_previledges_db'])->name('store-previledge-db');
 });
 
 

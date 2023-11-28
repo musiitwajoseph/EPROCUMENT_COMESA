@@ -168,13 +168,13 @@
                                             <tr>
                                                 <td>{{$key+1}}</td>
                                                 <td>{{$item->previledge_name}}</td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
-                                                <td class="table_checkbox"></td>
+                                                <td class="table_checkbox">{{$item->A}}</td>
+                                                <td class="table_checkbox">{{$item->V}}</td>
+                                                <td class="table_checkbox">{{$item->E}}</td>
+                                                <td class="table_checkbox">{{$item->D}}</td>
+                                                <td class="table_checkbox">{{$item->P}}</td>
+                                                <td class="table_checkbox">{{$item->I}}</td>
+                                                <td class="table_checkbox">{{$item->X}}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

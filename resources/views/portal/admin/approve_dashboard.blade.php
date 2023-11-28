@@ -259,25 +259,31 @@
         </div>
 
 
-
+<div id="all_data">
 	<div class="row">
 		<div class="col-sm-12">
 			<ul class="dshb_icoNav clearfix">
-				<li><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png)"><span class="label label-info">{{$approved_count}}</span> Approved</a></li>
-                <li><a class="btn" id="pending_btn" style="background-image: url(/assets/img/gCons/processing1.png)"><span class="label label-info">{{$pending_count}}</span> Pending</a></li>
-                <li><a class="btn" id="cancelled_btn" style="background-image: url(/assets/img/gCons/delete-item1.png)"><span class="label label-info">{{$cancelled_count}}</span> Cancelled</a></li>				
+				<li><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png)"><span class="label label-info">{{$approved_count}}</span>To be Approved</a></li>
+                <li><a class="btn" id="pending_btn" style="background-image: url(/assets/img/gCons/processing1.png)"><span class="label label-info">{{$pending_count}}</span>Pending Approvals</a></li>
+                <li><a class="btn" id="cancelled_btn" style="background-image: url(/assets/img/gCons/delete-item1.png)"><span class="label label-info">{{$cancelled_count}}</span>To be Cancelled</a></li>			
+                <li><a class="btn" id="fully_approved_btn" style="background-image: url(/assets/img/gCons/plane.png)"><span class="label label-info">{{$fully_approved_count}}</span>Fully Approved</a></li>
+                <li><a class="btn" id="fully_cancelled_btn" style="background-image: url(/assets/img/gCons/lock.png)"><span class="label label-info">{{$fully_rejected_count}}</span>Fully Cancelled</a></li>	
 			</ul>
 		</div>
 	</div>
 
+    <input type="hidden" name="admin_username_hidden" id="admin_username_hidden" value={{$LoggedUserAdmin['username']}}>
+    <input type="hidden" name="admin_email_hidden" id="admin_email_hidden" value={{$LoggedUserAdmin['email']}}>
 
     <div class="row">
         <div class="col-sm-12 col-md-12">
 
             <section id="Approved_suppliers">
+                <div style="padding-bottom: 0.50rem;" id="approve_all_btn">
+                    <button class="btn btn-success pull-right mb-4">Approve all</button>
+                </div>
             <h3 class="heading" style="color: rgb(26, 239, 54)" >Approved Suppliers Records</h3>
                   
-            
             <table class="table table-bordered table-striped" id="smpl_tbl">
                 <thead>
                     <tr>
@@ -322,6 +328,60 @@
         </section>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            <section id="fully_approved_suppliers">
+            <h3 class="heading" style="color: rgb(26, 239, 54)" >Fully Approved Records</h3>
+                  
+            
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Nature of Business</th>
+                        <th>Contact Person</th>
+                        <th>Physical Address</th>
+                        <th>National Pension Authority</th>
+                        <th>Bank Name</th>
+                        <th>Branch Name</th>
+                        <th>Years in Business</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($fully_approved as $item)    
+                    
+                    <tr>
+                        <td>{{$item->BusinessName}}</td>
+                        <td>{{$item->Nature_of_Business}}</td>
+                        <td>{{$item->contact_person}}</td>
+                        <td>{{$item->physical_address}}</td>
+                        <td>{{$item->National_Pension_Authority}}</td>
+                        <td>{{$item->Bank_name}}</td>
+                        <td>{{$item->Bank_Branch}}</td>
+                        <td>{{$item->No_of_years_in_business}}</td>
+                        <td><a href="{{'fully-approved/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            {{$approved->links()}}
+
+            <style>
+                .w-5{
+                    display: none;
+                    }
+            </style>
+
+        </section>
+        </div>
+    </div>
+
 
     <section id="Pending_Suppliers">
     <div class="row">
@@ -370,6 +430,9 @@
     <section id="Cancelled_Suppliers">
     <div class="row">
         <div class="col-sm-12 col-md-12">
+            <div style="padding-bottom: 0.50rem;" id="reject_all_btn">
+                <button class="btn btn-danger pull-right mb-4">Reject all</button>
+            </div>
             <h3 class="heading" style="color: red">Cancelled Suppliers Records</h3>
             
             <table class="table table-bordered table-striped" id="smpl_tbl">
@@ -398,7 +461,7 @@
                         <td>{{$item->National_Pension_Authority}}</td>
                         <td>{{$item->Bank_name}}</td>
                         <td>{{$item->No_of_years_in_business}}</td>
-                        <td><button class="btn btn-danger">Cancelled</button></td>
+                        <td><button class="btn btn-danger">To be Cancelled</button></td>
                         <td><a href="{{'cancelled-record/'.$item->id}}" class="btn btn-success">View Details</a></td>
                     </tr>
 
@@ -410,11 +473,111 @@
         </div>
     </div>
     </section>
+
+    <section id="fully_rejected_suppliers">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <h3 class="heading" style="color: red">Fully rejected Suppliers</h3>
+                
+                <table class="table table-bordered table-striped" id="smpl_tbl">
+                    <thead>
+                        <tr>
+                            <th>Business Name</th>
+                            <th>Nature of Business</th>
+                            <th>Contact Person</th>
+                            <th>Physical Address</th>
+                            <th>National Pension Authority</th>
+                            <th>Bank Name</th>
+                            <th>Years in Business</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        @foreach ($fully_rejected as $item)    
+                        
+                        <tr>
+                            <td>{{$item->BusinessName}}</td>
+                            <td>{{$item->Nature_of_Business}}</td>
+                            <td>{{$item->contact_person}}</td>
+                            <td>{{$item->physical_address}}</td>
+                            <td>{{$item->National_Pension_Authority}}</td>
+                            <td>{{$item->Bank_name}}</td>
+                            <td>{{$item->No_of_years_in_business}}</td>
+                            <td><button class="btn btn-danger">Fully rejected</button></td>
+                            <td><a href="{{'fully-cancelled/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                        </tr>
+    
+                        @endforeach
+                      
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+        </section>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            <section id="fully_approved_btns">
+            <h3 class="heading" style="color: rgb(26, 239, 54)" >Fully Approved Suppliers Records</h3>
+                  
+            
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Nature of Business</th>
+                        <th>Contact Person</th>
+                        <th>Physical Address</th>
+                        <th>National Pension Authority</th>
+                        <th>Bank Name</th>
+                        <th>Branch Name</th>
+                        <th>Years in Business</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($approved as $item)    
+                    
+                    <tr>
+                        <td>{{$item->BusinessName}}</td>
+                        <td>{{$item->Nature_of_Business}}</td>
+                        <td>{{$item->contact_person}}</td>
+                        <td>{{$item->physical_address}}</td>
+                        <td>{{$item->National_Pension_Authority}}</td>
+                        <td>{{$item->Bank_name}}</td>
+                        <td>{{$item->Bank_Branch}}</td>
+                        <td>{{$item->No_of_years_in_business}}</td>
+                        <td><a href="{{'approved-record/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            {{$approved->links()}}
+
+            <style>
+                .w-5{
+                    display: none;
+                    }
+            </style>
+
+        </section>
+        </div>
+    </div>
+</div>
                  
             </div>
         </div>
 
         </div>
+
+        <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
+        <input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
@@ -424,67 +587,138 @@
     <script type="text/javascript">
 
 
+
+            $(document).ready(function(){
+				
+                var hidden_role = $('#hidden_role').val();
+                var hidden_status = $('#hidden_status').val();
+
+                if(hidden_role == "Approval Officer" && hidden_status == "null")
+                {
+                    $('#special_supplier').hide();
+                    $('#special_procurement_plan').hide();
+                    $('#special_master_data').hide();
+                    $('#special_user_data').hide();
+                    $('#special_user_rights').hide();
+                    $('#dashboard_menu').hide();
+                    $('#mini_dashboard').hide();
+                    $('#fully_approved_btn').hide();
+                    $('#fully_cancelled_btn').hide();
+                    $('#all_data').hide();
+                    $('#reject_all_btn').hide();
+                    $('#approve_all_btn').hide();
+                }
+                else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
+                {
+                    $('#special_supplier').show();
+                    $('#special_procurement_plan').hide();
+                    $('#special_master_data').hide();
+                    $('#special_user_data').hide();
+                    $('#special_user_rights').hide();
+                    $('#dashboard_menu').hide();
+                    $('#mini_dashboard').hide();
+                    $('#fully_approved_btn').hide();
+                    $('#fully_cancelled_btn').hide();
+                    $('#reject_all_btn').hide();
+                    $('#approve_all_btn').hide();
+                }
+     });
+
+
             $(document).ready(function(){
                     $('#Pending_Suppliers').hide();
                     $('#Cancelled_Suppliers').hide();
+                    $('#fully_approved_btns').hide();
+                    $('#fully_approved_suppliers').hide();
+                    $('#fully_rejected_suppliers').hide();
+
             });
 
 
             $(document).ready(function(){
                 $('#approved_btn').click(function(){
-
+                    $('#fully_approved_suppliers').hide();
                     $('#Approved_suppliers').show();
                     $('#Pending_Suppliers').hide();
                     $('#Cancelled_Suppliers').hide();
+                    $('#fully_rejected_suppliers').hide();
                 });
             });
 
 
             $(document).ready(function(){
                 $('#pending_btn').click(function(){
-
+                    $('#fully_approved_suppliers').hide();
                     $('#Pending_Suppliers').show();
                     $('#Approved_suppliers').hide();
                     $('#Cancelled_Suppliers').hide();
+                    $('#fully_rejected_suppliers').hide();
                 });
             });
 
             $(document).ready(function(){
                 $('#cancelled_btn').click(function(){
-
+                    $('#fully_approved_suppliers').hide();
                     $('#Pending_Suppliers').hide();
                     $('#Approved_suppliers').hide();
                     $('#Cancelled_Suppliers').show();
+                    $('#fully_rejected_suppliers').hide();
                 });
             });
 
 
             $(document).ready(function(){
                 $('#approved_btn_supppliers').click(function(){
-
+                    $('#fully_approved_suppliers').hide();
                     $('#Approved_suppliers').show();
                     $('#Pending_Suppliers').hide();
                     $('#Cancelled_Suppliers').hide();
+                    $('#fully_rejected_suppliers').hide();
                 });
             });
 
 
             $(document).ready(function(){
                 $('#pending_btn_supppliers').click(function(){
-
                     $('#Pending_Suppliers').show();
                     $('#Approved_suppliers').hide();
                     $('#Cancelled_Suppliers').hide();
+                    $('#fully_approved_suppliers').hide();
+                    $('#fully_rejected_suppliers').hide();
+
                 });
             });
 
 
             $(document).ready(function(){
                 $('#rejected_btn_supppliers').click(function(){
-
                     $('#Pending_Suppliers').hide();
                     $('#Approved_suppliers').hide();
+                    $('#fully_approved_suppliers').hide();
                     $('#Cancelled_Suppliers').show();
+                    $('#fully_rejected_suppliers').hide();
+
+                });
+            });
+
+            $(document).ready(function(){
+                $('#fully_approved_btn').click(function(){
+                    $('#Pending_Suppliers').hide();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                    $('#fully_approved_suppliers').show();
+                    $('#fully_rejected_suppliers').hide();
+                });
+            });
+
+            $(document).ready(function(){
+                $('#fully_cancelled_btn').click(function(){
+                    $('#Pending_Suppliers').hide();
+                    $('#Approved_suppliers').hide();
+                    $('#Cancelled_Suppliers').hide();
+                    $('#fully_approved_suppliers').hide();
+                    $('#fully_rejected_suppliers').show();
+
                 });
             });
 

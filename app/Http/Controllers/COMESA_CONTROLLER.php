@@ -1385,7 +1385,8 @@ class COMESA_CONTROLLER extends Controller
 
     public function admin_register(){
 
-        return view('Login.AdminRegister');
+        $user_roles = user_role::all();
+        return view('Login.AdminRegister',compact('user_roles'));
     }
 
 
@@ -1395,6 +1396,7 @@ class COMESA_CONTROLLER extends Controller
             'username'=>'required',
             'email'=>'required|email|unique:admins',
             'password'=>'required|min:5|max:12',
+            'user_role'=>'required',
         ]);
 
         
@@ -1403,6 +1405,7 @@ class COMESA_CONTROLLER extends Controller
 
         $admindb->email = $request->email;
         $admindb->username = $request->username;
+        $admindb->user_role = $request->user_role;
         $admindb->password = Hash::make($request->password);
 
         $save = $admindb->save();
@@ -1419,7 +1422,6 @@ class COMESA_CONTROLLER extends Controller
 
 
     public function Supplier_OTP(){
-
 
         return view('Login.SupplierOTP');
     }
@@ -1541,16 +1543,36 @@ class COMESA_CONTROLLER extends Controller
     public function approve_dashboard(){
 
 
-        $approved = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')->simplePaginate(10);
-        $approved_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')->count();
+        $approved = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')
+                                                                     ->where('fully', 'null')
+                                                                     ->simplePaginate(10);
+
+                                                                    
+        $approved_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')
+                                                                    ->where('fully', 'null')->count();
 
         $pending = DB::table('supplier_registration_details_models')->where('approval_status', 'Pending')->simplePaginate(10);
         $pending_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Pending')->count();
 
 
-        $cancelled = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')->simplePaginate(10);
-        $cancelled_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')->count();
+        $cancelled = DB::table('supplier_registration_details_models')->where('approval_status', 'To be Cancelled')->simplePaginate(10);
+        $cancelled_count = DB::table('supplier_registration_details_models')->where('approval_status', 'To be Cancelled')->count();
 
+        $fully_approved = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')
+                                                                  ->where('fully', 'fully')
+                                                                      ->simplePaginate(10);
+
+        $fully_approved_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')
+                                                                                ->where('fully', 'fully')
+                                                                                  ->count();
+
+        $fully_rejected = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')
+                                                                                ->where('fully', 'fully')
+                                                                                ->simplePaginate(10);                          
+                
+        $fully_rejected_count = DB::table('supplier_registration_details_models')->where('approval_status', 'Cancelled')
+                                                                                                ->where('fully', 'fully')
+                                                                                                  ->count();
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
@@ -1559,7 +1581,11 @@ class COMESA_CONTROLLER extends Controller
                                                            ->with('cancelled',$cancelled)
                                                            ->with('approved_count',$approved_count)
                                                            ->with('pending_count',$pending_count)
-                                                           ->with('cancelled_count',$cancelled_count);
+                                                           ->with('cancelled_count',$cancelled_count)
+                                                           ->with('fully_approved',$fully_approved)
+                                                           ->with('fully_approved_count',$fully_approved_count)
+                                                           ->with('fully_rejected',$fully_rejected)
+                                                           ->with('fully_rejected_count',$fully_rejected_count);
                                                            
     }
 
@@ -1645,7 +1671,61 @@ class COMESA_CONTROLLER extends Controller
                                                               ->with('subcategory',$subcategory)->with('category',$category);
     }
 
+    public function fully_approved_record($id){
 
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+        $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+        $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
+        
+        $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+
+
+        $info = SupplierRegistrationDetailsModel::find($id);
+        $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.admin_fully_approved',$data)->with('info',$info)
+                                                              ->with('saved_documents',$saved_documents)
+                                                              ->with('Types_of_business',$Types_of_business)
+                                                              ->with('id',$id)->with('country_name',$country_name)
+                                                              ->with('subcategory',$subcategory)->with('category',$category);
+    }
+
+    public function fully_cancelled_record($id){
+
+        $country_code =  DB::table('supplier_registration_details_models')->where('id', $id)->value('country');
+        $country_name = DB::table('Countries')->where('PhoneCode',$country_code)->value('Name');
+
+        $category_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Category');
+        $category = DB::table('master_datas')->where('md_id',$category_id)->value('md_name');
+        
+        $SubCategory_id =  DB::table('supplier_registration_details_models')->where('id', $id)->value('SubCategory');
+        $subcategory = DB::table('master_datas')->select('md_name')->where('md_id','=',$SubCategory_id)->value('md_name');
+
+        $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
+        $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
+
+
+        $info = SupplierRegistrationDetailsModel::find($id);
+        $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
+        $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.admin_fully_cancelled',$data)->with('info',$info)
+                                                              ->with('saved_documents',$saved_documents)
+                                                              ->with('Types_of_business',$Types_of_business)
+                                                              ->with('id',$id)->with('country_name',$country_name)
+                                                              ->with('subcategory',$subcategory)->with('category',$category);
+    }
 
     public function cancelled_record($id)
     {
@@ -1719,7 +1799,7 @@ class COMESA_CONTROLLER extends Controller
         
         return response()->json([
                 "status" => True,
-                "message"=>"The supplier Applciation request has been approved",
+                "message"=>"The supplier Applciation has been recommended to be approved",
             ]);
     }
 
@@ -1733,7 +1813,7 @@ class COMESA_CONTROLLER extends Controller
 
         DB::table('supplier_registration_details_models')
                                 ->where('id', $id_hidden)
-                                ->update([  'approval_status' => "Cancelled",
+                                ->update([  'approval_status' => "To be Cancelled",
                                             'approved_by' => $admin_username_hidden,
                                             'approved_email' => $admin_email_hidden,
                                             'reason_for_rejection' => $reason_for_rejection,
@@ -1892,11 +1972,14 @@ class COMESA_CONTROLLER extends Controller
 
         public function edit_user_previledges($id){
 
+            $user_db_id = $id;
+
+            // dd($user_id);
             $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
             $specific_user = DB::table('user_previledges')->where('user_user_id', $id)->get();
             $user_role = DB::table('user_roles')->where('user_id', $id)->value('user_name');
 
-            return view('Users.edit_user_previledges',$data,compact(['specific_user','user_role']));
+            return view('Users.edit_user_previledges',$data,compact(['specific_user','user_role','user_db_id']));
         }
 
         public function view_user_previledges($id){
@@ -2001,28 +2084,292 @@ class COMESA_CONTROLLER extends Controller
 
         // Store in User Rights Table
 
-        public function store_user_previledges_db(Request $request)
+        public function store_user_previledges_db(Request $request,$id)
         {
 
+            $db_id = $id;
             $selectedColumns = $request->input('columns', []);
-            $users = user_previledge::all();
 
-            foreach ($users as $user) {
-                foreach ($selectedColumns as $column) {
-
-                    // var_dump($column);
-                    if ($column == 'A') {
-                           dd("hello");
-                        $user->name = 'New Name';
-                    } 
-                    elseif  ($column == 'email')
-                     {
-                        $user->email = 'new@email.com';
-                    }
-                }
-                dd();
-                $user->save();
+            if($selectedColumns == [])
+            {
+                user_previledge::where('user_user_id', $db_id)->update([
+                    'A' => '',
+                    'V' => '',
+                    'E' => '',
+                    'D' => '',
+                    'P' => '',
+                    'I' => '',
+                    'X' => '',
+                    ]);
             }
-        }
+            else
+            {
 
-}
+                foreach ($selectedColumns as $key => $column) {
+
+                    $data = $key+1;          
+
+                    if($data == 1)
+                    {                         
+                        if($column == 'A'){
+                            $A = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'A' => $A,
+                             ]);
+                         }
+                         else
+                         {
+                             $A = '';
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'A' => $A,
+                                 ]);
+                         }
+                    }
+
+                    if($data == 2)
+                    {                         
+                        if($column == 'V'){
+                            $V = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'V' => $V,
+                             ]);
+                         }
+                         else
+                         {
+                             $V = '';
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'V' => '',
+                                 ]);
+                         }
+                    }
+
+
+                    if($data == 3)
+                    {
+                        if($column == 'E'){
+                            $E = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'E' => $E,
+                             ]);
+                         }
+                         else
+                         {
+                             $E = '';
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'E' => '',
+                                 ]);
+                         }
+                    }
+
+                    if($data == 4)
+                    {
+                        if($column == 'D'){
+                            $D = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'D' => $D,
+                             ]);
+                         }
+                         else
+                         {
+                             $D = '';
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'D' => '',
+                                 ]);
+                         }
+                    }
+                   
+                    if($data == 5)
+                    {
+                        if($column == 'P'){
+                            $P = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'P' => $P,
+                             ]);
+                         }
+                         else
+                         {
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'P' => '',
+                                 ]);
+                         }
+                    }
+
+                    if($data == 6)
+                    {
+                        if($column == 'I'){
+                            $I = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'I' => $I,
+                             ]);
+                         }
+                         else
+                         {
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'I' => '',
+                                 ]);
+                         }
+                    }
+
+                    if($data == 7)
+                    {
+                        if($column == 'X'){
+                            $X = '✔';
+                            user_previledge::where('user_user_id', $db_id)->update([
+                             'X' => $X,
+                             ]);
+                         }
+                         else
+                         {
+                             user_previledge::where('user_user_id', $db_id)->update([
+                                 'X' => '',
+                                 ]);
+                         }
+                    }
+                     
+
+            }
+
+
+                // foreach ($selectedColumns as $key => $column) {
+
+                //     $data = $key+1;
+
+                //     if($column == 'A'){
+                //         $A = '✔';
+                //         user_previledge::where('user_user_id', $db_id)->update([
+                //          'A' => $A,
+                //          ]);
+                //      }
+                //      else
+                //      {
+                //          $A = '';
+                //          user_previledge::where('user_user_id', $db_id)->update([
+                //              'A' => $A,
+                //              ]);
+                //      }           
+
+                    // if($data == 1)
+                    // {                         
+                    //     if($column == 'A'){
+                    //         $A = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'A' => $A,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          $A = '';
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'A' => $A,
+                    //              ]);
+                    //      }
+                    // }
+
+                    // if($data == 2)
+                    // {                         
+                    //     if($column == 'V'){
+                    //         $V = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'V' => $V,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          $V = '';
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'V' => '',
+                    //              ]);
+                    //      }
+                    // }
+
+
+                    // if($data == 3)
+                    // {
+                    //     if($column == 'E'){
+                    //         $E = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'E' => $E,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          $E = '';
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'E' => '',
+                    //              ]);
+                    //      }
+                    // }
+
+                    // if($data == 4)
+                    // {
+                    //     if($column == 'D'){
+                    //         $D = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'D' => $D,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          $D = '';
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'D' => '',
+                    //              ]);
+                    //      }
+                    // }
+                   
+                    // if($data == 5)
+                    // {
+                    //     if($column == 'P'){
+                    //         $P = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'P' => $P,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'P' => '',
+                    //              ]);
+                    //      }
+                    // }
+
+                    // if($data == 6)
+                    // {
+                    //     if($column == 'I'){
+                    //         $I = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'I' => $I,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'I' => '',
+                    //              ]);
+                    //      }
+                    // }
+
+                    // if($data == 7)
+                    // {
+                    //     if($column == 'X'){
+                    //         $X = '✔';
+                    //         user_previledge::where('user_user_id', $db_id)->update([
+                    //          'X' => $X,
+                    //          ]);
+                    //      }
+                    //      else
+                    //      {
+                    //          user_previledge::where('user_user_id', $db_id)->update([
+                    //              'X' => '',
+                    //              ]);
+                    //      }
+                    // }
+                }
+
+            // if($save){
+                Alert::success('Success', 'User previledge have been updated');
+
+                return back();
+            // }
+        }
+    }

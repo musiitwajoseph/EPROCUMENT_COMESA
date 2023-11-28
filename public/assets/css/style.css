@@ -913,6 +913,14 @@
 			align-items: center;
 		 }
 
+		 .img-centre-two{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 170px;
+			/* width: 10px; */
+		 }
+
 		 #logo_resize_img{
 			width: 164px !important;
 			height: 164px !important;

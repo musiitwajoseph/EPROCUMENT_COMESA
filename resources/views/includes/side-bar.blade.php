@@ -12,6 +12,7 @@
                     </div>
                 </div>
 
+                <div id="special_supplier">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseTwo" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -23,15 +24,18 @@
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
                                 <li><a id="approved_btn_supppliers" href="{{ route('approve-dashboard')}}">Approved Suppliers</a></li>
-                                <li><a id="pending_btn_supppliers" href="j{{ route('approve-dashboard')}}">Pending Supplier</a></li>
+                                <li><a id="pending_btn_supppliers" href="{{ route('approve-dashboard')}}">Pending Supplier</a></li>
                                 <li><a id="rejected_btn_supppliers" href="{{ route('approve-dashboard')}}">Rejected Suppliers</a></li>
+                                <li><a id="rejected_btn_supppliers" href="{{ route('assign-officer')}}">Assign Approval Officer</a></li>
                                 <li><a id="rejected_btn_supppliers" href="{{ route('upload-supplier-details')}}">Import Suppliers Records</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-
+            </div>
                 
+
+            <div id="special_procurement_plan">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseThree" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -48,7 +52,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div id="special_master_data">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseLong" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -62,7 +68,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            
+            <div id="special_user_data">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseuser" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -77,8 +86,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
 
+            <div id="special_user_rights">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#collapseuser_rights" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
@@ -94,6 +105,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
             </div>
         </div> 

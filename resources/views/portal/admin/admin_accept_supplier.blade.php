@@ -262,6 +262,12 @@
                 text-transform: uppercase;
             }
         </style>
+
+		
+				
+
+
+
 		<div class="col-sm-12 tac">
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
@@ -432,7 +438,7 @@
 
 
 											  <tr>
-												<td colspan="3"><h3>5.Reason for rejecting Supplier Application</h3></td>
+												<td colspan="3"><h3>5.Reason for rejecting or accepting Supplier Application</h3></td>
 											   </tr>
 
 											   <tr>
@@ -443,9 +449,9 @@
 											
             </table>
 
-           <button class="btn btn-danger pull-left" id="disapproving_btn">Cancel Supplier</button>
+           <button class="btn btn-danger pull-left" id="disapproving_btn">Recommend Cancellation</button>
 
-            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button>
+            <button class="btn btn-success pull-right"  id="approving_btn">Recommend Approving</button>
 		</div>
 	</div>
                  
@@ -462,10 +468,38 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
 
+$(document).ready(function(){
+				
+				var hidden_role = $('#hidden_role').val();
+				var hidden_status = $('#hidden_status').val();
+
+				if(hidden_role == "Approval Officer" && hidden_status == "null")
+				{
+					$('#special_supplier').hide();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+				}
+				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
+				{
+					$('#special_supplier').show();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+				}
+				
+	 });
+
 
             $(document).ready(function(){
                 $('#approving_btn').click(function(){
-                    if (confirm('Are you sure you want to Approve this Supplier ?')) {
+                    if (confirm('Are you sure you want to recommend Approving for this Supplier ?')) {
                         
  
 						var id_hidden  = $('#id_hidden').val();

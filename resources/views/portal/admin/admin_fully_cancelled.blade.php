@@ -38,6 +38,8 @@
 
             <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
+			<meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <!-- favicon -->
             <link rel="shortcut icon" href="/assets/favicon.ico" />
 
@@ -113,7 +115,7 @@
 				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 					<div class="navbar-inner">
 						<div class="container-fluid">
-							<a class="brand pull-left" href="{{ route('admin-dashboard')}}">COMESA :: EPROCUREMENT</a>
+							<a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
 						   
 							<ul class="nav navbar-nav user_menu pull-right">
 								
@@ -121,7 +123,7 @@
 								<li class="divider-vertical hidden-sm hidden-xs"></li>                                                              
                                                                                                                                                                                                             
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user_avatar.png" alt="" class="user_avatar">{{$LoggedUserAdmin['username']}}<b class="caret"></b></a>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li><a href="javascript:void(0);">My Profile</a></li>
 										<li class="divider"></li>
@@ -133,8 +135,7 @@
 					</div>
 				</nav>
 
-				<input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
-				<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
+
 
 
 				<div class="modal fade" id="myMail">
@@ -260,101 +261,337 @@
     </ul>
 </div>
 
-	<div class="row" id="dashboard_menu">
+	<div class="row">
+
+        <style>
+            th{
+                text-align: center;
+                color: rgb(23, 137, 23);
+                text-transform: uppercase;
+            }
+        </style>
 		<div class="col-sm-12 tac">
-			<ul class="ov_boxes">
-				<li>
-					<div class="p_bar_up p_canvas"><span>2,4,9,7,12,8,16</span></div>
-					<div class="ov_text">
-						<strong>$3 458,00</strong>
-						Weekly Sale
 
-					</div>
-				</li>
-				<li>
-					<div class="p_bar_down p_canvas"><span>20,15,18,14,10,13,9,7</span></div>
-					<div class="ov_text">
-						<strong>$43 567,43</strong>
-						Monthly Sale
-					</div>
-				</li>
+            <h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Fully Rejected Supplier  </h1>
+            <table class="table table-bordered table-striped" id="smpl_tbl">
+
 				
-				</li>
-				<li>
-					<div class="p_line_down p_canvas"><span>20,16,14,18,15,14,14,13,12,10,10,8</span></div>
-					<div class="ov_text">
-						<strong>30240</strong>
-						Unique visitors (last week)
-					</div>
-				</li>
-			</ul>
+				<input type="hidden" name="id_hidden" id="id_hidden" value={{$id}}>
+
+				@csrf
+
+                <tr>
+                    <td colspan="4"><h3>1.Business Details</h3></td>
+                </tr>
+
+            <tr>
+            <th>Country</th>
+            <th>Category</th>
+            <th>Sub-category</th>
+            <th>BusinessName</th>
+            </tr>  
+
+            <tr>
+                <td>{{$country_name}}</td>
+                <td>{{$category}}</td>
+                <td>{{$subcategory}}</td>
+                <td>{{$info->BusinessName}}</td>
+            </tr>  
+
+                <tr>
+                <th>Type of Business</th>
+                <th>Nature of Business</th>
+                <th>Certificate of Registration Incorporation number</th>
+                <th>Revenue Authority Taxpayer’s Identification Number</th>
+                </tr>  
+
+                <tr>
+                    <td>{{$Types_of_business}}</td>
+                    <td>{{$info->Nature_of_Business}}</td>
+                    <td>{{$info->Certificate_of_Registration}}</td>
+                    <td>{{$info->Revenue_Authority_Taxpayers_Identification_Number}}</td>
+                </tr> 
+
+                    <tr>
+                    <th>Tax compliance certificate expiration date</th>
+                    <th>Physical address</th>
+                    <th>Company Email</th>
+                    <th>National Pension Authority (NPSA) Registration No</th>
+                    </tr>    
+
+                    <tr>
+                        <td>{{$info->Tax_compliance_certificate_expiration}}</td>
+                        <td>{{$info->physical_address}}</td>
+                        <td>{{$info->company_email}}</td>
+                        <td>{{$info->National_Pension_Authority}}</td>
+                    </tr> 
+
+                        <tr>
+                        <th>Personal contact :</th>
+                        <th>Company Telephone number</th>
+                        <th>Contact Telephone number</th>
+                        <th></th>
+                        </tr>  
+
+                        <tr>
+                            <td>{{$info->contact_person}}</td>
+                            <td>{{$info->company_telephone}}</td>
+                            <td>{{$info->contact_person_telephone}}</td>
+                        </tr> 
+
+                        <tr>
+                            <td colspan="4"><h3>2.Financial Information</h3></td>
+                        </tr>
+
+                            <tr>
+                            <th>Account name </th>
+                            <th>Bank Account number</th>
+                            <th>Bank name </th>
+                            <th>Bank Branch </th>
+                            </tr>  
+
+                            <tr>
+                                <td>{{$info->Account_Name}}</td>
+                                <td>{{$info->Bank_Account}}</td>
+                                <td>{{$info->Bank_name}}</td>
+                                <td>{{$info->Bank_Branch}}</td>
+                            </tr> 
+
+                                <tr>
+                                <th>Branch code  </th>
+                                <th>Account currency </th>
+                                <th>Company financial contact person</th>
+                                <th>Contact person email</th>
+                                </tr>  
+
+                                <tr>
+                                    <td>{{$info->Branch_code}}</td>
+                                    <td>{{$info->Account_currency}}</td>
+                                    <td>{{$info->company_financial_contact}}</td>
+                                    <td>{{$info->contact_person_email}}</td>
+                                </tr> 
+
+                                    <tr>
+                                    <th>Contact person phone number</th>
+                                    </tr>
+
+                                    <tr>
+                                        <td>{{$info->contact_person_phone_number}}</td>
+                                   </tr>
+
+                                   <tr>
+                                    <td colspan="4"><h3>3.Capacity Levels</h3></td>
+                                   </tr>
+
+                                    <tr>
+                                    <th>Annual turnover excluding this contract </th>
+                                    <th>Current assets </th>
+                                    <th>Current liabilities </th>
+                                    <th>Current ratio (current assets/current liabilities) </th>
+                                    </tr>  
+
+                                    <tr>
+                                        <td>{{$info->Annual_turnover}}</td>
+                                        <td>{{$info->Current_assets}}</td>
+                                        <td>{{$info->Current_liabilities}}</td>
+                                        <td>{{$info->Current_ratio}}</td>
+                                    </tr>
+
+                                        <tr>
+                                        <th>No of years in business :</th>
+                                        <th>Number of employees</th>
+                                        <th>Other employees </th>
+                                        <th>Relevant specialisation</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>{{$info->No_of_years_in_business}}</td>
+                                            <td>{{$info->Number_of_employees}}</td>
+                                            <td>{{$info->Other_employees}}</td>
+                                            <td>{{$info->Relevant_specialisation}}</td>
+                                        </tr>
+
+										
+
+                                        <tr>
+                                            <th>A maximum of 10 Projects|contracts  :</th>
+                                        </tr>
+
+                                            <tr>  
+                                            <td>{{$info->maximum_of_10_Projects_contracts}}</td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td colspan="4"><h3>4.Required Documents</h3></td>
+                                            </tr>
+
+                                            <tr>
+                                              
+                                                <td colspan="3" style="text-align: left">
+                                                    @foreach ($saved_documents as $doc)
+                                                    <span>Attachment:</span>
+                                                    <a href="{{ url('download/'.$doc->Attachments) }}">{{$doc->Attachments}}</a><br/>
+                                                    @endforeach
+                                                </td>
+                                            </tr>			
+											
+												<tr>
+												<td colspan="4"><h3>5.Reason for rejecting this Supplier Application</h3></td>
+											   </tr>
+
+											   <tr>
+                                                <td colspan="4" style="text-align: left;margin-top:2rem;">{{$info->reason_for_rejection}}</td>
+                                            </tr>
+
+											<input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
+											<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
+            </table>
+
+			{{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Fully Reject</button>
+
+            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}
+
 		</div>
 	</div>
 
-	<div class="row" id="mini_dashboard">
-		<div class="col-sm-12">
-			<ul class="dshb_icoNav clearfix">
-				<li><a href="{{ route('approve-dashboard') }}" style="background-image: url(/assets/img/gCons/multi-agents.png)"><span class="label label-info">+9</span> Approvals</a></li>
-				<li><a href="{{route('procurement')}}" style="background-image: url(/assets/img/gCons/chat-02.png)">Procurement</a></li>
-				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/configuration.png)">Settings</a></li>
-				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/lab.png)">Lab</a>
-				</li><li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/van.png)"><span class="label label-success">$2851</span> Delivery</a></li>
-				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/pie-chart.png)">Charts</a></li>
-				<li><a href="javascript:void(0);" style="background-image: url(/assets/img/gCons/edit.png)">Add New Article</a></li>
-		
-			</ul>
+		<div style="padding-top: 1rem;">
+			<p style="text-align: left;font-weight:bold;" >Reviewed by : {{$info->approved_by}}</p>
+			<p style="text-align: left;font-weight:bold;">Approval Officer Email: {{$info->approved_email}}</p>
+			<p style="text-align: left;font-weight:bold;">Reviewed date : {{$info->updated_at}}</p>
 		</div>
-	</div>
 
-
- 
-                 
+    </div>
+          
 </div>
-            </div>
 
-        </div>
+</div>
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
-
-	<script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
-        
+
+
+$(document).ready(function(){
+				
+				var hidden_role = $('#hidden_role').val();
+				var hidden_status = $('#hidden_status').val();
+
+				if(hidden_role == "Approval Officer" && hidden_status == "null")
+				{
+					$('#special_supplier').hide();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+					$('#disapproving_btn').hide();
+					$('#approving_btn').hide();
+				}
+				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
+				{
+					$('#special_supplier').show();
+					$('#special_procurement_plan').hide();
+					$('#special_master_data').hide();
+					$('#special_user_data').hide();
+					$('#special_user_rights').hide();
+					$('#dashboard_menu').hide();
+					$('#mini_dashboard').hide();
+					$('#disapproving_btn').hide();
+					$('#approving_btn').hide();
+				}
+				
+	 });
+
 
             $(document).ready(function(){
-				
-					var hidden_role = $('#hidden_role').val();
-					var hidden_status = $('#hidden_status').val();
+                $('#approving_btn').click(function(){
+                    if (confirm('Are you sure you want to Approve this Supplier ?')) {
+                        
 
-					if(hidden_role == "Approval Officer" && hidden_status == "null")
-					{
-						$('#special_supplier').hide();
-						$('#special_procurement_plan').hide();
-						$('#special_master_data').hide();
-						$('#special_user_data').hide();
-						$('#special_user_rights').hide();
-						$('#dashboard_menu').hide();
-						$('#mini_dashboard').hide();
-					}
-					else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
-					{
-						$('#special_supplier').show();
-						$('#special_procurement_plan').hide();
-						$('#special_master_data').hide();
-						$('#special_user_data').hide();
-						$('#special_user_rights').hide();
-						$('#dashboard_menu').hide();
-						$('#mini_dashboard').hide();
-					}
-					
-         });
+						var id_hidden  = $('#id_hidden').val();
+
+						var form_data = new FormData();
+
+						form_data.append('id_hidden', id_hidden);
+
+
+                            $.ajax({
+								type: "POST",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/fully-approve',
+								success		:function(data){
+									if(data.status){		
+                                        alert(data.message);	
+										location.replace('/approve-dashboard');						
+									}								
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+                    }
+                else{
+                   
+                    return false;
+                }
+                 
+                });
+            });
+
+
+
+            $(document).ready(function(){
+                $('#disapproving_btn').click(function(){
+                    if (confirm('Are you sure you want to reject this Supplier Application ?')) {
+                        
+						var id_hidden  = $('#id_hidden').val();
+
+						var form_data = new FormData();
+
+						form_data.append('id_hidden', id_hidden);
+
+                            $.ajax({
+								type: "POST",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/fully-cancel',
+								success		:function(data){
+									if(data.status){		
+                                        alert(data.message);	
+										location.replace('/approve-dashboard');				
+									}								
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+                    }
+                else{
+                   
+                    return false;
+                }
+                 
+                });
+            });
 
 
     </script>
 
+    <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->
