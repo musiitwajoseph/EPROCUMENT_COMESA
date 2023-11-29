@@ -546,6 +546,24 @@ class ProcurementPlan extends Controller
 
         $user_id = $request->id_hidden;
 
+        $supplier_reference = DB::table('supplier_registration_details_models')->where('id',$user_id)->value('supplier_reference_form_no');
+        $supplier_email = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('email');
+        $username = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('username');
+
+
+        $data = [
+            'email'      => $supplier_email,
+            'username'   => $username,   
+            'title'      => 'COMESA:E-PROCUREMENT -  Rejection of Supplier Application for COMESA E-Procurement System',
+        ];
+
+        $pdf_data = PDF::loadView('emails.supplier_rejection_approval', $data); 
+
+        Mail::send('emails.supplier_rejection_approval', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+        });
+
         DB::table('supplier_registration_details_models')
         ->where('id',$user_id)
         ->update(['approval_status' => "Cancelled",
@@ -566,11 +584,9 @@ class ProcurementPlan extends Controller
         $supplier_email = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('email');
         $username = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('username');
 
-        dd($username);
-    
 
         $data = [
-            'email'      => 'hello@gmail.com',
+            'email'      => $supplier_email,
             'username'   => $username,   
             'title'      => 'COMESA:E-PROCUREMENT -  Successful Approval of Supplier Registration in COMESA E-Procurement System',
         ];

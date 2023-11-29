@@ -508,11 +508,13 @@ $(document).ready(function(){
 	 });
 
 
-            $(document).ready(function(){
+	 $(document).ready(function(){
                 $('#approving_btn').click(function(){
+					$('#approving_btn').html('Approving...');
+							$('#approving_btn').attr('disabled', true);
+
                     if (confirm('Are you sure you want to Approve this Supplier ?')) {
                         
-
 						var id_hidden  = $('#id_hidden').val();
 
 						var form_data = new FormData();
@@ -530,7 +532,11 @@ $(document).ready(function(){
 								url			:'/fully-approve',
 								success		:function(data){
 									if(data.status){		
-                                        alert(data.message);	
+                                        Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: data.message,
+                                    });	
 										location.replace('/approve-dashboard');						
 									}								
 								},
@@ -550,15 +556,18 @@ $(document).ready(function(){
 
 
 
-            $(document).ready(function(){
+			$(document).ready(function(){
                 $('#disapproving_btn').click(function(){
-                    if (confirm('Are you sure you want to reject this Supplier Application ?')) {
+					$('#disapproving_btn').html('Rejecting...');
+							$('#disapproving_btn').attr('disabled', true);
+                    if (confirm('Are you sure you want to cancel this Supplier Application ?')) {
                         
+
 						var id_hidden  = $('#id_hidden').val();
 
 						var form_data = new FormData();
-
 						form_data.append('id_hidden', id_hidden);
+
 
                             $.ajax({
 								type: "POST",

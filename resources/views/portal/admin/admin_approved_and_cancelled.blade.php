@@ -412,7 +412,6 @@
                                             <td>{{$info->Relevant_specialisation}}</td>
                                         </tr>
 
-										
 
                                         <tr>
                                             <th>A maximum of 10 Projects|contracts  :</th>
@@ -512,6 +511,9 @@ $(document).ready(function(){
 
             $(document).ready(function(){
                 $('#approving_btn').click(function(){
+					$('#approving_btn').html('Approving...');
+							$('#approving_btn').attr('disabled', true);
+
                     if (confirm('Are you sure you want to Approve this Supplier ?')) {
                         
 						var id_hidden  = $('#id_hidden').val();
@@ -552,49 +554,6 @@ $(document).ready(function(){
                  
                 });
             });
-
-
-
-            $(document).ready(function(){
-                $('#disapproving_btn').click(function(){
-                    if (confirm('Are you sure you want to cancel this Supplier Application ?')) {
-                        
-
-						var id_hidden  = $('#id_hidden').val();
-
-						var form_data = new FormData();
-						form_data.append('id_hidden', id_hidden);
-
-
-
-                            $.ajax({
-								type: "POST",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,								
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								url			:'/fully-cancel',
-								success		:function(data){
-									if(data.status){		
-                                        alert(data.message);	
-										location.replace('/approve-dashboard');				
-									}								
-								},
-								error: function(data)
-								{
-									$('body').html(data.responseText);
-								}
-							});
-                    }
-                else{
-                   
-                    return false;
-                }
-                 
-                });
-            });
-
 
     </script>
 
