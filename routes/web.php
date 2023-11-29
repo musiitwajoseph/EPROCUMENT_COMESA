@@ -126,7 +126,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
    Route::post('fully-cancel',[ProcurementPlan::class,'fully_cancel'])->name('fully-cancel');
    Route::post('fully-approve',[ProcurementPlan::class,'fully_approve'])->name('fully-approve');
-
+   Route::post('accomplish-task',[ProcurementPlan::class,'accomplish_task'])->name('accomplish-task');
 
 
    // Master Code routes :

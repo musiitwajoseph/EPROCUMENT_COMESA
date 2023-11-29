@@ -13,6 +13,8 @@ use App\Models\master_code;
 use App\Models\procurement;
 use App\Models\timeline;
 use Session;
+use PDF;
+use Mail;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Reader\Exception;
 // use PhpOffice\PhpSpreadsheet\Writer\Xls;
@@ -502,9 +504,26 @@ class ProcurementPlan extends Controller
 
     public function store_assign_officer(Request $request){
 
-        // $user_id = DB::table('admins')->where('md_master_code_id',$db_timeline)->value('id');
         $user_id = $request->assigned;  
-        
+
+        $officer_email = DB::table('admins')->where('id',$user_id)->value('email');
+        $username = DB::table('admins')->where('id',$user_id)->value('username');
+
+        $data = [
+            'email'      => $officer_email,
+            'username'   => $username,   
+            'title'      => 'COMESA:E-PROCUREMENT - Verification of Supplier Submitted Information',
+        ];
+
+
+        $pdf_data = PDF::loadView('emails.procurement_officer', $data); 
+
+        Mail::send('emails.procurement_officer', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+        });
+
+
         DB::table('admins')
         ->where('id',$user_id)
         ->update(['user_status' => "Assigned"]);
@@ -542,16 +561,71 @@ class ProcurementPlan extends Controller
     public function fully_approve(Request $request){
 
         $user_id = $request->id_hidden;
-
         
+        $supplier_reference = DB::table('supplier_registration_details_models')->where('id',$user_id)->value('supplier_reference_form_no');
+        $supplier_email = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('email');
+        $username = DB::table('supplier_logins')->where('supplier_reference',$supplier_reference)->value('username');
+
+        dd($username);
+    
+
+        $data = [
+            'email'      => 'hello@gmail.com',
+            'username'   => $username,   
+            'title'      => 'COMESA:E-PROCUREMENT -  Successful Approval of Supplier Registration in COMESA E-Procurement System',
+        ];
+
+        $pdf_data = PDF::loadView('emails.supplier_successfully_approval', $data); 
+
+        Mail::send('emails.supplier_successfully_approval', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+        });
+
         DB::table('supplier_registration_details_models')
         ->where('id',$user_id)
         ->update(['approval_status' => "Approved",
         'fully' => "fully",]);
 
+
         return response()->json([
             "status"=>TRUE,
             "message"=>"Supplier has been Approved",
         ]);
+    }
+
+    public function accomplish_task(Request $request){
+
+        $procurement_officer_id = $request->hidden_id;
+
+        $user_role = "	Head of Procurement";
+        $user_email = DB::table('admins')->where('user_role',$user_role)->value('email');
+        $username = DB::table('admins')->where('user_role',$user_role)->value('username');
+
+        $data = [
+            'email'      => $user_email,
+            'username'   => $username,   
+            'title'      => 'COMESA:E-PROCUREMENT - Accomplishment of Supplier verification Submitted Details',
+        ];
+
+
+        $pdf_data = PDF::loadView('emails.accomplishment_of_supplier_verification', $data); 
+
+        Mail::send('emails.accomplishment_of_supplier_verification', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+        });
+
+
+        DB::table('admins')
+        ->where('id',$procurement_officer_id)
+        ->update(['user_status' => "null"]);
+
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Head of Procurement has recieved your message",
+        ]);
+
     }
 }

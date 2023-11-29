@@ -43,6 +43,10 @@
 
             <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
+            <!-- Include SweetAlert CSS and JS from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
  </head>
     <body class="full_width">
         <div class="style_switcher">
@@ -263,11 +267,11 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<ul class="dshb_icoNav clearfix">
-				<li><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png)"><span class="label label-info">{{$approved_count}}</span>To be Approved</a></li>
-                <li><a class="btn" id="pending_btn" style="background-image: url(/assets/img/gCons/processing1.png)"><span class="label label-info">{{$pending_count}}</span>Pending Approvals</a></li>
-                <li><a class="btn" id="cancelled_btn" style="background-image: url(/assets/img/gCons/delete-item1.png)"><span class="label label-info">{{$cancelled_count}}</span>To be Cancelled</a></li>			
-                <li><a class="btn" id="fully_approved_btn" style="background-image: url(/assets/img/gCons/plane.png)"><span class="label label-info">{{$fully_approved_count}}</span>Fully Approved</a></li>
-                <li><a class="btn" id="fully_cancelled_btn" style="background-image: url(/assets/img/gCons/lock.png)"><span class="label label-info">{{$fully_rejected_count}}</span>Fully Cancelled</a></li>	
+				<li style="padding-bottom:1rem;"><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png);"><span class="label label-info">{{$approved_count}}</span>Recommended for <br> Approval</a></li>
+                <li style="padding-bottom:1rem;"><a class="btn" id="pending_btn" style="background-image: url(/assets/img/gCons/processing1.png)"><span class="label label-info">{{$pending_count}}</span>Supplier <br>Pending Approvals</a></li>
+                <li style="padding-bottom:1rem;"><a class="btn" id="cancelled_btn" style="background-image: url(/assets/img/gCons/delete-item1.png)"><span class="label label-info">{{$cancelled_count}}</span>Recommended for <br> Cancelling</a></li>			
+                <li style="padding-bottom:1rem;"><a class="btn" id="fully_approved_btn" style="background-image: url(/assets/img/gCons/plane.png)"><span class="label label-info">{{$fully_approved_count}}</span>Fully Approved <br> Applications</a></li>
+                <li style="padding-bottom:1rem;"><a class="btn" id="fully_cancelled_btn" style="background-image: url(/assets/img/gCons/lock.png)"><span class="label label-info">{{$fully_rejected_count}}</span>Fully Cancelled <br> Applications</a></li>	
 			</ul>
 		</div>
 	</div>
@@ -279,10 +283,10 @@
         <div class="col-sm-12 col-md-12">
 
             <section id="Approved_suppliers">
-                <div style="padding-bottom: 0.50rem;" id="approve_all_btn">
+                {{-- <div style="padding-bottom: 0.50rem;" id="approve_all_btn">
                     <button class="btn btn-success pull-right mb-4">Approve all</button>
-                </div>
-            <h3 class="heading" style="color: rgb(26, 239, 54)" >Approved Suppliers Records</h3>
+                </div> --}}
+            <h3 class="heading" style="color: rgb(26, 239, 54)" >Recommended for Approval Suppliers Applications</h3>
                   
             <table class="table table-bordered table-striped" id="smpl_tbl">
                 <thead>
@@ -334,7 +338,7 @@
         <div class="col-sm-12 col-md-12">
 
             <section id="fully_approved_suppliers">
-            <h3 class="heading" style="color: rgb(26, 239, 54)" >Fully Approved Records</h3>
+            <h3 class="heading" style="color: rgb(26, 239, 54)" >Fully Approved Supplier Applications</h3>
                   
             
             <table class="table table-bordered table-striped" id="smpl_tbl">
@@ -386,7 +390,7 @@
     <section id="Pending_Suppliers">
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <h3 class="heading" style="color: rgba(255, 170, 0, 0.637)">Pending Suppliers Records</h3>
+            <h3 class="heading" style="color: rgba(255, 170, 0, 0.637)">Pending verification Supplier Applications</h3>
             
             <table class="table table-bordered table-striped" id="smpl_tbl">
                 <thead>
@@ -423,6 +427,7 @@
                 </tbody>
             </table>
             
+            <button class="btn btn-primary" id="accomplish_task">Accomplish Task</button>
         </div>
     </div>
     </section>
@@ -430,10 +435,10 @@
     <section id="Cancelled_Suppliers">
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <div style="padding-bottom: 0.50rem;" id="reject_all_btn">
+            {{-- <div style="padding-bottom: 0.50rem;" id="reject_all_btn">
                 <button class="btn btn-danger pull-right mb-4">Reject all</button>
-            </div>
-            <h3 class="heading" style="color: red">Cancelled Suppliers Records</h3>
+            </div> --}}
+            <h3 class="heading" style="color: red">Recommended for Cancellation Suppliers Applications</h3>
             
             <table class="table table-bordered table-striped" id="smpl_tbl">
                 <thead>
@@ -477,7 +482,7 @@
     <section id="fully_rejected_suppliers">
         <div class="row">
             <div class="col-sm-12 col-md-12">
-                <h3 class="heading" style="color: red">Fully rejected Suppliers</h3>
+                <h3 class="heading" style="color: red">Fully rejected Suppliers Applications</h3>
                 
                 <table class="table table-bordered table-striped" id="smpl_tbl">
                     <thead>
@@ -578,6 +583,8 @@
 
         <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
         <input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
+        <input type="hidden" id="hidden_id" value="{{$LoggedUserAdmin['id']}}">
+
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
@@ -621,8 +628,14 @@
                     $('#fully_cancelled_btn').hide();
                     $('#reject_all_btn').hide();
                     $('#approve_all_btn').hide();
+                    $('#all_data').show();
                 }
-     });
+
+                if(hidden_role != "Approval Officer")
+                {
+                    $('#accomplish_task').hide();
+                }
+         });
 
 
             $(document).ready(function(){
@@ -721,6 +734,46 @@
 
                 });
             });
+
+
+            $(document).ready(function(){
+                $('#accomplish_task').click(function(){
+                    $('#accomplish_task').html('Submitting...');
+							$('#accomplish_task').attr('disabled', true);
+
+                            var hidden_id = $('#hidden_id').val();
+
+							var form_data = new FormData();
+
+							form_data.append('hidden_id', hidden_id);
+
+
+							$.ajax({
+								type: "post",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/accomplish-task',
+
+								success		:function(data){
+									if(data.status){
+										Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: data.message,
+                                    });
+                                    location.replace('/approve-dashboard');
+								}
+							},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+						});
+                     });
 
     </script>
 

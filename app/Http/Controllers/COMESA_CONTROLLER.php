@@ -1127,12 +1127,7 @@ class COMESA_CONTROLLER extends Controller
       public function SupplierFormSubmission(Request $request){
 
         $input = $request->all();
-
         $user_id = $input['user_id'];
-
-        // $data = $input['original_supplier_email'];
-        // $exported_original_data = $this->userdata($data);
-
 
         $post = SupplierRegistrationDetailsModel::find($request->user_id);
 
@@ -1616,7 +1611,6 @@ class COMESA_CONTROLLER extends Controller
         $T_O_B =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Type_of_Business');
         $Types_of_business = DB::table('master_datas')->select('md_name')->where('md_id','=',$T_O_B)->value('md_name');
 
-
         $info = SupplierRegistrationDetailsModel::find($id);
         $ref =  DB::table('supplier_registration_details_models')->where('id', $id)->value('Reference');
         $saved_documents =  DB::table('documents')->where('documents_references', $ref)->get();
@@ -1631,7 +1625,6 @@ class COMESA_CONTROLLER extends Controller
     }
 
     public function submitted_record($id){
-
 
         $app_status =  DB::table('supplier_registration_details_models')->where('supplier_reference_form_no', $id)->value('approval_status');
 
@@ -2366,10 +2359,13 @@ class COMESA_CONTROLLER extends Controller
                     // }
                 }
 
-            // if($save){
+           
                 Alert::success('Success', 'User previledge have been updated');
 
                 return back();
-            // }
+            
         }
+
+
+       
     }
