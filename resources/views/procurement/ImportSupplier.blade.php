@@ -128,6 +128,17 @@
                                                     style="">Upload Supplier Infomation:</label>
                                                     <input type="file" name="file1" class="input-sm form-control" required>
                                                 </div>
+
+                                                 <div class="col-md-3">
+                                                    <label  control-labelq"
+                                                    style="">Download Excel Supplier template:</label>
+                                                    <a href="{{route('download-supplier')}}" class=" btn btn-primary"><i
+                                                        class="glyphicon glyphicon-download"></i> Download</a>
+                                                    {{-- <button type="submit"  </button> --}}
+                                                    {{-- <input type="file" name="file1" class="input-sm form-control" required> --}}
+                                                </div>
+
+
                                             </div>
 
                                             <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">

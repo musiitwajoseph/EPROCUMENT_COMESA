@@ -7,6 +7,7 @@ use App\Models\otp;
 use App\Models\user_right;
 use App\Models\user_previledge;
 use App\Models\Document;
+use App\Models\excelupload;
 use App\Models\Procurement_plan;
 use Mail;
 use App\Mail\SupplierMail;
@@ -1834,13 +1835,6 @@ class COMESA_CONTROLLER extends Controller
         return view('welcome');
     }
 
-
-
-    public function excel_upload(Request $request){
-
-        return view('excelupload');
-    }
-
         // USER MODULE AND USER RIGHTS AND PREVILEDGES
 
         public function add_user_view(){
@@ -2366,6 +2360,54 @@ class COMESA_CONTROLLER extends Controller
             
         }
 
+        public function excel_upload()
+        {
 
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+            return view('excelupload',$data);
+        }
+
+        public function post_excel_sheet(Request $request)
+        {
+
+            $request->validate([
+                        'file1' => 'required|mimes:xlsx',
+                        'name_sheet' => 'required'
+                    ]);
+
+                    $post = new  excelupload;
+
+                    $file=$request->file1;
+                    $filename=date('YmdHi').$file->getClientOriginalName();
+                    $file->move('Sheets',$filename);
+                    $post->excel_file=$filename; 
+                    $post->name_sheet = $request->name_sheet;;
+                    $save = $post->save();
+
+                    if($save)
+                    {
+                        return back()->with('success','Sheet has been uploaded successfully');
+                    }
+            }
+
+            public function download_procurement_sheet(){
+
+                $procurement_plan = DB::table('exceluploads')->where('name_sheet', "Procurement Plan")->orderBy('id', 'desc')->value('excel_file');
+
+                return response()->download(public_path('Sheets/'.$procurement_plan));
+            }
+
+            public function download_supplier_sheet(){
+
+                $supplier_sheet = DB::table('exceluploads')->where('name_sheet', "Supplier sheet")->orderBy('id', 'desc')->value('excel_file');
+
+                return response()->download(public_path('Sheets/'.$supplier_sheet));
+            }
+
+
+
+        }
+
+        
        
-    }

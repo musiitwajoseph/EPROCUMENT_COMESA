@@ -23,9 +23,9 @@
                     <div class="accordion-body collapse" id="collapseTwo">
                         <div class="panel-body">
                             <ul class="nav nav-pills nav-stacked">
-                                <li><a id="approved_btn_supppliers" href="{{ route('approve-dashboard')}}">Approved Suppliers</a></li>
-                                <li><a id="pending_btn_supppliers" href="{{ route('approve-dashboard')}}">Pending Supplier</a></li>
-                                <li><a id="rejected_btn_supppliers" href="{{ route('approve-dashboard')}}">Rejected Suppliers</a></li>
+                                <li><a id="approved_btn_supppliers" href="{{ route('approve-dashboard')}}">Supplier Approvals</a></li>
+                                {{-- <li><a id="pending_btn_supppliers" href="{{ route('approve-dashboard')}}">Pending Supplier</a></li>
+                                <li><a id="rejected_btn_supppliers" href="{{ route('approve-dashboard')}}">Rejected Suppliers</a></li> --}}
                                 <li><a id="rejected_btn_supppliers" href="{{ route('assign-officer')}}">Assign Approval Officer</a></li>
                                 <li><a id="rejected_btn_supppliers" href="{{ route('upload-supplier-details')}}">Import Suppliers Records</a></li>
                             </ul>
@@ -53,6 +53,25 @@
                     </div>
                 </div>
             </div>
+
+
+            <div id="special_master_data">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="#requistioning" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                            <i class="glyphicon glyphicon-print"></i> Requistioning
+                        </a>
+                    </div>
+                    <div class="accordion-body collapse" id="requistioning">
+                        <div class="panel-body">
+                                <li><a href=" {{ route('purchase-requistion')}}">Purchase Requistion</a></li>
+                                <li><a href="#">SPV</a></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
             <div id="special_master_data">
                 <div class="panel panel-default">

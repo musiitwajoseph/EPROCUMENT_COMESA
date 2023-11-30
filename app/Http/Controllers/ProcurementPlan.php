@@ -391,7 +391,7 @@ class ProcurementPlan extends Controller
 
     public function uploadSupplierDetails(){
 
-    $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+      $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
       return view('procurement.ImportSupplier',$data);
     }
@@ -478,7 +478,7 @@ class ProcurementPlan extends Controller
             Alert::success('Success', 'Timeline information has been added successfully');
          }
         
-         return redirect('display-timelines');
+         return redirect('display-timelines');  
     }
 
     public function display_timeline()

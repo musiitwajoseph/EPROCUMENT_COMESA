@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\COMESA_CONTROLLER;
 use App\Http\Controllers\ProcurementPlan;
+use App\Http\Controllers\Requistioning;
 
 
 
@@ -152,10 +153,9 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::post('update-md-code',[ProcurementPlan::class,'updatemdcode'])->name('update-md-code');
 
     //  Procurement plan Routes :
-
-    Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
+    
     Route::post('upload-excel',[ProcurementPlan::class,'upload_excel'])->name('upload-excel');
-
+    Route::post('upload-all-excels',[ProcurementPlan::class,'upload_all_excel'])->name('upload-all-excels');
 
    //  User role and rights previledges
 
@@ -199,10 +199,25 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::post('admin-verify-otp',[COMESA_CONTROLLER::class,'admin_verify_otp'])->name('admin-verify-otp');
     Route::post('cancel_approving',[COMESA_CONTROLLER::class,'cancel_approving_supplier']);
 
+   //  EXCEL SHEETS UPLOAD
+
+   // Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload']);
+
+   Route::get('excel-upload',[COMESA_CONTROLLER::class,'excel_upload'])->name('excel-upload');
+   Route::post('post-excel-sheet',[COMESA_CONTROLLER::class,'post_excel_sheet'])->name('post-excel-sheet');
+
+   Route::get('download-procurement',[COMESA_CONTROLLER::class,'download_procurement_sheet'])->name('download-procurement');
+   Route::get('download-supplier',[COMESA_CONTROLLER::class,'download_supplier_sheet'])->name('download-supplier');
+
+
    //  Testing routes to be deleted later
     Route::get('welcome',[COMESA_CONTROLLER::class,'welcomeHome']);
 
 
+
+// REQUISITION 
+
+Route::get('purchase-requistion',[Requistioning::class,'purchase_requistion'])->name('purchase-requistion');
 
    
 

@@ -125,14 +125,13 @@
                                                 
                                                 @include('sweetalert::alert')
                                                 <div class="col-md-6">
-                                                
                                                     <label  control-labelq"
                                                     style="">Upload Procurement Plan:</label>
                                                     <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
                                                 </div>
 
                                                 <div class="col-md-3">
-                                                    <label class="control-labelq" >Year: </label>
+                                                    <label>Year: </label>
                                                       <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
                                                           <option value="">Select Procurement year</option>
                                                           <option value="2021">2021</option>
@@ -145,12 +144,19 @@
                                                           <option value="2028">2028</option>
                                                       </select>
                                                   </div>
+
+                                                  <div class="col-md-2">
+                                                    <label >Download template:</label>
+                                                    <a href="{{route('download-supplier')}}" class=" btn btn-primary"><i class="glyphicon glyphicon-download"></i> Download</a>
+                                                </div>
+
                                               </div>
 
-                                              <button type="submit"  class=" btn btn-primary"><i
-                                                class="glyphicon glyphicon-ok"></i> Upload</button>
+                                              
 
+                                              <button type="submit"  class=" btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Upload</button>
                                                 
+
                                             </div>
 
                                             
