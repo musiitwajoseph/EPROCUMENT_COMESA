@@ -950,3 +950,7 @@
 		 .BtnTp{
 			padding-top: 4.3rem;
 		 }
+
+		 .align-bottom {
+			vertical-align: top !important;
+			}

@@ -129,7 +129,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                         src="img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserInfo['username'] }} <b
+                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }} <b
                                         class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="javascript:void();">My Profile</a></li>
@@ -153,14 +153,11 @@
                         </li>
 
                         <li>
-                            <a href="javascript:void(0);">Requistion Form</a4
+                            <a href="javascript:void(0);">Purchase requistion</a4
                         </li>
 
                     </ul>
                 </div>
-
-                <input type="hidden" name="user_reference" id="user_reference"
-                value="{{ $LoggedUserInfo['supplier_reference'] }}">
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -171,7 +168,7 @@
                                     <label style="color: black">Division/ Unit</label>
                                     <select name="division_unit" id="division_unit" class="form-control">
                                     @foreach ($info as $item)
-                                <option  value="">{{$item->description_of_goods_Works_and_Services}}</option>
+                                     <option  value="{{$item->description_of_goods_Works_and_Services}}">{{$item->description_of_goods_Works_and_Services}}</option>
                                  
                                     @endforeach
                                 </select>
@@ -214,7 +211,7 @@
                             </div>
                             <div class="col-sm-3 col-md-3">
                                 <label for="mask_ssn" ></label>
-                                <a href="" class="btn btn-primary" style="margin-top: 1.3rem;">Submit</a>
+                                <a class="btn btn-primary" style="margin-top: 1.3rem;" id="submit_btn">Submit</a>
                             </div>
                         </div>
 
@@ -237,8 +234,48 @@
     
     $(document).ready(function(){
 
-        $('#btn_selected_record').click(function(){
+        $('#submit_btn').click(function(){
+            $('#submit_btn').html('Submiting...');
+				$('#submit_btn').attr('disabled', true);
 
+                var division_unit = $('#division_unit').val();
+                var date = $('#date').val();
+                var reason_for_purchase = $('#reason_for_purchase').val();
+                var qty = $('#qty').val();
+                var item_code = $('#item_code').val();
+                var description = $('#description').val();
+                var attach_other = $('#attach_other').val();
+							
+				var form_data = new FormData();
+
+				form_data.append('division_unit', division_unit);
+                form_data.append('date', date);
+                form_data.append('reason_for_purchase', reason_for_purchase);
+                form_data.append('qty', qty);
+                form_data.append('item_code', item_code);
+                form_data.append('description', description);
+                form_data.append('attach_other', attach_other);
+
+                         $.ajax({
+								type: "post",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+
+								url			:'/store-purchase-requistion',
+								success		:function(data){
+									if(data.status){
+										alert(data.message);
+                                        location.replace('/purchase-requistion');
+									}
+								},
+								error: function(data)
+								{
+                                    $('body').html(data.responseText);
+								}
+							});
            
         });
     });

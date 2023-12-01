@@ -218,9 +218,11 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 // REQUISITION 
 
 Route::get('purchase-requistion',[Requistioning::class,'purchase_requistion'])->name('purchase-requistion');
+Route::post('store-purchase-requistion',[Requistioning::class,'store_purchase_requistion'])->name('store-purchase-requistion');
 
    
-
+Route::get('SPV',[Requistioning::class,'SPV'])->name('SPV');
+Route::post('SPV-save',[Requistioning::class,'SPV_save'])->name('SPV-save');
 
 
    

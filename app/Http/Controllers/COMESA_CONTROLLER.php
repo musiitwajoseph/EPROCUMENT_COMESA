@@ -1779,7 +1779,8 @@ class COMESA_CONTROLLER extends Controller
                                             'reason_for_rejection' => "Not provided",
                                         ]);
         }
-        else{
+        else
+        {
 
             DB::table('supplier_registration_details_models')
                                 ->where('id', $id_hidden)

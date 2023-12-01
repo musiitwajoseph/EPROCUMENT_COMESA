@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('purchase_requistions', function (Blueprint $table) {
             $table->id();
-            $table-text('divison');
-            $table->texet('date');
+            $table->text('divison');
+            $table->text('date');
+            $table->text('reason_for_purchase');
+            $table->text('qty');
+            $table->text('item_code');
+            $table->text('description');
+            $table->text('Attached_records');
             $table->timestamps();
         });
     }

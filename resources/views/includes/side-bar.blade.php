@@ -65,7 +65,7 @@
                     <div class="accordion-body collapse" id="requistioning">
                         <div class="panel-body">
                                 <li><a href=" {{ route('purchase-requistion')}}">Purchase Requistion</a></li>
-                                <li><a href="#">SPV</a></li>
+                                <li><a href="{{ route('SPV')}} ">SPV</a></li>
                         </div>
                     </div>
                 </div>
