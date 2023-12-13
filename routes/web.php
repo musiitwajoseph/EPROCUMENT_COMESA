@@ -11,6 +11,7 @@ use App\Http\Controllers\Requistioning;
 //SUPPLIER ROUTES
 
 Route::get('supplier-registration',[COMESA_CONTROLLER::class, 'supplierRegistration'])->name('supplier-registration');
+Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
 
 Route::post('fetch-email',[COMESA_CONTROLLER::class,'fetch_email']);
 Route::post('regenerate-otp',[COMESA_CONTROLLER::class,'regenerate']);
@@ -105,11 +106,12 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::get('fully-cancelled/{id}',[COMESA_CONTROLLER::class,'fully_cancelled_record']);
     Route::get('fully-approved/{id}',[COMESA_CONTROLLER::class,'fully_approved_record']);
     Route::get('user-data',[COMESA_CONTROLLER::class,'get_user_data'])->name('user-data');
-    Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
     Route::get('OTP-validation',[COMESA_CONTROLLER::class,'OTP_Validation'])->name('OTP-validation');
     Route::get('admin-dashboard',[COMESA_CONTROLLER::class,'admin_dashboard'])->name('admin-dashboard');
     Route::get('approve-dashboard',[COMESA_CONTROLLER::class,'approve_dashboard'])->name('approve-dashboard');
+    Route::get('view-approved-suppliers/{id}',[COMESA_CONTROLLER::class,'view_approved_suppliers']);
 
+    Route::post('revert-application',[COMESA_CONTROLLER::class,'revert_application'])->name('revert-application');
     //  Procurement plan Routes :
 
    Route::get('procurement',[ProcurementPlan::class,'procuring'])->name('procurement');
@@ -180,8 +182,20 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('add-user-right',[COMESA_CONTROLLER::class,'add_user_right'])->name('add-user-right');
    Route::post('store-user-right',[COMESA_CONTROLLER::class,'store_user_right'])->name('store-user-right');
 
-
    Route::post('store-previledge-db/{id}',[COMESA_CONTROLLER::class,'store_user_previledges_db'])->name('store-previledge-db');
+
+   // SUPPLIER DOCUMENTS DETAILS
+
+   Route::get('add-document',[COMESA_CONTROLLER::class,'add_document'])->name('add-document');
+   Route::post('store-document',[COMESA_CONTROLLER::class,'store_document'])->name('store-document');
+   Route::get('view-supplier-documents',[COMESA_CONTROLLER::class,'view_supplier_documents'])->name('view-supplier-documents');
+
+   Route::get('delete-supplier-document/{id}',[COMESA_CONTROLLER::class,'delete_supplier_document']);
+   Route::get('edit-supplier-document/{id}',[COMESA_CONTROLLER::class,'edit_supplier_document']);
+   Route::post('edit-supplier-document',[COMESA_CONTROLLER::class,'edit_store_supplier_document'])->name('edit-supplier-document');
+
+
+
 });
 
 
@@ -224,10 +238,21 @@ Route::post('store-purchase-requistion',[Requistioning::class,'store_purchase_re
 Route::get('SPV',[Requistioning::class,'SPV'])->name('SPV');
 Route::post('SPV-save',[Requistioning::class,'SPV_save'])->name('SPV-save');
 
+// PROCUREMENT WORK FLOW 
 
+Route::get('procurement-assign-view',[ProcurementPlan::class,'procurement_assign_view'])->name('procurement-assign-view');
+Route::post('assign-procurement-officer',[ProcurementPlan::class,'assign_procurement_officer'])->name('assign-procurement-officer');
    
+Route::get('approve-procurement',[ProcurementPlan::class,'approve_procurement'])->name('approve-procurement');
+Route::post('H-O-P-approve-procurement',[ProcurementPlan::class,'Head_of_procurement_approval_pp'])->name('H-O-P-approve-procurement');
 
 
+Route::get('dummy',[ProcurementPlan::class,'dummy'])->name('dummy');
 
+Route::post('approve-procurement-record',[ProcurementPlan::class,'approve_procurement_records'])->name('approve-procurement-record');
+Route::post('reject-procurement-record',[ProcurementPlan::class,'reject_procurement_records'])->name('reject-procurement-record');
 
-  
+Route::get('approved_by_admin/{id}',[COMESA_CONTROLLER::class,'approved_by_admin'])->name('approved_by_admin');
+
+Route::post('hide',[ProcurementPlan::class,'hide'])->name('hide');
+Route::post('search-status',[ProcurementPlan::class,'search_status'])->name('search-status');

@@ -267,13 +267,10 @@
                 text-transform: uppercase;
             }
         </style>
+					@include('includes.user_info')
+	<div class="row" id="dashboard_menu"> 
 		<div class="col-sm-12 tac">
-
-			<input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
-			<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
-
-
-
+			
             <h1 style="text-align: center;color:#FFF;margin:3rem;background-color:blue;">Recommended to be Apprroved</h1>
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
@@ -452,6 +449,7 @@
 			<button class="btn btn-danger pull-right" id="disapproving_btn">Cancel Supplier</button>
 
 		</div>
+		</div>
 	</div>
 
 		<div style="padding-top: 1rem">
@@ -473,40 +471,13 @@
    
     @include('includes.side-bar')
 
-    <script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-
-$(document).ready(function(){
-				
-				var hidden_role = $('#hidden_role').val();
-				var hidden_status = $('#hidden_status').val();
-
-				if(hidden_role == "Approval Officer" && hidden_status == "null")
-				{
-					$('#special_supplier').hide();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-					$('#approving_btn').hide();
-					$('#disapproving_btn').hide();
-				}
-				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
-				{
-					$('#special_supplier').show();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-					$('#approving_btn').hide();
-					$('#disapproving_btn').hide();
-				}
-				
-	 });
+	
+	$(document).ready(function(){
+		app_approvals();
+	});
 
 
             $(document).ready(function(){

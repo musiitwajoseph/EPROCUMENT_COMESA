@@ -7,8 +7,9 @@ use App\Models\otp;
 use App\Models\user_right;
 use App\Models\user_previledge;
 use App\Models\Document;
+use App\Models\master_data;
 use App\Models\excelupload;
-use App\Models\Procurement_plan;
+use App\Models\procurement;
 use Mail;
 use App\Mail\SupplierMail;
 use App\Models\SupplierRegistrationDetailsModel;
@@ -1392,13 +1393,20 @@ class COMESA_CONTROLLER extends Controller
             'username'=>'required',
             'email'=>'required|email|unique:admins',
             'password'=>'required|min:5|max:12',
-            'user_role'=>'required',
+            'firstname'=>'required',
+            'lastname'=>'required',
+            'gender'=>'required',
+            'phonenumber'=>'required',
         ]);
 
         
 
         $admindb =  new Admin;
 
+        $admindb->firstname = $request->firstname;
+        $admindb->lastname = $request->lastname;
+        $admindb->gender = $request->gender;
+        $admindb->phonenumber = $request->phonenumber;
         $admindb->email = $request->email;
         $admindb->username = $request->username;
         $admindb->user_role = $request->user_role;
@@ -1444,7 +1452,8 @@ class COMESA_CONTROLLER extends Controller
                 return back()->with('fail','We dont recognise the above email or password');
             }
 
-            else{
+            else
+            {
                 if(Hash::check($request->password,$AdminInfo->password)){
                     
                     $request->session()->put('LoggedAdmin',$AdminInfo->id);
@@ -1753,7 +1762,21 @@ class COMESA_CONTROLLER extends Controller
 
 
 
+    public function revert_application(Request $request)
+    {
 
+        $id_hidden = $request->id_hidden;
+
+        DB::table('supplier_registration_details_models')
+                                ->where('id', $id_hidden)
+                                ->update(['approval_status' => "Pending",
+                                        ]);
+        
+        return response()->json([
+            "status" => True,
+            "message"=>"This supplier application request has been reverted",
+        ]);
+    }
 
 
     public function show_table(){
@@ -1828,6 +1851,20 @@ class COMESA_CONTROLLER extends Controller
             "message"=>"This supplier application request has been cancelled",
         ]);
     }
+
+    public function view_approved_suppliers($id)
+    {
+
+        $user_email = DB::table('admins')->where('id', $id)->value('email');
+
+        $approved = DB::table('supplier_registration_details_models')->where('approved_email', $user_email)->get();
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('portal.admin.view_approved_suppliers',$data , compact(['approved']));
+        
+    }
+
 
     // modifications and changes 
 
@@ -2407,6 +2444,106 @@ class COMESA_CONTROLLER extends Controller
             }
 
 
+            // DOCUMENTS TABLE
+
+            public function add_document(){
+
+                $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+                return view('portal.Supplier.add_document',$data);
+            }
+
+            public function store_document(Request $request){
+
+                DB::table('master_datas')->insert(
+                    array(
+                    'md_master_code_id' =>1032,
+                    'md_code' => "DOC",
+                    'md_name'=>$request->supplier_document,
+                    )
+                );
+
+                Alert::success('Success', 'New Document has been added successfully');
+                return back();
+            }
+
+            public function view_supplier_documents()
+            {
+
+                $documents = DB::table("master_datas")
+                            ->select('md_id','md_name')
+                            ->where('md_master_code_id',1032)
+                            ->get();
+
+                $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+                return view('portal.Supplier.view_document',$data ,compact(['documents']));
+            }
+
+            public function delete_supplier_document($id)
+            {
+
+                DB::table('master_datas')
+                        ->where('md_id', '=', $id)
+                        ->delete();
+
+                Alert::success('Success', 'Record has been deleted successfully');
+                return back();
+
+            }
+
+            public function edit_supplier_document($id)
+            {
+
+              $user_data =   DB::table('master_datas')
+                        ->where('md_id', '=', $id)
+                        ->get();
+
+
+             $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+                        
+                return view('portal.Supplier.edit_document',$data, compact(['user_data']));
+            }
+
+
+            public function edit_store_supplier_document(Request $request)
+            {
+
+                $md_md = $request->md_id;
+                $doc = $request->supplier_document;
+
+                // return $request->all();
+
+                DB::table('master_datas')
+                    ->where('md_id', $md_md)
+                    ->update(['md_name' => $doc]);
+
+                    Alert::success('Success', 'Record has been deleted successfully');
+                    return redirect('view-supplier-documents');
+            }
+
+            public function dummy()
+            {
+
+                $distinctValues = procurement::distinct()->pluck('requisition_division');
+
+                $values = master_data::where('id', $specificId)->pluck('column_name');
+
+                dd($values);                
+            }
+
+            public function approved_by_admin($id){
+
+                return $id;
+
+                DB::table('supplier_registration_details_models')
+                            ->where('id', $id_hidden)
+                            ->update([  'approval_status' => "Approved",
+                                        'approved_by' => $admin_username_hidden,
+                                        'approved_email' => $admin_email_hidden,
+                                        'reason_for_rejection' => $reason_for_rejection,
+                                    ]);
+            }
 
         }
 

@@ -39,139 +39,169 @@
 
     <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 
-    <meta name="csrf-token" content="{{ csrf_token() }}"
-
-</head>
+    <meta name="csrf-token" content="{{ csrf_token() }}" </head>
 
 <body class="full_width">
-  
-
-        <header>
-
-            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="navbar-inner">
-                    <div class="container-fluid">
-                        <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
-
-                        <ul class="nav navbar-nav user_menu pull-right">
 
 
-                            <li class="divider-vertical hidden-sm hidden-xs"></li>
+    <header>
 
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
-                                        src="/assets/img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b
-                                        class="caret"></b></a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="javascript:void(0);">My Profile</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="{{ route('admin-logout') }}">Log Out</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
+
+                    <ul class="nav navbar-nav user_menu pull-right">
 
 
-        </header>
-        <div id="contentwrapper">
-            <div class="main_content">
+                        <li class="divider-vertical hidden-sm hidden-xs"></li>
 
-                <div id="jCrumbs" class="breadCrumb module">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0);">Admin Dashboard</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
+                                    src="/assets/img/user_avatar.png" alt=""
+                                    class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="javascript:void(0);">My Profile</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{ route('admin-logout') }}">Log Out</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
+            </div>
+        </nav>
 
+
+    </header>
+    <div id="contentwrapper">
+        <div class="main_content">
+
+            <div id="jCrumbs" class="breadCrumb module">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">Admin Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+
+            @include('sweetalert::alert')
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <h3 class="heading">Procurement Plan</h3>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-12">
+                        <h3 class="heading">Procurement Plan</h3>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
 
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success">
-                                            {{Session::get('success')}}
+                                @if (Session::get('success'))
+                                    <div class="alert alert-success">
+                                        {{ Session::get('success') }}
+                                    </div>
+                                @endif
+
+
+                                @if (Session::get('fail'))
+                                    <div class="alert alert-danger">
+                                        {{ Session::get('fail') }}
+                                    </div>
+                                @endif
+
+                                @include('includes.user_info')
+
+                                <form action="{{ route('upload-excel') }}" method="POST"
+                                    class="stepy-wizzard form-horizontal" enctype="multipart/form-data">
+
+                                    @csrf
+
+                                    <input type="hidden" name="user_email" hidden="user_email" value="{{ $LoggedUserAdmin['email'] }}">
+                                    <legend class="hide">Lorem ipsum dolor…</legend>
+                                    <div class="formSep form-group">
+
+                                        @include('sweetalert::alert')
+                                        <div class="col-md-6">
+                                            <label control-labelq" style="">Upload Procurement Plan:</label>
+                                            <input type="file" name="file1" id="file1"
+                                                class="input-sm form-control" required>
                                         </div>
-                                    @endif
 
-
-                                    @if (Session::get('fail'))
-                                        <div class="alert alert-danger">
-                                            {{Session::get('fail')}}
+                                        <div class="col-md-3">
+                                            <label>Year: </label>
+                                            <select name="year_of_procurement" id="year_of_procurement"
+                                                class="input-sm form-control" required>
+                                                <option value="">Select Procurement year</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                            </select>
                                         </div>
-                                    @endif
+
+                                        <div class="col-md-2">
+                                            <label>Download template:</label>
+                                            <a href="{{ route('download-supplier') }}" class=" btn btn-primary"><i
+                                                    class="glyphicon glyphicon-download"></i> Download</a>
+                                        </div>
 
 
-                                    <form action="{{route('upload-excel')}}" method="POST" class="stepy-wizzard form-horizontal" enctype="multipart/form-data" >
-                                    
-                                        @csrf
-                                        
-                                            <legend class="hide">Lorem ipsum dolor…</legend>
-                                            <div class="formSep form-group">
-                                                
-                                                @include('sweetalert::alert')
-                                                <div class="col-md-6">
-                                                    <label  control-labelq"
-                                                    style="">Upload Procurement Plan:</label>
-                                                    <input type="file" name="file1" id="procurement_data1" class="input-sm form-control" required>
-                                                </div>
+                                        <div class="col-md-6">
+                                            <br>
+                                            <label control-labelq" style="">Recommendation reason from
+                                                procurement officer:</label>
+                                            <input type="text"  id="" name="recommendation_proc_officer"
+                                                placeholder="Procurement Officer reason for recommendation "
+                                                class="input-sm form-control" required>
+                                        </div>
 
-                                                <div class="col-md-3">
-                                                    <label>Year: </label>
-                                                      <select name="year_of_procurement" id="year_of_procurement" class="input-sm form-control" required>
-                                                          <option value="">Select Procurement year</option>
-                                                          <option value="2021">2021</option>
-                                                          <option value="2022">2022</option>
-                                                          <option value="2023">2023</option>
-                                                          <option value="2024">2024</option>
-                                                          <option value="2025">2025</option>
-                                                          <option value="2026">2026</option>
-                                                          <option value="2027">2027</option>
-                                                          <option value="2028">2028</option>
-                                                      </select>
-                                                  </div>
+                                        <div class="col-md-4">
+                                            <br>
+                                            <label control-labelq" style="">Approve or Reject:</label>
+                                            <select name="choice" id="choice" class="input-sm form-control"
+                                                required>
+                                                <option value="">Select </option>
+                                                <option value="Approve">Approve</option>
+                                                <option value="Reject">Reject</option>
+                                            </select>
+                                            {{-- <input type="text" name="recommendation_proc_officer" id="recommendation_proc_officer" placeholder="Procurement Officer reason for recommendation " class="input-sm form-control" required> --}}
+                                        </div>
 
-                                                  <div class="col-md-2">
-                                                    <label >Download template:</label>
-                                                    <a href="{{route('download-supplier')}}" class=" btn btn-primary"><i class="glyphicon glyphicon-download"></i> Download</a>
-                                                </div>
 
-                                              </div>
+                                        <div class="col-md-2">
+                                            <br> <br>
+                                        </div>
+                                    </div>
 
-                                              
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    {{-- <button type="button" id="upload_procurement_plan"
+                                        class="btn btn-primary">upload</button> --}}
 
-                                              <button type="submit"  class=" btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Upload</button>
-                                                
-
-                                            </div>
-
-                                            
-
-                                       
-                                    </form>
-                                </div>
                             </div>
+
+
+                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
 
         </div>
+    </div>
+
+    </div>
     </div>
 
     </div>
@@ -182,47 +212,110 @@
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
+        $(document).ready(function() {
+            app_approvals();
+            // $('#mini_dashboard').hide();
 
-
-            $(document).ready(function(){
-                $('#upload_procurement_plan').click(function(){
-                  
-                    var procurement_data = $('#procurement_data')[0].files[0];
-
-                    var form_data = new FormData();
-
-                    form_data.append('procurement_data', procurement_data);
-
-                    $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,	
-								url			:'/upload-procurement',							
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								success		:function(data){
-                                    // alert('data has been upload successfully');
-                                    alert(data.success);
-									// $('#SubCategory').html(data);
-								},
-                                error: function(data)
-								{
-									$('body').html(data.responseText);
-								}
-					});
-			}); 
         });
-        
+
+
+
+        $(document).ready(function() {
+            $('#upload_procurement_plan').click(function() {
+
+                var procurement_data = $('#file1')[0].files[0];
+                var recommendation_proc_officer = $('#recommendation_proc_officer').val();
+                var year = $('#year_of_procurement').val();
+                var choice = $('#choice').val();
+
+
+                var errors = validateForm();
+
+                if (errors.length > 0) {
+                    showErrors(errors);
+                    return;
+                } 
+                else
+                 {
+
+                $('#upload_procurement_plan').attr('disabled', 'false');
+                $('#upload_procurement_plan').html('uploading...');
+
+                var form_data = new FormData();
+
+                form_data.append('procurement_data', procurement_data);
+                form_data.append('recommendation_proc_officer', recommendation_proc_officer);
+                form_data.append('year', year);
+                form_data.append('choice', choice);
+
+
+                $.ajax({
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: form_data,
+                    url: '/upload-procurement',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        alert(data.success);
+                    },
+                    error: function(data) {
+                        $('body').html(data.responseText);
+                    }
+                });
+                }
+
+                function validateForm() {
+
+                    var errors = [];
+
+                    if (!procurement_data) {
+                        errors.push("Procurement plar name is required.");
+                    }
+
+                    if (!recommendation_proc_officer) {
+                        errors.push("recommendation is required.");
+                    }
+
+                    if (!year) {
+                        errors.push("Year is required.");
+                    }
+
+                    if (!choice) {
+                        errors.push("Choice is required.");
+                    }
+
+                }
+
+                function showErrors(errors) {
+
+                    var errorMessage = "<ol>";
+                    for (var i = 0; i < errors.length; i++) {
+                        errorMessage += "<li>" + errors[i] + "</li>";
+                    }
+                    errorMessage += "</ol>";
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Validation Error",
+                        html: errorMessage,
+                        color: '#FFF',
+                        background: '#452e6f',
+                    });
+                }
+
+            });
+        });
     </script>
-    
 
 
 
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
@@ -272,8 +365,8 @@
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
     <!-- charts -->
-  
-   
+
+
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

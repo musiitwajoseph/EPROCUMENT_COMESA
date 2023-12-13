@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assign Officer </title>
+    <title>Add a new document </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,13 +41,13 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 </head>
 
 <body class="full_width">
-
+    
     <div id="maincontainer" class="clearfix">
 
         <header>
@@ -68,7 +68,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                         src="/assets/img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b class="caret"></b></a>
+                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b
+                                        class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="javascript:void(0);">My Profile</a></li>
                                     <li class="divider"></li>
@@ -96,99 +97,49 @@
                         </li>
                     </ul>
                 </div>
-                <h3 class="heading" style="color: rgb(26, 239, 54)">Assign Officer</h3>
+                <h3 class="heading" style="color: rgb(26, 239, 54)">Add a new required supplier document</h3>
 
                 @if (Session::get('success'))
-                    <div class="alert alert-success">
-                        {{ Session::get('success') }}
-                    </div>
-                @endif
+                <div class="alert alert-success">
+                 {{Session::get('success')}}
+                </div>
+                 @endif
 
-                @include('sweetalert::alert')
-
-                <form action="{{ route('store-assign-officer') }}" method="POST">
+                 
+                <form action="{{ route('store-document')}}" method="POST"> 
 
                     @csrf
-                    <div class="formSep">
+                     <div class="formSep">
 
-                        <div class="row">
+                    <div class="row">
 
-                            {{-- For each for the name and State  --}}
+                        @include('sweetalert::alert')
 
-                            <input type="hidden" name="user_id" id="user_id" value="{{ $LoggedUserAdmin['id'] }}">
+                        <input type="hidden" name="user_id" id="user_id" value="{{$LoggedUserAdmin['id']}}" >
 
-                            <div class="col-sm-3 col-md-3">
-                                <label for="">Officer Name</label>
-                                <select name="assigned" id="assigned" class="form-control">
-                                    @foreach ($approval_officer as $item)
-                                        <option value="{{ $item->id }}">{{ $item->username }}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
-
-
-                            <div class="col-sm-3 col-md-3">
-                                <label for="">Role</label>
-                                <input class="form-control" type="text" name="user_role" id="user_role"
-                                    value="{{ $item->user_role }}" required>
-
-                            </div>
-
-
-                            <div class="clearfix"></div>
-                            <br>
-                            <div class="col-sm-3 col-md-3">
-                                <button type="submit" onclick="disbale_btn()" id="myButton"
-                                    class="btn btn-primary">Assign</button>
-                            </div>
-                </form>
-
-                    
-                    <div class="col-sm-12 col-md-12" id="Assigned_approvers">
-                        <section id="Approved_suppliers">
-                            <br>
-                            <h3 class="heading" style="color: rgb(11, 12, 11)">Assigned Approvers</h3>
-
-                            <div class="table-responsive">
-
-                            <table class="table table-bordered table-striped" id="smpl_tbl">
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
-                                        <th>Email</th>
-                                        <th>Status Assignment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    @foreach ($assigned_approval_officer as $item)
-                                        <tr>
-                                            <td>{{ $item->username}}</td>
-                                            <td>{{ $item->firstname}}</td>
-                                            <td>{{ $item->lastname}}</td>
-                                            <td>{{ $item->email}}</td>
-                                            <td>{{ $item->user_status}}</td>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="col-sm-3 col-md-3">
+                            <label for="">Enter supplier document required </label>
+                            <input class="form-control" type="text" name="supplier_document" id="supplier_document" required>
+                           
                         </div>
 
+                       
+                        <div class="clearfix"></div>
+                        <br> 
+                        <div class="col-sm-3 col-md-3">
+                            <button type="submit" class="btn btn-primary">Add document</button>
+                           {{-- <button class="btn btn-primary" id="add_new_data" >submit</button> --}}
+                        </div>
+
+                </form>
+
+                    </div>
+                </div>
+
+
+                </div>  
             </div>
         </div>
-
-        <input type="hidden" id="hidden_role" value="{{ $LoggedUserAdmin['user_role'] }}">
-        <input type="hidden" id="hidden_status" value="{{ $LoggedUserAdmin['user_status'] }}">
-
-
-    </div>
-    </div>
-    </div>
 
     </div>
 
@@ -196,38 +147,10 @@
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
-        function disbale_btn() {
-            document.getElementById('myButton').innerHTML = 'Assigning...';
-            // document.getElementById('myButton').disabled = true;
-        }
+        // Jquery entering here
 
-        $(document).ready(function() {
-
-            var hidden_role = $('#hidden_role').val();
-            var hidden_status = $('#hidden_status').val();
-
-            if (hidden_role == "Approval Officer" && hidden_status == "null") {
-                $('#special_supplier').hide();
-                $('#special_procurement_plan').hide();
-                $('#special_master_data').hide();
-                $('#special_user_data').hide();
-                $('#special_user_rights').hide();
-                $('#dashboard_menu').hide();
-                $('#mini_dashboard').hide();
-            } else if (hidden_role == "Approval Officer" && hidden_status == "Assigned") {
-                $('#special_supplier').show();
-                $('#special_procurement_plan').hide();
-                $('#special_master_data').hide();
-                $('#special_user_data').hide();
-                $('#special_user_rights').hide();
-                $('#dashboard_menu').hide();
-                $('#mini_dashboard').hide();
-            }
-
-        });
     </script>
-
-
+    
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->

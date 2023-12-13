@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Models\master_data;
 use App\Models\master_code;
 use App\Models\procurement;
+use App\Models\procurement_approval;
+use App\Models\procurement_approval_reason;
 use App\Models\timeline;
 use Session;
 use PDF;
@@ -148,10 +150,6 @@ class ProcurementPlan extends Controller
 
 
         public function upload_excel(Request $request){
-      
-                $request->validate([
-                    'file1' => 'required|mimes:xlsx'
-                ]);
 
                 $request->validate([
                     'file1' => 'required|mimes:xlsx'
@@ -186,7 +184,7 @@ class ProcurementPlan extends Controller
                         continue;
                     }
                     else{
-                        Alert::error('Error', 'Procurement plan has been not been uploaded successfully');
+                        Alert::error('Error', 'Procurement plan has not been uploaded successfully');
                         return back()->with('fail','Invalid Contract type');
                     }
                 }
@@ -200,14 +198,62 @@ class ProcurementPlan extends Controller
                         continue;
                     }
                     else{
-                        Alert::error('Error', 'Procurement plan has been not been uploaded successfully');
+                        Alert::error('Error', 'Procurement plan has not been uploaded successfully');
                         return back()->with('fail','Invalid Currency type');
                     }
                 }
 
 
                 Excel::import(new Procurementdata, $request->file('file1'));
+
+                $distinctValues = procurement::distinct()->pluck('requisition_division');
+
+                $values = master_data::where('md_master_code_id', 53)->get();
+
+                foreach ($distinctValues as $item) {
+                    foreach ($values as $value) {
+                        if($item == $value->md_id)
+                        {
+                            $post = new procurement_approval;
+
+                            $post->All_sections = $value->md_name;
+                            $post->HOP = 'Pending';
+                            $post->director_hr = 'Pending';
+                            $post->ASG_Finance = 'Pending';
+                            $post->SG = 'Pending';      
+                            $post->save();
+
+                        }
+                    }
+                }
+
+
+                $officer_email = "headofprocurement@gmail.com";
+                $firstname = "Klunzate";
+                $lastname  = "Timportz";
+                $status  = $request->choice;
+                $recommendations = $request->recommendation_proc_officer;
+
+        
+                $data = [
+                    'email'      => $officer_email,
+                    'username'   => $firstname ." ". $lastname,   
+                    'recommendations'=> $recommendations,
+                    'status'     => $status,
+                    'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Uploaded and Awaiting Approval.',
+                ];
+        
+        
+                $pdf_data = PDF::loadView('emails.approval_upload_procurement', $data); 
+        
+                Mail::send('emails.approval_upload_procurement', $data, function ($message) use ($data, $pdf_data) {
+                    $message->to($data["email"], $data["email"] )
+                        ->subject($data["title"]);
+                });
+        
+
                 Alert::success('Success', 'Procurement plan has been uploaded successfully');
+
 
                 return back();
 
@@ -227,10 +273,7 @@ class ProcurementPlan extends Controller
 
     public function master_table(){
 
-        // $all_data =  master_data::all();
         $mc_code = DB::select('select * from master_codes,master_datas where master_codes.id = md_master_code_id');
-
-        // dd($mc_code);
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
@@ -496,9 +539,13 @@ class ProcurementPlan extends Controller
     public function assign_officer(){
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
-        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
 
-        return view('procurement.assign_officer',$data,compact('approval_officer'));
+        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+        $assigned_approval_officer = DB::table('admins')
+                                ->where('user_status','Assigned')
+                                ->where('procurement_approval_status','null')->get();
+
+        return view('procurement.assign_officer',$data,compact('approval_officer','assigned_approval_officer'));
 
     }
 
@@ -642,6 +689,763 @@ class ProcurementPlan extends Controller
             "status"=>TRUE,
             "message"=>"Head of Procurement has recieved your message",
         ]);
+
+    }
+
+    // PROCUREMENT PLAN WORKFLOW
+
+    public function procurement_assign_view()
+    {
+        
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+
+        return view ('procurement.procurement_assign_officer',$data , compact('approval_officer'));
+    }
+
+    public function assign_procurement_officer(Request $request)
+    {
+        
+        $user_id = $request->assigned;  
+
+        $officer_email = DB::table('admins')->where('id',$user_id)->value('email');
+        $username = DB::table('admins')->where('id',$user_id)->value('username');
+        $firstname = DB::table('admins')->where('id',$user_id)->value('firstname');
+        $lastname = DB::table('admins')->where('id',$user_id)->value('lastname');
+
+        $data = [
+            'email'      => $officer_email,
+            'username'   => $firstname ." ". $lastname,   
+            'title'      => 'COMESA:E-PROCUREMENT - Uploading of Procurement Plan',
+        ];
+
+
+        $pdf_data = PDF::loadView('emails.upload_procurement_plan', $data); 
+
+        Mail::send('emails.upload_procurement_plan', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+        });
+
+
+        DB::table('admins')
+        ->where('id',$user_id)
+        ->update(['procurement_approval_status' => "Assigned"]);
+
+        Alert::success('Success', 'Procurement Approval Officer has been assigned and notified');
+
+        return back();
+
+    }
+
+    public function approve_procurement()
+    {
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $values = procurement_approval::all();
+        $approval_reasons = procurement_approval_reason::all();
+        
+        return view('procurement.approve_procurement',$data , compact(['values','approval_reasons']));
+    }
+
+    public function Head_of_procurement_approval_pp(Request $request){
+
+        $choice = $request->choice;  
+
+        if($choice == "Reject"){
+
+            $unit_email = "unit_HOP_email@gmail.com";
+    
+            $data = [
+                'email'      => $unit_email,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Uploading Reject for Procurement Plan',
+            ];
+    
+    
+            $pdf_data = PDF::loadView('emails.upload_procurement_plan', $data); 
+    
+            Mail::send('emails.upload_procurement_plan', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+            });
+        }
+        else
+        {
+
+            $HOP = "HOP@gmail.com";
+    
+            $data = [
+                'email'      => $HOP,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Uploading of Procurement Plan',
+            ];
+    
+            $pdf_data = PDF::loadView('emails.upload_procurement_plan', $data); 
+    
+            Mail::send('emails.upload_procurement_plan', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+            });
+
+        }
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>$choice,
+        ]);
+    }
+
+    public function dummy()
+    {
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()]; 
+
+        return view('dummy',$data , compact(['values']));
+    }
+
+    public function approve_procurement_records(Request $request)
+    {
+
+        $user_role = $request->user_role;
+        $user_id  = $request->user_id;
+        $user_role = $request->user_role;
+        $reason = $request->reason;
+
+
+        $firstname = DB::table('admins')->where('id',$user_id)->value('firstname');
+        $lastname = DB::table('admins')->where('id',$user_id)->value('lastname');
+
+        $distinctValues = procurement_approval::distinct()->pluck('All_sections');
+
+        // Approving Logic
+
+        if($user_role == 'Head of Procurement')
+        {
+            foreach ($distinctValues as $value) {
+
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'HOP' => 'Approved',
+                            ]);
+            }
+
+            // inserting reason in the db.
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'HOP')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'HOP')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'HOP'],
+                    ['reason' => $reason]
+                ); 
+            }
+            
+
+            $director_email = "directorprocurement@gmail.com";
+        
+            $data = [
+                'email'      => $director_email,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Approval.',
+            ];
+    
+    
+            $pdf_data = PDF::loadView('emails.procurement_approvals.approval_email', $data); 
+    
+            Mail::send('emails.procurement_approvals.approval_email', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+            });
+
+        }
+
+        
+        if($user_role == 'Director HR')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'director_hr' => 'Approved',
+                            ]);
+            }
+
+              $count_data =  DB::table('procurement_approval_reasons')->where('role', 'director_hr')->count();
+
+              if($count_data > 0)
+              {
+                  DB::table('procurement_approval_reasons')->where('role', 'director_hr')->update(['reason' => $reason]);
+              }
+              else
+              {
+                  procurement_approval_reason::updateOrCreate(
+                      ['name' => $firstname.$lastname, 'role' => 'director_hr'],
+                      ['reason' => $reason]
+                  ); 
+              }
+
+            $ASG_Finance = "ASG_finance@gmail.com";
+        
+                $data = [
+                    'email'      => $ASG_Finance,
+                    'username'   => $firstname ." ". $lastname,   
+                    'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Approval.',
+                ];
+        
+        
+                $pdf_data = PDF::loadView('emails.procurement_approvals.approval_email', $data); 
+        
+                Mail::send('emails.procurement_approvals.approval_email', $data, function ($message) use ($data, $pdf_data) {
+                    $message->to($data["email"], $data["email"] )
+                        ->subject($data["title"]);
+                });
+        }
+
+
+        if($user_role == 'ASG Finance')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'ASG_Finance' => 'Approved',
+                            ]);
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'ASG_Finance')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'ASG_Finance')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'ASG_Finance'],
+                    ['reason' => $reason]
+                ); 
+            }
+
+            $SG = "SG@gmail.com";
+        
+            $data = [
+                'email'      => $SG,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Approval.',
+            ];
+    
+    
+            $pdf_data = PDF::loadView('emails.procurement_approvals.approval_email', $data); 
+    
+            Mail::send('emails.procurement_approvals.approval_email', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+            });
+        }
+
+
+        if($user_role == 'SG')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'SG' => 'Approved',
+                            ]);
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'SG')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'SG')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'SG'],
+                    ['reason' => $reason]
+                ); 
+            }
+        }
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Procurement plan has been approved successfully",
+        ]);
+    }
+
+    // Rejecting logic 
+
+    public function reject_procurement_records(Request $request)
+    {
+
+        $user_role = $request->user_role;
+        $user_id  = $request->user_id;
+        $user_role = $request->user_role;
+        $reason = $request->reason;
+
+        
+        $firstname = DB::table('admins')->where('id',$user_id)->value('firstname');
+        $lastname = DB::table('admins')->where('id',$user_id)->value('lastname');
+        
+        $distinctValues = procurement_approval::distinct()->pluck('All_sections');
+          
+
+        if($user_role == 'Head of Procurement')
+        {
+            foreach ($distinctValues as $value) {
+
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'HOP' => 'Rejected',
+                            ]);
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'HOP')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'HOP')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'HOP'],
+                    ['reason' => $reason]
+                ); 
+            }
+
+            $unit_divsion = "unit_divsion@gmail.com";
+        
+            $data = [
+                'email'      => $unit_divsion,
+                'reason'     => $reason,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+            ];
+    
+    
+            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+    
+            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+            });
+        }
+
+        
+        if($user_role == 'Director HR')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'director_hr' => 'Rejected',
+                            ]);
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'director_hr')->count();
+
+              if($count_data > 0)
+              {
+                  DB::table('procurement_approval_reasons')->where('role', 'director_hr')->update(['reason' => $reason]);
+              }
+              else
+              {
+                  procurement_approval_reason::updateOrCreate(
+                      ['name' => $firstname.$lastname, 'role' => 'director_hr'],
+                      ['reason' => $reason]
+                  ); 
+              }
+
+            $unit_divsion = "unit_divsion@gmail.com";
+        
+            $data = [
+                'email'      => $unit_divsion,
+                'reason'     => $reason,
+                'username'   => $firstname ." ". $lastname,   
+                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+            ];
+    
+    
+            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+    
+            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"] )
+                    ->subject($data["title"]);
+        });
+
+        
+        $unit_divsion = "HOP@gmail.com";
+        
+        $data = [
+            'email'      => $unit_divsion,
+            'reason'     => $reason,
+            'username'   => $firstname ." ". $lastname,   
+            'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+        ];
+
+
+        $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+
+        Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"] )
+                ->subject($data["title"]);
+    });
+        
+    }
+
+
+        if($user_role == 'ASG Finance')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'ASG_Finance' => 'Rejected',
+                            ]);
+
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'ASG_Finance')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'ASG_Finance')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'ASG_Finance'],
+                    ['reason' => $reason]
+                ); 
+            }
+
+
+            $unit_divsion = "unit_divsion@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });
+
+
+                        $unit_divsion = "HOP@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });
+
+
+                        $unit_divsion = "directorprocurement@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });
+        }
+
+
+        if($user_role == 'SG')
+        {
+           
+            foreach ($distinctValues as $value)
+            {
+                procurement_approval::where('All_sections', $value)
+                            ->update([
+                                'SG' => 'Rejected',
+                            ]);
+            }
+
+            $count_data =  DB::table('procurement_approval_reasons')->where('role', 'SG')->count();
+
+            if($count_data > 0)
+            {
+                DB::table('procurement_approval_reasons')->where('role', 'SG')->update(['reason' => $reason]);
+            }
+            else
+            {
+                procurement_approval_reason::updateOrCreate(
+                    ['name' => $firstname.$lastname, 'role' => 'SG'],
+                    ['reason' => $reason]
+                ); 
+            }
+
+            $unit_divsion = "unit_divsion@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });     
+
+
+                        $unit_divsion = "HOP@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });
+
+
+                        $unit_divsion = "directorprocurement@gmail.com";
+        
+                            $data = [
+                                'email'      => $unit_divsion,
+                                'reason'     => $reason,
+                                'username'   => $firstname ." ". $lastname,   
+                                'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                            ];
+                    
+                    
+                            $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                    
+                            Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                                $message->to($data["email"], $data["email"] )
+                                    ->subject($data["title"]);
+                        });
+
+
+                        $unit_divsion = "ASG_finance@gmail.com";
+        
+                        $data = [
+                            'email'      => $unit_divsion,
+                            'reason'     => $reason,
+                            'username'   => $firstname ." ". $lastname,   
+                            'title'      => 'COMESA:E-PROCUREMENT - Procurement Plan Rejection.',
+                        ];
+                
+                
+                        $pdf_data = PDF::loadView('emails.procurement_approvals.reject_email', $data); 
+                
+                        Mail::send('emails.procurement_approvals.reject_email', $data, function ($message) use ($data, $pdf_data) {
+                            $message->to($data["email"], $data["email"] )
+                                ->subject($data["title"]);
+                    });
+        }
+
+        return response()->json([
+            "status"=>TRUE,
+            "message"=>"Rejecting has been done successfully",
+        ]);
+    }
+
+
+    public function hide(Request $request)
+    {
+
+        $user_role = $request->user_role;
+
+        if($user_role == 'Head of Procurement')
+        {
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('HOP');
+
+            if($approval_status == "Approved")
+            {
+                $status = "Approved";
+            }
+            else if($approval_status == "Rejected")
+            {
+                $status = "Rejected";
+
+            }
+            else
+            {
+                $status = "Pending";
+
+            }
+
+            return response()->json([
+                "status"=> TRUE,
+                "status_approval"=> $status,
+            ]);
+
+        }
+
+        else if($user_role == 'Director HR')
+        {
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('director_hr');
+            
+            if($approval_status == "Approved")
+            {
+                $status = "Approved";
+            }
+            else if($approval_status == "Rejected")
+            {
+                $status = "Rejected";
+
+            }
+            else
+            {
+                $status = "Pending";
+
+            }
+
+            return response()->json([
+                "status"=> TRUE,
+                "status_approval"=> $status,
+            ]);
+
+        }
+
+        else if($user_role == 'ASG Finance')
+        {
+           
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('ASG_Finance');
+            
+            if($approval_status == "Approved")
+            {
+                $status = "Approved";
+            }
+            else if($approval_status == "Rejected")
+            {
+                $status = "Rejected";
+
+            }
+            else
+            {
+                $status = "Pending";
+
+            }
+
+            return response()->json([
+                "status"=> TRUE,
+                "status_approval"=> $status,
+            ]);
+
+        }
+
+        else if($user_role == 'SG')
+        {
+           
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('SG');
+            
+            if($approval_status == "Approved")
+            {
+                $status = "Approved";
+            }
+            else if($approval_status == "Rejected")
+            {
+                $status = "Rejected";
+
+            }
+            else
+            {
+                $status = "Pending";
+
+            }
+
+            return response()->json([
+                "status"=> TRUE,
+                "status_approval"=> $status,
+            ]);
+
+        }
+    }
+
+
+    public function search_status(Request $request)
+    {
+        $data = $request->user_role;
+                
+        if($data == 'SG')
+        {
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('ASG_Finance');    
+        
+                return response()->json([
+                    "status"=>TRUE,
+                    "approval_status"=>$approval_status,
+                ]);
+            
+        }
+
+
+        
+        if($data == 'ASG Finance')
+        {
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('director_hr');    
+            
+                return response()->json([
+                    "status"=>TRUE,
+                    "approval_status"=>$approval_status,
+                ]);   
+        }
+
+
+        if($data == 'Director HR')
+        {
+            $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('HOP');    
+
+                return response()->json([
+                    "status"=>TRUE,
+                    "approval_status"=>$approval_status,
+                ]);
+            
+        }
+
 
     }
 }

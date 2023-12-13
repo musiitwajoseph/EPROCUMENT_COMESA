@@ -264,7 +264,7 @@
 
 
 <div id="all_data">
-	<div class="row">
+	<div class="row" id="mini_dashboard">
 		<div class="col-sm-12">
 			<ul class="dshb_icoNav clearfix">
 				<li style="padding-bottom:1rem;"><a class="btn" id="approved_btn" style="background-image: url(/assets/img/gCons/multi-agents1.png);"><span class="label label-info">{{$approved_count}}</span>Recommended for <br> Approval</a></li>
@@ -286,6 +286,9 @@
                 {{-- <div style="padding-bottom: 0.50rem;" id="approve_all_btn">
                     <button class="btn btn-success pull-right mb-4">Approve all</button>
                 </div> --}}
+
+                <a href="" class="btn btn-success pull-right">Approve All</a>
+
             <h3 class="heading" style="color: rgb(26, 239, 54)" >Recommended for Approval Suppliers Applications</h3>
                   
             <table class="table table-bordered table-striped" id="smpl_tbl">
@@ -353,6 +356,7 @@
                         <th>Branch Name</th>
                         <th>Years in Business</th>
                         <th style="text-align: center">Action</th>
+                        <th>Block Supplier</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -369,6 +373,7 @@
                         <td>{{$item->Bank_Branch}}</td>
                         <td>{{$item->No_of_years_in_business}}</td>
                         <td><a href="{{'fully-approved/'.$item->id}}" class="btn btn-success">View Details</a></td>
+                        <td><a href="{{'fully-approved/'.$item->id}}" class="btn btn-info">Block</a></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -438,7 +443,11 @@
             {{-- <div style="padding-bottom: 0.50rem;" id="reject_all_btn">
                 <button class="btn btn-danger pull-right mb-4">Reject all</button>
             </div> --}}
+
+            <a href="" class="btn btn-danger pull-right">Cancell All</a>
             <h3 class="heading" style="color: red">Recommended for Cancellation Suppliers Applications</h3>
+            
+
             
             <table class="table table-bordered table-striped" id="smpl_tbl">
                 <thead>
@@ -581,62 +590,19 @@
 
         </div>
 
-        <input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
-        <input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
-        <input type="hidden" id="hidden_id" value="{{$LoggedUserAdmin['id']}}">
-
+        @include('includes.user_info')
 
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right" data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
    
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-
-
-
-            $(document).ready(function(){
-				
-                var hidden_role = $('#hidden_role').val();
-                var hidden_status = $('#hidden_status').val();
-
-                if(hidden_role == "Approval Officer" && hidden_status == "null")
-                {
-                    $('#special_supplier').hide();
-                    $('#special_procurement_plan').hide();
-                    $('#special_master_data').hide();
-                    $('#special_user_data').hide();
-                    $('#special_user_rights').hide();
-                    $('#dashboard_menu').hide();
-                    $('#mini_dashboard').hide();
-                    $('#fully_approved_btn').hide();
-                    $('#fully_cancelled_btn').hide();
-                    $('#all_data').hide();
-                    $('#reject_all_btn').hide();
-                    $('#approve_all_btn').hide();
-                }
-                else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
-                {
-                    $('#special_supplier').show();
-                    $('#special_procurement_plan').hide();
-                    $('#special_master_data').hide();
-                    $('#special_user_data').hide();
-                    $('#special_user_rights').hide();
-                    $('#dashboard_menu').hide();
-                    $('#mini_dashboard').hide();
-                    $('#fully_approved_btn').hide();
-                    $('#fully_cancelled_btn').hide();
-                    $('#reject_all_btn').hide();
-                    $('#approve_all_btn').hide();
-                    $('#all_data').show();
-                }
-
-                if(hidden_role != "Approval Officer")
-                {
-                    $('#accomplish_task').hide();
-                }
-         });
-
+	
+        $(document).ready(function(){
+            app_approvals();
+        });
 
             $(document).ready(function(){
                     $('#Pending_Suppliers').hide();

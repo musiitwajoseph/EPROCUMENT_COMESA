@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assign Officer </title>
+    <title>Supplier Documents TABLE </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -41,13 +41,14 @@
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    
+    {{-- <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.min.css')}}"> --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 </head>
 
 <body class="full_width">
-
+    
     <div id="maincontainer" class="clearfix">
 
         <header>
@@ -68,7 +69,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                         src="/assets/img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b class="caret"></b></a>
+                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b
+                                        class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="javascript:void(0);">My Profile</a></li>
                                     <li class="divider"></li>
@@ -96,99 +98,61 @@
                         </li>
                     </ul>
                 </div>
-                <h3 class="heading" style="color: rgb(26, 239, 54)">Assign Officer</h3>
 
-                @if (Session::get('success'))
+
+                <div class="row">
+
+                    @if (Session::get('success'))
                     <div class="alert alert-success">
-                        {{ Session::get('success') }}
+                     {{Session::get('success')}}
                     </div>
-                @endif
-
-                @include('sweetalert::alert')
-
-                <form action="{{ route('store-assign-officer') }}" method="POST">
-
-                    @csrf
-                    <div class="formSep">
-
-                        <div class="row">
-
-                            {{-- For each for the name and State  --}}
-
-                            <input type="hidden" name="user_id" id="user_id" value="{{ $LoggedUserAdmin['id'] }}">
-
-                            <div class="col-sm-3 col-md-3">
-                                <label for="">Officer Name</label>
-                                <select name="assigned" id="assigned" class="form-control">
-                                    @foreach ($approval_officer as $item)
-                                        <option value="{{ $item->id }}">{{ $item->username }}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
+                 @endif
 
 
-                            <div class="col-sm-3 col-md-3">
-                                <label for="">Role</label>
-                                <input class="form-control" type="text" name="user_role" id="user_role"
-                                    value="{{ $item->user_role }}" required>
+                 @include('sweetalert::alert')
 
-                            </div>
-
-
-                            <div class="clearfix"></div>
-                            <br>
-                            <div class="col-sm-3 col-md-3">
-                                <button type="submit" onclick="disbale_btn()" id="myButton"
-                                    class="btn btn-primary">Assign</button>
-                            </div>
-                </form>
-
-                    
-                    <div class="col-sm-12 col-md-12" id="Assigned_approvers">
+                    <div class="col-sm-12 col-md-12">
                         <section id="Approved_suppliers">
-                            <br>
-                            <h3 class="heading" style="color: rgb(11, 12, 11)">Assigned Approvers</h3>
+                            <h3 class="heading" style="color: rgb(26, 239, 54)">Supplier Required Documents</h3>
+
+                            <a href="{{ route('add-document') }}" class="btn btn-sm btn-primary"><i class="la la-pencil"></i>Add a documents </a>  <br> <br>
 
                             <div class="table-responsive">
 
                             <table class="table table-bordered table-striped" id="smpl_tbl">
                                 <thead>
                                     <tr>
-                                        <th>Username</th>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
-                                        <th>Email</th>
-                                        <th>Status Assignment</th>
+                                        <th>Document Name</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     
-                                    @foreach ($assigned_approval_officer as $item)
+                                    @foreach ($documents as $item)
                                         <tr>
-                                            <td>{{ $item->username}}</td>
-                                            <td>{{ $item->firstname}}</td>
-                                            <td>{{ $item->lastname}}</td>
-                                            <td>{{ $item->email}}</td>
-                                            <td>{{ $item->user_status}}</td>
+                                            <td>{{ $item->md_name }}</td>
+                                            <td>
+                                                <a href="{{'edit-supplier-document/'.$item->md_id}}" class="btn  btn-primary"></i>Edit</a>
+                                                <a href="{{'delete-supplier-document/'.$item->md_id}}" class="btn  btn-danger"></i>Delete</a>                                                
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                           
 
+                            <style>
+                                .w-5 {
+                                    display: none;
+                                }
+                            </style>
+
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <input type="hidden" id="hidden_role" value="{{ $LoggedUserAdmin['user_role'] }}">
-        <input type="hidden" id="hidden_status" value="{{ $LoggedUserAdmin['user_status'] }}">
-
-
-    </div>
-    </div>
-    </div>
 
     </div>
 
@@ -196,38 +160,36 @@
 
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
-        function disbale_btn() {
-            document.getElementById('myButton').innerHTML = 'Assigning...';
-            // document.getElementById('myButton').disabled = true;
-        }
+        // Jquery entering here
 
-        $(document).ready(function() {
 
-            var hidden_role = $('#hidden_role').val();
-            var hidden_status = $('#hidden_status').val();
+            $(document).ready(function(){
+					$('#delete_btn').click(function(){
 
-            if (hidden_role == "Approval Officer" && hidden_status == "null") {
-                $('#special_supplier').hide();
-                $('#special_procurement_plan').hide();
-                $('#special_master_data').hide();
-                $('#special_user_data').hide();
-                $('#special_user_rights').hide();
-                $('#dashboard_menu').hide();
-                $('#mini_dashboard').hide();
-            } else if (hidden_role == "Approval Officer" && hidden_status == "Assigned") {
-                $('#special_supplier').show();
-                $('#special_procurement_plan').hide();
-                $('#special_master_data').hide();
-                $('#special_user_data').hide();
-                $('#special_user_rights').hide();
-                $('#dashboard_menu').hide();
-                $('#mini_dashboard').hide();
-            }
+                    var username = $('#delete_btn').val();
 
-        });
+                    alert(username);
+
+					$.ajax({
+								type: "post",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: "",	
+								url			:'/edit-record/'+username,							
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								success		:function(data){
+                                    if(data.status){
+										alert(data.message);
+									}
+								}
+					});
+				});
+            });
+
+
     </script>
-
-
+    
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->

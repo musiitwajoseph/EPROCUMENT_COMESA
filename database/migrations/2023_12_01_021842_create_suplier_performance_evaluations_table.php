@@ -32,9 +32,8 @@ return new class extends Migration
         $table->text('overall');
         $table->text('contract_manager_name');
         $table->text('contract_manager_signature');
-        $table->text('contract_manager_date');
-           
-            $table->timestamps();
+        $table->text('contract_manager_date');   
+        $table->timestamps();
 
        
 

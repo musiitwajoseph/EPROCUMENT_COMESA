@@ -270,6 +270,7 @@
                 text-transform: uppercase;
             }
         </style>
+		<div class="row" id="dashboard_menu">
 		<div class="col-sm-12 tac">
 
             <h1 style="text-align: center;color:#fff;margin:3rem;background-color:blue;">Fully Rejected Supplier  </h1>
@@ -444,23 +445,31 @@
                                                 <td colspan="4" style="text-align: left;margin-top:2rem;">{{$info->reason_for_rejection}}</td>
                                             </tr>
 
-											<input type="hidden" id="hidden_role" value="{{$LoggedUserAdmin['user_role']}}">
-											<input type="hidden" id="hidden_status" value="{{$LoggedUserAdmin['user_status']}}">
+											@include('includes.user_info')
+
             </table>
 
-			{{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Fully Reject</button>
+			{{-- {{-- <button class="btn btn-danger pull-left" id="disapproving_btn">Fully Reject</button> --}}
 
-            <button class="btn btn-success pull-right"  id="approving_btn">Approve Supplier</button> --}}
 
 		</div>
+	</div>
+
+	<button class="btn btn-success pull-right"  id="revert_application">Revert Application</button> 
 	</div>
 
 		<div style="padding-top: 1rem;">
 			<p style="text-align: left;font-weight:bold;" >Reviewed by : {{$info->approved_by}}</p>
 			<p style="text-align: left;font-weight:bold;">Approval Officer Email: {{$info->approved_email}}</p>
 			<p style="text-align: left;font-weight:bold;">Reviewed date : {{$info->updated_at}}</p>
+
+			
 		</div>
 
+		
+
+
+		
     </div>
           
 </div>
@@ -471,41 +480,13 @@
    
     @include('includes.side-bar')
 
-    <script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-
-
-$(document).ready(function(){
-				
-				var hidden_role = $('#hidden_role').val();
-				var hidden_status = $('#hidden_status').val();
-
-				if(hidden_role == "Approval Officer" && hidden_status == "null")
-				{
-					$('#special_supplier').hide();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-					$('#disapproving_btn').hide();
-					$('#approving_btn').hide();
-				}
-				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
-				{
-					$('#special_supplier').show();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-					$('#disapproving_btn').hide();
-					$('#approving_btn').hide();
-				}
-				
-	 });
+	
+	$(document).ready(function(){
+		app_approvals();
+	});
 
 
             $(document).ready(function(){
@@ -588,6 +569,44 @@ $(document).ready(function(){
                 });
             });
 
+
+			$(document).ready(function(){
+                $('#revert_application').click(function(){
+                    if (confirm('Are you sure you want to revert this Supplier Application ?')) {
+                        
+						var id_hidden  = $('#id_hidden').val();
+
+						var form_data = new FormData();
+
+						form_data.append('id_hidden', id_hidden);
+
+                            $.ajax({
+								type: "POST",
+								processData: false,
+								contentType: false,
+								cache: false,
+								data		: form_data,								
+								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+								url			:'/revert-application',
+								success		:function(data){
+									if(data.status){		
+                                        alert(data.message);	
+										location.replace('/approve-dashboard');				
+									}								
+								},
+								error: function(data)
+								{
+									$('body').html(data.responseText);
+								}
+							});
+                    }
+                else{
+                   
+                    return false;
+                }
+                 
+                });
+            });
 
     </script>
 

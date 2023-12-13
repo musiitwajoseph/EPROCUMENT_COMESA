@@ -267,7 +267,7 @@
 				
 
 
-
+		<div class="row" id="dashboard_menu">
 		<div class="col-sm-12 tac">
             <table class="table table-bordered table-striped" id="smpl_tbl">
 
@@ -453,6 +453,7 @@
 
             <button class="btn btn-success pull-right"  id="approving_btn">Recommend Approving</button>
 		</div>
+		</div>
 	</div>
                  
     </div>
@@ -466,35 +467,13 @@
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
-    <script type="text/javascript">
+    <script src="/assets/js/cust.js"></script>
+	<script src="/assets/js/Approval_logic.js"></script>
+	<script type="text/javascript">
 
-$(document).ready(function(){
-				
-				var hidden_role = $('#hidden_role').val();
-				var hidden_status = $('#hidden_status').val();
-
-				if(hidden_role == "Approval Officer" && hidden_status == "null")
-				{
-					$('#special_supplier').hide();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-				}
-				else if(hidden_role == "Approval Officer" && hidden_status == "Assigned")
-				{
-					$('#special_supplier').show();
-					$('#special_procurement_plan').hide();
-					$('#special_master_data').hide();
-					$('#special_user_data').hide();
-					$('#special_user_rights').hide();
-					$('#dashboard_menu').hide();
-					$('#mini_dashboard').hide();
-				}
-				
-	 });
+	$(document).ready(function(){
+		app_approvals();
+	});
 
 
             $(document).ready(function(){

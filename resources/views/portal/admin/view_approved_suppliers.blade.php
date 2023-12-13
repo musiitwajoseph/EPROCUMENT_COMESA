@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA SUPPLIER DASHBOARD</title>
+    <title>COMESA ADMIN DASHBOARD </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -42,7 +42,12 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <!-- Include SweetAlert CSS and JS from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body class="full_width">
@@ -117,24 +122,30 @@
 
         <header>
 
+
+
+            {{-- @include('includes.TopNavTest'); --}}
+
+
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
                     <div class="container-fluid">
-                        <a class="brand pull-left" href="{{ route('supplier-dashboard') }}">SUPPLIER DASHBOARD</a>
+                        <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
 
                         <ul class="nav navbar-nav user_menu pull-right">
 
 
                             <li class="divider-vertical hidden-sm hidden-xs"></li>
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
-                                        src="img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserInfo['username'] }} <b
+                                        src="/assets/img/user_avatar.png" alt=""
+                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b
                                         class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="javascript:void();">My Profile</a></li>
+                                    <li><a href="javascript:void(0);">My Profile</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="{{ route('supplier-logout') }}">Log Out</a></li>
+                                    <li><a href="{{ route('admin-logout') }}">Log Out</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -142,88 +153,101 @@
                 </div>
             </nav>
 
-        </header>
 
+        </header>
         <div id="contentwrapper">
             <div class="main_content">
+
                 <div id="jCrumbs" class="breadCrumb module">
                     <ul>
                         <li>
                             <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
                         </li>
-
                         <li>
-                            <a href="javascript:void(0);">Supplier Dashboard</a>
+                            <a href="javascript:void(0);">Admin Dashboard</a>
                         </li>
-
                     </ul>
                 </div>
 
-                <input type="hidden" name="user_reference" id="user_reference"
-                value="{{ $LoggedUserInfo['supplier_reference'] }}">
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <ul class="dshb_icoNav clearfix">
-                            <li><a href="{{'submitted-record/'.$LoggedUserInfo['supplier_reference']}}"
-                                    style="background-image: url(/assets/img/gCons/edit.png);"><span
-                                        class="label label-info"></span> Applications</a></li>
-                        </ul>
-                    </div>
+                <div id="all_data">
+
+                    <input type="hidden" name="admin_username_hidden" id="admin_username_hidden"
+                        value={{ $LoggedUserAdmin['username'] }}>
+
+                    <input type="hidden" name="admin_email_hidden" id="admin_email_hidden"
+                        value={{ $LoggedUserAdmin['email'] }}>
+
+                    <input type="hidden" name="user_id" id="user_id" value={{ $LoggedUserAdmin['id'] }}>
+
+                    <section id="">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <h3 class="heading" style="color: rgba(8, 94, 22, 0.637);font-weight:bold;">Your
+                                    Approved Suppliers</h3>
+
+                                <table class="table table-bordered table-striped" id="smpl_tbl">
+                                    <thead>
+                                        <tr>
+                                            <th>Business Name</th>
+                                            <th>Nature of Business</th>
+                                            <th>Contact Person</th>
+                                            <th>Physical Address</th>
+                                            <th>National Pension Authority</th>
+                                            <th>Bank Name</th>
+                                            <th>Years in Business</th>
+                                            <th style="text-align: center">Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach ($approved as $item)
+                                              <tr>
+                                                <td>{{ $item->BusinessName }}</td>
+                                                <td>{{ $item->Nature_of_Business }}</td>
+                                                <td>{{ $item->contact_person }}</td>
+                                                <td>{{ $item->physical_address }}</td>
+                                                <td>{{ $item->National_Pension_Authority }}</td>
+                                                <td>{{ $item->Bank_name }}</td>
+                                                <td>{{ $item->No_of_years_in_business }}</td>
+                                                <td><button class="btn btn-warning">Pending</button></td>
+                                                <td><a href="{{ url('fully-approved/' . $item->id )}}"
+                                                        class="btn btn-success">View Details</a></td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </section>
                 </div>
+
             </div>
         </div>
 
     </div>
 
+    @include('includes.user_info')
+
     <a href="/assets/javascript:void(0)" class="sidebar_switch on_switch bs_ttip" data-placement="auto right"
         data-viewport="body" title="Hide Sidebar">Sidebar switch</a>
 
-    @include('includes.supplier-side-bar')
+    @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
-    $(document).ready(function(){
-
-        $('#btn_selected_record').click(function(){
-
-            var user_reference = $('#user_reference').val();
-
-            var form_data = new FormData();
-
-            form_data.append('user_reference', user_reference);
-          
-                     $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,
-								url			:'/submitted-record',							
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-								success		:function(data){
-                                    if(data.status){
-										// alert(data.message);
-                                        location.replace('/userdata/'+data.user_id);
-									}
-								},
-								error: function(data)
-								{
-									$('body').html(data.responseText);
-								}
-					});
-
+        $(document).ready(function() {
+            app_approvals();
         });
-    });
 
 
     </script>
 
 
-
-
-    <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->
