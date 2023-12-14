@@ -212,6 +212,10 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     Route::post('approving',[COMESA_CONTROLLER::class,'approving_supplier']);
     Route::post('admin-verify-otp',[COMESA_CONTROLLER::class,'admin_verify_otp'])->name('admin-verify-otp');
     Route::post('cancel_approving',[COMESA_CONTROLLER::class,'cancel_approving_supplier']);
+    Route::post('approve-cancel-all',[COMESA_CONTROLLER::class,'approve_cancel_all'])->name('approve-cancel-all');
+    Route::post('approve-all-mass-assign',[COMESA_CONTROLLER::class,'mass_approve'])->name('approve-all-mass-assign');
+    Route::post('reject-all-mass-assign',[COMESA_CONTROLLER::class,'mass_reject'])->name('reject-all-mass-assign');
+    Route::post('verify-all-mass-assign',[COMESA_CONTROLLER::class,'verify_all_mass_assign'])->name('verify-all-mass-assign');
 
    //  EXCEL SHEETS UPLOAD
 

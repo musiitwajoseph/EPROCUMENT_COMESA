@@ -646,9 +646,9 @@ class ProcurementPlan extends Controller
         });
 
         DB::table('supplier_registration_details_models')
-        ->where('id',$user_id)
-        ->update(['approval_status' => "Approved",
-        'fully' => "fully",]);
+                        ->where('id',$user_id)
+                        ->update(['approval_status' => "Approved",
+                        'fully' => "fully",]);
 
 
         return response()->json([
@@ -672,17 +672,17 @@ class ProcurementPlan extends Controller
         ];
 
 
-        $pdf_data = PDF::loadView('emails.accomplishment_of_supplier_verification', $data); 
+        // $pdf_data = PDF::loadView('emails.accomplishment_of_supplier_verification', $data); 
 
-        Mail::send('emails.accomplishment_of_supplier_verification', $data, function ($message) use ($data, $pdf_data) {
-            $message->to($data["email"], $data["email"] )
-                ->subject($data["title"]);
-        });
+        // Mail::send('emails.accomplishment_of_supplier_verification', $data, function ($message) use ($data, $pdf_data) {
+        //     $message->to($data["email"], $data["email"] )
+        //         ->subject($data["title"]);
+        // });
 
 
         DB::table('admins')
-        ->where('id',$procurement_officer_id)
-        ->update(['user_status' => "null"]);
+                    ->where('id',$procurement_officer_id)
+                    ->update(['user_status' => "null"]);
 
 
         return response()->json([

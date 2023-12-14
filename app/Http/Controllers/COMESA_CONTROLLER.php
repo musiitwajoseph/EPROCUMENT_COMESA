@@ -1821,6 +1821,70 @@ class COMESA_CONTROLLER extends Controller
             ]);
     }
 
+
+    public function approve_cancel_all(Request $request)
+    {
+        $id = $request->user_admin_id;
+
+        $user_role = DB::table('admins')->where('id', $id)->value('user_role');
+
+
+        if($user_role != 'Head of Procurement')
+        {
+            return response()->json([
+                "status" => True,
+                "app_canc_all"=> "NO",
+            ]);
+        }
+
+    }
+
+    public function mass_approve(){
+
+        $approved = DB::table('supplier_registration_details_models')->where('approval_status', 'Approved')
+        ->where('fully', 'null')->get();
+        
+        DB::table('supplier_registration_details_models')
+        ->where('fully', 'null')
+        ->where('approval_status', 'Approved')
+        ->update([  'approval_status' => "Approved",
+                    'fully'=>'fully',
+                ]);
+
+                return response()->json([
+                    "status" => True,
+                    "message"=>"Supplier applications have all been approved",
+                ]);
+
+    }
+
+
+    public function mass_reject(){
+        
+        DB::table('supplier_registration_details_models')
+        ->where('approval_status', 'To be Cancelled')
+        ->update([  'approval_status' => "Cancelled",
+                    'fully'=>'fully',
+                ]);
+
+                return response()->json([
+                    "status" => True,
+                    "message"=>"Supplier applications have all been rejected successfully",
+                ]);
+
+    }
+
+    public function verify_all_mass_assign()
+    {
+        DB::table('supplier_registration_details_models')
+                    ->where('approval_status', 'Pending')
+                    ->update([  'approval_status' => "Approved",
+                                'fully'=>'null',
+                            ]);
+
+    }
+
+
     public function cancel_approving_supplier(Request $request){
 
         $id_hidden =  $request->input('id_hidden');
