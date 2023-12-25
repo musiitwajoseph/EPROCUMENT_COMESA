@@ -30,9 +30,10 @@
                                             href="{{ route('approve-dashboard') }}">Supplier
                                             Approvals</a></li>
 
-           {{-- <li><a href="{{'approved_by_admin/'.$LoggedUserAdmin['id']" class="btn btn-sm btn-danger" </i></a></li> --}}
+                                    {{-- <li><a href="{{'approved_by_admin/'.$LoggedUserAdmin['id']" class="btn btn-sm btn-danger" </i></a></li> --}}
 
-                                    <li><a id="supplier_1" class="" href="{{ url('view-approved-suppliers/'.$LoggedUserAdmin['id']) }}">
+                                    <li><a id="supplier_1" class=""
+                                            href="{{ url('view-approved-suppliers/' . $LoggedUserAdmin['id']) }}">
                                             View Approved records</a></li>
 
                                     <li><a id="supplier2" class="supplier_info"
@@ -74,6 +75,9 @@
                                     <li><a class="procurement_plan" href=" {{ route('timelines') }}">Timelines</a></li>
                                     <li><a class="procurement_plan" href="{{ route('display-timelines') }}">View
                                             Timelines</a></li>
+
+                                            <li><a class="procurement_plan" id="procurement_upload"
+                                                href=" {{ route('disable-procurement') }}">Disable procurement Plan </a></li>
                                 </ul>
                             </div>
                         </div>
@@ -91,8 +95,10 @@
                         </div>
                         <div class="accordion-body collapse" id="requistioning">
                             <div class="panel-body">
-                                <li><a href=" {{ route('purchase-requistion') }}">Purchase Requistion</a></li>
+                                {{-- <li><a href=" {{ route('purchase-requistion') }}">Make Requistion</a></li> --}}
+                                <li><a href=" {{ route('start-requistion') }}">Start Requistion</a></li>
                                 <li><a href="{{ route('SPV') }} ">SPV</a></li>
+                                <li><a href="{{ route('Assign-requistion-role') }} ">Assign requistion task </a></li>
                             </div>
                         </div>
                     </div>

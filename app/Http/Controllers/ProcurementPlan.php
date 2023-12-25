@@ -42,6 +42,16 @@ class ProcurementPlan extends Controller
         return view('procurement.procuring',$data,compact('procurement_categories'));
     }
 
+    public function disable_procurement()
+    {
+
+        $procurement_categories = DB::select('select * from master_datas where md_master_code_id = 53');
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+
+        return view('procurement.disable_procurement',$data,compact('procurement_categories'));
+    }
 
     // public function upload_excel(Request $request){
       
@@ -155,7 +165,6 @@ class ProcurementPlan extends Controller
                     'file1' => 'required|mimes:xlsx'
                 ]);
 
-
                 $file =  $request->file('file1');
                 $import = new Procurementdata; 
                 $importedData = Excel::toArray($import, $file);
@@ -202,6 +211,22 @@ class ProcurementPlan extends Controller
                         return back()->with('fail','Invalid Currency type');
                     }
                 }
+
+                
+                foreach ($importedData[0] as $row) {
+
+                    $unique_identifier = $row[48]; 
+
+                    if ($unique_identifier != null) {
+                        continue;
+                    }
+                    else{
+                        Alert::error('Error', 'Procurement plan has not been uploaded successfully');
+                        return back()->with('fail','Year of procurement plan is missing');
+                    }
+                
+                }
+
 
 
                 Excel::import(new Procurementdata, $request->file('file1'));
@@ -296,7 +321,6 @@ class ProcurementPlan extends Controller
 
         $data = Session::get($md_id);
         $date = time();
-
 
         // $session = $request->user_id;
          $session = 2;

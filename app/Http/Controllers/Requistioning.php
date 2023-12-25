@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Admin;
 use App\Models\procurement;    
 use App\Models\suplier_performance_evaluation;
@@ -19,6 +20,18 @@ class Requistioning extends Controller
 
         return view('Requistion.purchase_requisition',$data,compact('info'));
     }
+
+
+    public function start_requistion()
+    {
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $info = procurement::all();
+
+        return view('Requistion.start_requistioning',$data,compact('info'));
+    }
+
 
     public function store_purchase_requistion(Request $request){
 
@@ -92,4 +105,42 @@ class Requistioning extends Controller
             "message"=>"Purchase requstion has been submitted successfully",
         ]);
     }
+
+    public function assign_requistion_role()
+    {
+
+        $role = "Originator";
+        $originators =  Admin::where('user_role', $role)->get();
+
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        $info = procurement::all();
+
+        $distinctValues = procurement::distinct()->pluck('requisition_division');
+
+        // $values = master_data::where('md_master_code_id', 53)->get();
+
+        // foreach ($distinctValues as $item) {
+        //     foreach ($values as $value) {
+        //         if($item == $value->md_id)
+        //         {
+        //             $post = new procurement_approval;
+
+        //             $post->All_sections = $value->md_name;
+        //             $post->HOP = 'Pending';
+        //             $post->director_hr = 'Pending';
+        //             $post->ASG_Finance = 'Pending';
+        //             $post->SG = 'Pending';      
+        //             $post->save();
+
+        //         }
+        //     }
+        // }
+
+        dd($distinctValues);
+
+        return view('Requistion.assign_requistion',$data,compact(['originators','info']));
+    }
+
 }

@@ -53,7 +53,6 @@ Route::get('edit-required-documents/{id}',[COMESA_CONTROLLER::class,'Update_Requ
 Route::post('update-required-document-data',[COMESA_CONTROLLER::class, 'updateRequiredDetailsData']);
 
 
-
 // Download Store pdf Attachments from suppliers
 
 Route::get('/download/{file}',[COMESA_CONTROLLER::class,'download']);
@@ -115,6 +114,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
     //  Procurement plan Routes :
 
    Route::get('procurement',[ProcurementPlan::class,'procuring'])->name('procurement');
+   Route::get('disable-procurement',[ProcurementPlan::class,'disable_procurement'])->name('disable-procurement');
+
    Route::get('procurement-records',[ProcurementPlan::class,'procurement_records'])->name('procurement-records');
    Route::get('master-table',[ProcurementPlan::class,'master_table'])->name('master-table');
    Route::get('edit-record/{id}',[ProcurementPlan::class,'edit_record']);
@@ -147,8 +148,6 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
 
    Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
-
-   // 
 
    Route::post('add-new-record',[ProcurementPlan::class,'addnewrecord'])->name('add-new-record');
    Route::post('update-md-record',[ProcurementPlan::class,'updatemdrecord'])->name('update-md-record');
@@ -238,9 +237,15 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 Route::get('purchase-requistion',[Requistioning::class,'purchase_requistion'])->name('purchase-requistion');
 Route::post('store-purchase-requistion',[Requistioning::class,'store_purchase_requistion'])->name('store-purchase-requistion');
 
+
+Route::get('start-requistion',[Requistioning::class,'start_requistion'])->name('start-requistion');
+
+                                                                                                                                                                                                                           
    
 Route::get('SPV',[Requistioning::class,'SPV'])->name('SPV');
 Route::post('SPV-save',[Requistioning::class,'SPV_save'])->name('SPV-save');
+Route::get('Assign-requistion-role',[Requistioning::class,'assign_requistion_role'])->name('Assign-requistion-role');
+
 
 // PROCUREMENT WORK FLOW 
 
@@ -260,3 +265,6 @@ Route::get('approved_by_admin/{id}',[COMESA_CONTROLLER::class,'approved_by_admin
 
 Route::post('hide',[ProcurementPlan::class,'hide'])->name('hide');
 Route::post('search-status',[ProcurementPlan::class,'search_status'])->name('search-status');
+
+
+Route::post('role-user-auth',[COMESA_CONTROLLER::class,'role_user_auth']);

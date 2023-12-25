@@ -6,6 +6,7 @@ function app_approvals(){
         var hidden_status = $('#hidden_status').val();
         var procurement_approval_status = $('#procurement_approval_status').val();
 
+
         if(hidden_role == "Approval Officer" && hidden_status == "null")
         {
             $('#supplier_menu').hide();

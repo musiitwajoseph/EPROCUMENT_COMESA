@@ -747,7 +747,7 @@ class COMESA_CONTROLLER extends Controller
             return  view('Edits.Business_Details',compact(['countrylist','Accessed_user','categories',
             'Type_of_Business','Documents','User_country','db_category','user_selected_sub_category',
             'db_sub_category','db_type_of_business','user_country_name','user_selected_category','user_selected_type_of_business']));     
-        }
+   }
 
 
         // Update Business Details:
@@ -2607,6 +2607,15 @@ class COMESA_CONTROLLER extends Controller
                                         'approved_email' => $admin_email_hidden,
                                         'reason_for_rejection' => $reason_for_rejection,
                                     ]);
+            }
+
+
+            public function role_user_auth(Request $request){
+
+                $data = $request->all();
+
+
+                dd($data);
             }
 
         }

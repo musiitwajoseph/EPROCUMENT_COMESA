@@ -24,7 +24,7 @@ class Procurementdata implements ToModel, WithStartRow, WithEvents
     {
 
         return new procurement([
-            
+
             'crt_no' => $row[0],
             'description_of_goods_Works_and_Services' => $row[1],
             'category_of_procurement' => $row[2],
@@ -48,7 +48,6 @@ class Procurementdata implements ToModel, WithStartRow, WithEvents
             $md_name_pp = $row[11],
             $md_user_id  = DB::table('master_datas')->where('md_name', $md_name_pp)->value('md_id'),
 
-            // dd($md_user_id),
             'requisition_division' => $md_user_id,
             'requisition_unit' => $row[12],
             'end_user_requisition_date' => $row[13],
@@ -86,6 +85,7 @@ class Procurementdata implements ToModel, WithStartRow, WithEvents
             'main_activity_analysis_code' => $row[45],
             'disbursement_category_analysis_Code' => $row[46],
             'budget_line_analysis_code' => $row[47],
+            'year'=>$row[48],            
 
         ]);
     }
