@@ -103,7 +103,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        <h3 class="heading">Assign requistioner : </h3>
+                        <h3 class="heading">Assign Head of Unit/division : </h3>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
 
@@ -139,9 +139,9 @@
                                             <label>Name: </label>
                                             <select class="input-sm form-control">
                                                 <option value="">Select Requistioner</option>
-                                                @foreach ($originators as $item)
+                                                @foreach ($Head_of_unit as $item)
                                                     <option value="{{ $item->firstname . ' ' . $item->lastname }}"
-                                                        id="requistioner_name">{{ $item->firstname }}
+                                                        id="head_of_unit_name">{{ $item->firstname }}
                                                         {{ $item->lastname }}</option>
                                                 @endforeach
                                             </select>
@@ -175,7 +175,6 @@
                                     </div>
 
                                     <button id="assign_unit" class="btn btn-primary">Submit</button>
-
                             </div>
 
 
@@ -211,7 +210,7 @@
 
             $('#assign_unit').click(function() {
 
-                var requistioner_name = $('#requistioner_name').val();
+                var head_of_unit_name = $('#head_of_unit_name').val();
                 var procurement_division = $('#procurement_division').val();
 
                 var form_data = new FormData();
@@ -219,8 +218,7 @@
                 $('#assign_unit').html('Assigning procurement division...');
                 $('#assign_unit').attr('disabled', true);
 
-
-                form_data.append('requistioner_name', requistioner_name);
+                form_data.append('head_of_unit_name', head_of_unit_name);
                 form_data.append('procurement_division', procurement_division);
 
                 $.ajax({
@@ -233,13 +231,13 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
 
-                    url: '/assign-procurement-division',
+                    url: '/assign-head-unit',
                     success: function(data) {
                         if (data.status) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: 'Procurement Division has been assigned to Originator',
+                                text: 'Head of Unit assigned successfully',
                             });
                             location.replace('/Assign-requistion-role');
                         }

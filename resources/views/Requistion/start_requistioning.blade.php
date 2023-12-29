@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMESA SUPPLIER DASHBOARD</title>
+    <title>COMESA PROCUREMENT DASHBOARD </title>
 
     <!-- Bootstrap framework -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
@@ -39,140 +39,116 @@
 
     <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
-</head>
+    <meta name="csrf-token" content="{{ csrf_token() }}" </head>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 <body class="full_width">
-    <div class="style_switcher">
-        <div class="sepH_c">
-            <p>Colors:</p>
-            <div class="clearfix">
-                <a href="/assets/javascript:void(0)" class="style_item jQclr blue_theme style_active"
-                    title="blue">blue</a>
-                <a href="/assets/javascript:void(0)" class="style_item jQclr dark_theme" title="dark">dark</a>
-                <a href="/assets/javascript:void(0)" class="style_item jQclr green_theme" title="green">green</a>
-                <a href="/assets/javascript:void(0)" class="style_item jQclr brown_theme" title="brown">brown</a>
-                <a href="/assets/javascript:void(0)" class="style_item jQclr eastern_blue_theme"
-                    title="eastern_blue">eastern blue</a>
-                <a href="/assets/javascript:void(0)" class="style_item jQclr tamarillo_theme"
-                    title="tamarillo">tamarillo</a>
-            </div>
-        </div>
-        <div class="sepH_c">
-            <p>Backgrounds:</p>
-            <div class="clearfix">
-                <span class="style_item jQptrn style_active ptrn_def" title=""></span>
-                <span class="ssw_ptrn_a style_item jQptrn" title="ptrn_a"></span>
-                <span class="ssw_ptrn_b style_item jQptrn" title="ptrn_b"></span>
-                <span class="ssw_ptrn_c style_item jQptrn" title="ptrn_c"></span>
-                <span class="ssw_ptrn_d style_item jQptrn" title="ptrn_d"></span>
-                <span class="ssw_ptrn_e style_item jQptrn" title="ptrn_e"></span>
-            </div>
-        </div>
-        <div class="sepH_c">
-            <p>Layout:</p>
-            <div class="clearfix">
-                <label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fluid" value="" checked=""
-                        type="radio"> Fluid</label>
-                <label class="radio-inline"><input name="ssw_layout" id="ssw_layout_fixed" value="gebo-fixed"
-                        type="radio"> Fixed</label>
-            </div>
-        </div>
-        <div class="sepH_c">
-            <p>Sidebar position:</p>
-            <div class="clearfix">
-                <label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_left" value=""
-                        checked="" type="radio"> Left</label>
-                <label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_right" value="sidebar_right"
-                        type="radio"> Right</label>
-            </div>
-        </div>
-        <div class="sepH_c">
-            <p>Show top menu on:</p>
-            <div class="clearfix">
-                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_click" value=""
-                        checked="" type="radio"> Click</label>
-                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_hover" value="menu_hover"
-                        type="radio"> Hover</label>
-            </div>
-        </div>
-
-        <div class="gh_button-group">
-            <a href="/assets/#" id="showCss" class="btn btn-primary btn-sm">Show CSS</a>
-            <a href="/assets/#" id="resetDefault" class="btn btn-default btn-sm">Reset</a>
-        </div>
-        <div class="hide">
-            <ul id="ssw_styles">
-                <li class="small ssw_mbColor sepH_a" style="display:none">body {<span class="ssw_mColor sepH_a"
-                        style="display:none"> color: #<span></span>;</span> <span class="ssw_bColor"
-                        style="display:none">background-color: #<span></span> </span>}</li>
-                <li class="small ssw_lColor sepH_a" style="display:none">a { color: #<span></span> }</li>
-            </ul>
-        </div>
-    </div>
-    <div id="maincontainer" class="clearfix">
-
-        <header>
-
-            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="navbar-inner">
-                    <div class="container-fluid">
-                        <a class="brand pull-left" href="{{ route('supplier-dashboard') }}">SUPPLIER DASHBOARD</a>
-
-                        <ul class="nav navbar-nav user_menu pull-right">
 
 
-                            <li class="divider-vertical hidden-sm hidden-xs"></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
-                                        src="img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }} <b
-                                        class="caret"></b></a>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="javascript:void();">My Profile</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="{{ route('supplier-logout') }}">Log Out</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+    <header>
 
-        </header>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
 
-        <div id="contentwrapper">
-            <div class="main_content">
-                <div id="jCrumbs" class="breadCrumb module">
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
+                    <ul class="nav navbar-nav user_menu pull-right">
+
+
+                        <li class="divider-vertical hidden-sm hidden-xs"></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
+                                    src="/assets/img/user_avatar.png" alt=""
+                                    class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b class="caret"></b></a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="javascript:void(0);">My Profile</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{ route('admin-logout') }}">Log Out</a></li>
+                            </ul>
                         </li>
-
-                        <li>
-                            <a href="javascript:void(0);">Make requistion</a4
-                        </li>
-
                     </ul>
                 </div>
+            </div>
+        </nav>
 
+
+    </header>
+    <div id="contentwrapper">
+        <div class="main_content">
+
+            <div id="jCrumbs" class="breadCrumb module">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-home"></i></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">Admin Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+
+            @include('sweetalert::alert')
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 col-md-12">
+                        <h3 class="heading">Start requistioning : </h3>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
 
-                            <div class="row">
+                                @if (Session::get('success'))
+                                    <div class="alert alert-success">
+                                        {{ Session::get('success') }}
+                                    </div>
+                                @endif
 
-                                <a href="" class="btn btn-primary " id="planned_for">Item planned for</a>
-                                <a href="" class="btn btn-primary " id="not_planned_for">Item not planned for</a>
-            
-                         </div>
+
+                                @if (Session::get('fail'))
+                                    <div class="alert alert-danger">
+                                        {{ Session::get('fail') }}
+                                    </div>
+                                @endif
+
+                                @include('includes.user_info')
+
+                                <form action="{{ route('load-procurement-plan') }}" method="POST">
+
+                                    @csrf
+
+                                <input type="hidden" name="hidden_originator_name" value="{{ $LoggedUserAdmin['firstname']}} {{ $LoggedUserAdmin['lastname'] }}">
+
+                                {{-- <a class="btn btn-primary " id="planned_for">Item planned for</a> --}}
+                                <button type="submit"  class="btn btn-primary">Item planned</button>
+
+                                <a class="btn btn-primary " id="not_planned_for">Item not planned for</a>
+
+                                    
+                                </form>
+                                
+
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
+    </div>
+
+    </div>
+    </div>
 
     </div>
 
@@ -182,51 +158,48 @@
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
-    $(document).ready(function(){
 
-        $('#planned_for').click(function(){
-            $('#planned_for').html('Loading procurement plan...');
-				$('#planned_for').attr('disabled', true);
-
-
-                // var division_unit = $('#division_unit').val();
-							
-				// var form_data = new FormData();
-
-				// form_data.append('division_unit', division_unit);
-
-
-                         $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,								
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-
-								url			:'/store-purchase-requistion',
-								success		:function(data){
-									if(data.status){
-										alert(data.message);
-                                        location.replace('/purchase-requistion');
-									}
-								},
-								error: function(data)
-								{
-                                    $('body').html(data.responseText);
-								}
-							});
-           
+        $(document).ready(function() {
+            app_approvals();
         });
-    });
+
+
+        $(document).ready(function() {
+
+            $('#planned_for').click(function() {
+                $('#planned_for').html('Loading procurement plan ...');
+                     $('#planned_for').attr('disabled', true);
+
+                var hidden_originator_name = $('#hidden_originator_name').val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/load-procurement-plan',
+                    data: {
+                        hidden_originator_name: hidden_originator_name
+                    },
+
+                    success: function(data) {
+                        if (data.status) {
+
+                        }
+                    },
+                    error: function(data) {
+                        $('body').html(data.responseText);
+                    }
+                });
+            });
+        });
+
 
     </script>
 
 
 
-    <script src="/assets/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
     <!-- touch events for jquery ui-->
@@ -275,10 +248,8 @@
     <!-- small charts -->
     <script src="/assets/js/jquery.peity.min.js"></script>
     <!-- charts -->
-    <script src="/assets/lib/flot/jquery.flot.min.js"></script>
-    <script src="/assets/lib/flot/jquery.flot.resize.min.js"></script>
-    <script src="/assets/lib/flot/jquery.flot.pie.min.js"></script>
-    <script src="/assets/lib/flot.tooltip/jquery.flot.tooltip.min.js"></script>
+
+
     <!-- calendar -->
     <script src="/assets/lib/fullcalendar/fullcalendar.min.js"></script>
     <!-- sortable/filterable list -->

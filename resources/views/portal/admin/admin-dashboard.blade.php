@@ -353,7 +353,7 @@
     <script src="/assets/js/jquery.min.js"></script>
 
     <script src="/assets/js/jquery.min.js"></script>
-	<script src="/assets/js/cust.js"></script>
+    <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
 	
 	$(document).ready(function(){

@@ -1443,7 +1443,6 @@ class ProcurementPlan extends Controller
                     "status"=>TRUE,
                     "approval_status"=>$approval_status,
                 ]);
-            
         }
 
 
@@ -1466,10 +1465,7 @@ class ProcurementPlan extends Controller
                 return response()->json([
                     "status"=>TRUE,
                     "approval_status"=>$approval_status,
-                ]);
-            
+                ]);   
         }
-
-
     }
 }

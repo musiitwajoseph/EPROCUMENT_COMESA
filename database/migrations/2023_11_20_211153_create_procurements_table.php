@@ -81,6 +81,7 @@ return new class extends Migration
             $table->text('main_activity_analysis_code');
             $table->text('disbursement_category_analysis_Code');
             $table->text('budget_line_analysis_code');
+            $table->text('year');
 
             $table->timestamps();
         });

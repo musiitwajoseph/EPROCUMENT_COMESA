@@ -3,8 +3,17 @@
         <div class="sidebar_inner">
             <div id="side_accordion" class="panel-group">
 
+                <input type="hidden" id="hidden_role" value="{{ $LoggedUserAdmin['user_role'] }}">
+                <input type="hidden" id="hidden_status" value="{{ $LoggedUserAdmin['user_status'] }}">
+                <input type="hidden" id="hidden_id" value="{{ $LoggedUserAdmin['id'] }}">
+                <input type="hidden" id="hidden_originator_name" value="{{ $LoggedUserAdmin['firstname']}} {{ $LoggedUserAdmin['lastname'] }}">
 
-                <div class="panel panel-default">
+
+                <input type="hidden" id="procurement_approval_status"
+                    value="{{ $LoggedUserAdmin['procurement_approval_status'] }}">
+
+
+                <div class="panel panel-default" id="Dashboard">
                     <div class="panel-heading">
                         <a href="#collapseOne" data-parent="#side_accordion" data-toggle="collapse"
                             class="accordion-toggle">
@@ -66,7 +75,8 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     <li><a class="procurement_plan" id="procurement_upload"
                                             href=" {{ route('procurement') }}">Upload Procurement Plan</a></li>
-                                    <li><a class="procurement_plan" href="{{ route('procurement-assign-view') }}">Assign
+                                    <li><a class="procurement_plan"
+                                            href="{{ route('procurement-assign-view') }}">Assign
                                             Approval Officer</a> </li>
                                     <li><a class="procurement_plan" id="procurement_approval_innner"
                                             href="{{ route('approve-procurement') }}">Procurement Approval</a> </li>
@@ -76,8 +86,9 @@
                                     <li><a class="procurement_plan" href="{{ route('display-timelines') }}">View
                                             Timelines</a></li>
 
-                                            <li><a class="procurement_plan" id="procurement_upload"
-                                                href=" {{ route('disable-procurement') }}">Disable procurement Plan </a></li>
+                                    <li><a class="procurement_plan" id="procurement_upload"
+                                            href=" {{ route('disable-procurement') }}">Disable procurement Plan </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -96,9 +107,13 @@
                         <div class="accordion-body collapse" id="requistioning">
                             <div class="panel-body">
                                 {{-- <li><a href=" {{ route('purchase-requistion') }}">Make Requistion</a></li> --}}
-                                <li><a href=" {{ route('start-requistion') }}">Start Requistion</a></li>
-                                <li><a href="{{ route('SPV') }} ">SPV</a></li>
-                                <li><a href="{{ route('Assign-requistion-role') }} ">Assign requistion task </a></li>
+                                <li id="start_requistioning"><a href=" {{ route('start-requistion') }}">Start Requistion</a></li>
+                                <li id="spv"><a href="{{ route('SPV') }} ">SPV</a></li>
+                                <li id="assign_requistion_role"><a href="{{ route('Assign-requistion-role') }} ">Assign requistion Unit </a></li>
+                                <li id="assign_head_unit"><a href="{{ route('Assign-head-unit') }} ">Assign Head of Unit </a></li>
+                                <li id="review_requistion"><a href="{{ url('review-requistion/'. $LoggedUserAdmin['id']) }} ">Review Requistion </a></li>
+                                <li id="review_requistion_FA"><a href="{{ url('review-requistion-FA/'. $LoggedUserAdmin['id']) }} ">Review requistion FA </a></li>
+                                <li id="review_requistion_FA"><a href="{{ route('Assign-procurement-officer') }} ">Assign Procurement Officer </a></li>
                             </div>
                         </div>
                     </div>
@@ -116,8 +131,8 @@
                         </div>
                         <div class="accordion-body collapse" id="collapseLong">
                             <div class="panel-body">
-                                <li><a href=" {{ route('master-table') }}">View master Data</a></li>
-                                <li><a href=" {{ route('master-code') }}">View master Code</a></li>
+                                <li id="view_master_data"><a href=" {{ route('master-table') }}">View master Data</a></li>
+                                <li id="view_master_code"><a href=" {{ route('master-code') }}">View master Code</a></li>
                             </div>
                         </div>
                     </div>
@@ -134,9 +149,9 @@
                         </div>
                         <div class="accordion-body collapse" id="collapseuser">
                             <div class="panel-body">
-                                <li><a href="{{ route('admin-register') }}">Create new User</a></li>
-                                <li><a href=" {{ route('add-user') }}">Add User Role</a></li>
-                                <li><a href=" {{ route('view-user') }}">View User Role</a></li>
+                                <li id="admin_register"><a href="{{ route('admin-register') }}">Create new User</a></li>
+                                <li id="add_user_role"><a href=" {{ route('add-user') }}">Add User Role</a></li>
+                                <li id="view_user"><a href=" {{ route('view-user') }}">View User Role</a></li>
                             </div>
                         </div>
                     </div>
@@ -154,9 +169,9 @@
 
                         <div class="accordion-body collapse" id="collapseuser_rights">
                             <div class="panel-body">
-                                <li><a href=" {{ route('user-rights-priveledges') }}">View User Rights</a></li>
-                                <li><a href=" {{ route('add-user-previledges') }}">Assign User previledges</a></li>
-                                <li><a href=" {{ route('add-user-right') }}">Add new User Rights</a></li>
+                                <li id="user_rights_previledges"><a href=" {{ route('user-rights-priveledges') }}">View User Rights</a></li>
+                                <li id="assign_user_previledges"><a href=" {{ route('add-user-previledges') }}">Assign User previledges</a></li>
+                                <li id="add_new_user_rights"><a href=" {{ route('add-user-right') }}">Add new User Rights</a></li>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,6 @@ use App\Http\Controllers\Requistioning;
 //SUPPLIER ROUTES
 
 Route::get('supplier-registration',[COMESA_CONTROLLER::class, 'supplierRegistration'])->name('supplier-registration');
-Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
 
 Route::post('fetch-email',[COMESA_CONTROLLER::class,'fetch_email']);
 Route::post('regenerate-otp',[COMESA_CONTROLLER::class,'regenerate']);
@@ -97,6 +96,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 //  Admin Middleware Routes
 
  Route::group(['middleware'=>['AdminAuth']], function(){
+
+   Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
 
     Route::get('show_tb',[COMESA_CONTROLLER::class,'show_table']);
     Route::get('pending-record/{id}',[COMESA_CONTROLLER::class,'pending_record']);
@@ -193,8 +194,6 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    Route::get('edit-supplier-document/{id}',[COMESA_CONTROLLER::class,'edit_supplier_document']);
    Route::post('edit-supplier-document',[COMESA_CONTROLLER::class,'edit_store_supplier_document'])->name('edit-supplier-document');
 
-
-
 });
 
 
@@ -234,19 +233,38 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
 // REQUISITION 
 
-Route::get('purchase-requistion',[Requistioning::class,'purchase_requistion'])->name('purchase-requistion');
-Route::post('store-purchase-requistion',[Requistioning::class,'store_purchase_requistion'])->name('store-purchase-requistion');
-
-
 Route::get('start-requistion',[Requistioning::class,'start_requistion'])->name('start-requistion');
-
-                                                                                                                                                                                                                           
    
 Route::get('SPV',[Requistioning::class,'SPV'])->name('SPV');
 Route::post('SPV-save',[Requistioning::class,'SPV_save'])->name('SPV-save');
 Route::get('Assign-requistion-role',[Requistioning::class,'assign_requistion_role'])->name('Assign-requistion-role');
 
 
+Route::get('Assign-head-unit',[Requistioning::class,'assign_head_unit'])->name('Assign-head-unit');
+Route::post('assign-head-unit',[Requistioning::class,'assign_head_division'])->name('assign-head-unit');
+
+
+Route::post('assign-procurement-division',[Requistioning::class,'assign_procurement_division'])->name('assign-procurement-division');
+
+Route::get('purchase-requistion',[Requistioning::class,'purchase_requistion'])->name('purchase-requistion');
+Route::post('store-purchase-requistion',[Requistioning::class,'store_purchase_requistion'])->name('store-purchase-requistion');
+
+Route::post('load-procurement-plan',[Requistioning::class,'load_procurement_plan'])->name('load-procurement-plan');
+
+Route::get('proceed/{id}',[Requistioning::class,'proceed_requistioning']);
+
+Route::get('review-requistion/{id}',[Requistioning::class,'review_requistioning']);
+Route::get('review-requistion-FA/{id}',[Requistioning::class,'review_requistioning_FA']);
+
+
+Route::get('approve-requistion/{id}',[Requistioning::class,'approve_requistion']);
+Route::get('reject-requistion/{id}',[Requistioning::class,'reject_requistion']);
+
+Route::get('approve-requistion-FA/{id}',[Requistioning::class,'approve_requistion_FA']);
+Route::get('reject-requistion-FA/{id}',[Requistioning::class,'reject_requistion_FA']);
+
+
+Route::get('Assign-procurement-officer',[Requistioning::class,'assign_procurement_officer'])->name('Assign-procurement-officer');
 // PROCUREMENT WORK FLOW 
 
 Route::get('procurement-assign-view',[ProcurementPlan::class,'procurement_assign_view'])->name('procurement-assign-view');
@@ -254,7 +272,6 @@ Route::post('assign-procurement-officer',[ProcurementPlan::class,'assign_procure
    
 Route::get('approve-procurement',[ProcurementPlan::class,'approve_procurement'])->name('approve-procurement');
 Route::post('H-O-P-approve-procurement',[ProcurementPlan::class,'Head_of_procurement_approval_pp'])->name('H-O-P-approve-procurement');
-
 
 Route::get('dummy',[ProcurementPlan::class,'dummy'])->name('dummy');
 
@@ -268,3 +285,8 @@ Route::post('search-status',[ProcurementPlan::class,'search_status'])->name('sea
 
 
 Route::post('role-user-auth',[COMESA_CONTROLLER::class,'role_user_auth']);
+
+
+   // Advanced User rights , roles  and Previledges 
+
+Route::get('admin-rights-previledges',[Requistioning::class,'admin_rights_previledges'])->name('admin-rights-previledges');

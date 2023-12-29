@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Models\Admin;
-use App\Models\procurement;    
-use App\Models\suplier_performance_evaluation;
+use App\Models\assign_head_of_unit;
+use App\Models\assign_originator_role;
+use App\Models\procurement;
 use App\Models\purchase_requistion;
+use App\Models\suplier_performance_evaluation;
+use DB;
 use Illuminate\Http\Request;
 
 class Requistioning extends Controller
 {
     public function purchase_requistion()
     {
-
-        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
         $info = procurement::all();
 
-        return view('Requistion.purchase_requisition',$data,compact('info'));
+        return view('Requistion.purchase_requisition', $data, compact('info'));
     }
-
 
     public function start_requistion()
     {
-
-        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
         $info = procurement::all();
 
-        return view('Requistion.start_requistioning',$data,compact('info'));
+        return view('Requistion.start_requistioning', $data, compact('info'));
     }
 
-
-    public function store_purchase_requistion(Request $request){
+    public function store_purchase_requistion(Request $request)
+    {
 
         $request->validate([
             'division_unit' => 'required',
@@ -41,43 +40,66 @@ class Requistioning extends Controller
             'reason_for_purchase' => 'required',
             'qty' => 'required',
             'item_code' => 'required',
-            'description' => 'required',
             'attach_other' => 'required',
         ]);
 
-        $post = new purchase_requistion;
+        $id = $request->hidden_admin_id;
+
+        $firstname = DB::table('admins')->where('id', $id)->value('firstname');
+        $lastname = DB::table('admins')->where('id', $id)->value('lastname');
+
+        $fullname = $firstname . ' ' . $lastname;
+
+        $procurement_data_division = DB::table('assign_originator_roles')
+            ->where('orignator_name', $fullname)
+            ->value('procurement_division');
+
+        $requistioning_id = $request->hidden_requistioning_id;
+
+        $qty_numb = DB::table('procurements')->where('id', $requistioning_id)->value('qty');
+
+        $quantity_numb = $request->qty;
+
+        if ($quantity_numb > $qty_numb) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Quantity number provided is bigger the planned item',
+            ]);
+        }
+
+        $post = new purchase_requistion();
 
         $post->divison = $request->division_unit;
         $post->date = $request->date;
         $post->reason_for_purchase = $request->reason_for_purchase;
         $post->qty = $request->qty;
         $post->item_code = $request->item_code;
-        $post->description = $request->description;
+        $post->description = '-';
         $post->Attached_records = $request->attach_other;
+        $post->approval_status = 'Pending';
+        $post->division_unit = $procurement_data_division;
 
         $save = $post->save();
 
-        if($save)
-        {
+        if ($save) {
             return response()->json([
-                "status" => True,
-                "message"=>"Purchase requstion has been submitted successfully",
+                'status' => true,
+                'message' => 'Requistion has been intiated successfully',
             ]);
         }
     }
 
     public function SPV()
     {
-        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
         $info = procurement::all();
 
-        return view('Requistion.SPV',$data,compact(['info']));
+        return view('Requistion.SPV', $data, compact(['info']));
     }
 
-
-    public function SPV_save(Request $request){
-
-        $post = new suplier_performance_evaluation;
+    public function SPV_save(Request $request)
+    {
+        $post = new suplier_performance_evaluation();
 
         $post->Leader = $request->Leader;
         $post->Partner = $request->Partner;
@@ -86,14 +108,14 @@ class Requistioning extends Controller
         $post->achievement_of_contract = $request->achievement_of_contract;
         $post->ability_to_meet_deadlines = $request->ability_to_meet_deadlines;
         $post->quality_of_service = $request->quality_of_service;
-        $post->name_key_experts= $request->name_key_experts;
+        $post->name_key_experts = $request->name_key_experts;
         $post->client_relations = $request->client_relations;
         $post->written_communications = $request->written_communications;
         $post->verbal_communication = $request->verbal_communication;
         $post->drive_and_determination = $request->drive_and_determination;
         $post->personal_effectiveness = $request->personal_effectiveness;
         $post->technical_completence = $request->technical_completence;
-        $post->contract_manager_name= $request->contract_manager_name;
+        $post->contract_manager_name = $request->contract_manager_name;
         $post->contract_manager_signature = $request->contract_manager_signature;
         $post->contract_manager_date = $request->contract_manager_date;
         $post->overall = $request->overall;
@@ -101,46 +123,506 @@ class Requistioning extends Controller
         $post->save();
 
         return response()->json([
-            "status" => True,
-            "message"=>"Purchase requstion has been submitted successfully",
+            'status' => true,
+            'message' => 'Purchase requstion has been submitted successfully',
         ]);
     }
 
     public function assign_requistion_role()
     {
+        $role = 'Originator';
 
-        $role = "Originator";
-        $originators =  Admin::where('user_role', $role)->get();
+        $info = DB::table('master_datas')
+            ->where('md_master_code_id', '=', 53)
+            ->get();
 
-
-        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
-
-        $info = procurement::all();
+        $originators = Admin::where('user_role', $role)->get();
 
         $distinctValues = procurement::distinct()->pluck('requisition_division');
 
-        // $values = master_data::where('md_master_code_id', 53)->get();
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
-        // foreach ($distinctValues as $item) {
-        //     foreach ($values as $value) {
-        //         if($item == $value->md_id)
-        //         {
-        //             $post = new procurement_approval;
+        return view('Requistion.assign_requistion', $data, compact(['originators', 'info', 'distinctValues']));
+    }
 
-        //             $post->All_sections = $value->md_name;
-        //             $post->HOP = 'Pending';
-        //             $post->director_hr = 'Pending';
-        //             $post->ASG_Finance = 'Pending';
-        //             $post->SG = 'Pending';      
-        //             $post->save();
+    public function assign_procurement_division(Request $request)
+    {
+        $requistioner_name = $request->requistioner_name;
+        $procurement_division = $request->procurement_division;
 
-        //         }
-        //     }
-        // }
+        $record = DB::table('assign_originator_roles')
+            ->where('orignator_name', $requistioner_name)
+            ->where('procurement_division', $procurement_division)
+            ->first();
 
-        dd($distinctValues);
+        if ($record == null) {
+            $post = new assign_originator_role();
 
-        return view('Requistion.assign_requistion',$data,compact(['originators','info']));
+            $post->orignator_name = $requistioner_name;
+            $post->procurement_division = $procurement_division;
+
+            $save = $post->save();
+
+            if ($save) {
+                return response()->json([
+                    'status' => true,
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+    }
+
+    public function assign_head_unit()
+    {
+
+        $role = 'Head of project/unit/division';
+        $Head_of_unit = Admin::where('user_role', $role)->get();
+
+        $info = DB::table('master_datas')->where('md_master_code_id', '=', 53)->get();
+
+        $distinctValues = procurement::distinct()->pluck('requisition_division');
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        return view('Requistion.assign_head_role', $data, compact(['Head_of_unit', 'distinctValues', 'info']));
+    }
+
+    public function assign_head_division(Request $request)
+    {
+
+        $head_of_unit_name = $request->head_of_unit_name;
+        $procurement_division = $request->procurement_division;
+
+        $record = DB::table('assign_head_of_units')
+            ->where('head_of_unit_name', $head_of_unit_name)
+            ->where('procurement_division', $procurement_division)
+            ->first();
+
+        if ($record == null) {
+
+            $post = new assign_head_of_unit();
+
+            $post->head_of_unit_name = $head_of_unit_name;
+            $post->procurement_division = $procurement_division;
+
+            $save = $post->save();
+
+            if ($save) {
+                return response()->json([
+                    'status' => true,
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+    }
+
+    public function review_requistioning($id)
+    {
+
+        $firstname = DB::table('admins')->where('id', $id)->value('firstname');
+        $lastname = DB::table('admins')->where('id', $id)->value('lastname');
+
+        $fullname = $firstname . ' ' . $lastname;
+
+        $procurement_data_division = DB::table('assign_head_of_units')
+            ->where('head_of_unit_name', $fullname)
+            ->value('procurement_division');
+
+        $values = DB::table('purchase_requistions')
+            ->where('division_unit', $procurement_data_division)
+            ->where('approval_status', '=', 'Pending')->get();
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        return view('Requistion.review_requistion', $data, compact(['values']));
+    }
+
+    public function review_requistioning_FA($id)
+    {
+
+        $values = DB::table('purchase_requistions')
+            ->where('approval_status', '=', 'Head of unit')->get();
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        return view('Requistion.review_requistion_FA', $data, compact(['values']));
+
+    }
+
+    public function approve_requistion($id)
+    {
+
+        DB::table('purchase_requistions')
+            ->where('id', $id)
+            ->update(['approval_status' => "Head of unit"]);
+
+        return back()->with('success', 'requistioin has been approved');
+
+    }
+
+    public function reject_requistion($id)
+    {
+
+        DB::table('purchase_requistions')
+            ->where('id', $id)
+            ->update(['approval_status' => "Rejected"]);
+
+        return back()->with('error', 'requistioin has been rejected successfully');
+
+    }
+
+    public function approve_requistion_FA($id)
+    {
+
+        DB::table('purchase_requistions')
+            ->where('id', $id)
+            ->update(['approval_status' => "Finance Accountant"]);
+
+        return back()->with('success', 'requistioin has been approved');
+    }
+
+    public function reject_requistion_FA($id)
+    {
+
+        DB::table('purchase_requistions')
+            ->where('id', $id)
+            ->update(['approval_status' => "Rejected"]);
+
+        return back()->with('error', 'requistioin has been rejected successfully');
+    }
+
+
+    public function assign_procurement_officer()
+    {
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        
+        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+
+
+        // dd($data);
+        return view ('Requistion.assign_procurement_officer',$data , compact('approval_officer'));
+    }
+
+    // Advanced Admin user Rights, Roles and previledges
+
+    public function admin_rights_previledges(Request $request)
+    {
+        // ROLES AND PREVILEDGES
+
+        // Director HR
+        // ASG Finance
+        // Originator
+        // ASG Finance
+        // Head of project/unit/division
+        // SG
+        // Approval Officer
+        // Head of Procurement
+
+        $admin_role = $request->admin_role;
+
+        // $role_id = DB::table('user_roles')->where('user_name', $admin_role)->value('user_id');
+
+        // Originator role
+        /* -------------------------------------------------- */
+
+        if ($admin_role == 'Originator') {
+            $originator = DB::table('user_previledges')->where('previledge_name', 'Originator')->first();
+
+            $originator_status = 'NULL';
+
+            if ($originator != null || $originator != 'NULL') {
+                $A = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('A');
+                $V = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('V');
+                $E = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('E');
+                $D = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('D');
+                $P = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('P');
+                $I = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('I');
+                $X = DB::table('user_previledges')
+                    ->where('previledge_name', 'Originator')
+                    ->value('X');
+
+                if ($A == '✔' && $V == '✔' && $E == '✔' && $D == '✔') {
+                    $originator_status = 'display';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                } else {
+                    $originator_status = 'hide';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                }
+            } else {
+                $originator_status = 'hide';
+
+                return response()->json([
+                    'status' => true,
+                    'admin_role' => $admin_role,
+                    'originator_status' => $originator_status,
+                ]);
+            }
+        }
+
+        // Head of project/unit/division
+        /* -------------------------------------------------- */
+
+        else if ($admin_role == 'Head of project/unit/division') {
+            $head_of_unit = DB::table('user_previledges')->where('previledge_name', 'Head of project/unit/division')->first();
+
+            $originator_status = 'NULL';
+
+            if ($head_of_unit != null || $head_of_unit != 'NULL') {
+                $A = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('A');
+
+                $V = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('V');
+
+                $E = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('E');
+
+                $D = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('D');
+
+                $P = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('P');
+
+                $I = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('I');
+
+                $X = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('X');
+
+                if ($A == '✔' && $V == '✔' && $E == '✔' && $D == '✔') {
+                    $originator_status = 'display';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                } else {
+                    $originator_status = 'hide';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                }
+            } else {
+                $originator_status = 'hide';
+
+                return response()->json([
+                    'status' => true,
+                    'admin_role' => $admin_role,
+                    'originator_status' => $originator_status,
+                ]);
+            }
+        }
+
+        // Finance Accountant
+        /* -------------------------------------------------- */
+
+        else if ($admin_role == 'Finance Accountant') {
+
+            $head_of_unit = DB::table('user_previledges')->where('previledge_name', 'Finance Accountant')->first();
+
+            $originator_status = 'NULL';
+
+            if ($head_of_unit != null || $head_of_unit != 'NULL') {
+                $A = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('A');
+
+                $V = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('V');
+
+                $E = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('E');
+
+                $D = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('D');
+
+                $P = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('P');
+
+                $I = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('I');
+
+                $X = DB::table('user_previledges')
+                    ->where('previledge_name', 'Head of project/unit/division')
+                    ->value('X');
+
+                if ($A == '✔' && $V == '✔' && $E == '✔' && $D == '✔') {
+
+                    $originator_status = 'display';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                } else {
+                    $originator_status = 'hide';
+
+                    return response()->json([
+                        'status' => true,
+                        'admin_role' => $admin_role,
+                        'originator_status' => $originator_status,
+                    ]);
+                }
+            } else {
+                $originator_status = 'hide';
+
+                return response()->json([
+                    'status' => true,
+                    'admin_role' => $admin_role,
+                    'originator_status' => $originator_status,
+                ]);
+            }
+        }
+
+        // Head of Procurement
+        /* -------------------------------------------------- */
+
+        else if ($admin_role == 'Head of Procurement') {
+
+            $admin_user_id = DB::table('user_roles')->where('user_name', $admin_role)->value('user_id');
+
+            $head_of_procurement_previledges = DB::table('user_previledges')->where('user_user_id', $admin_user_id)->pluck('previledge_name');
+
+            $originator_status = 'NULL';
+
+            if ($head_of_procurement_previledges == null) {
+                $originator_status = 'hide';
+
+                return response()->json([
+                    'status' => true,
+                    'admin_role' => $admin_role,
+                    'originator_status' => $originator_status,
+                ]);
+            } else {
+
+                foreach ($head_of_procurement_previledges as $head_of_procurement_previledge) {
+
+                        $A = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('A');
+
+                        $V = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('V');
+
+                        $E = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('E');
+
+                        $D = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('D');
+
+                        $P = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('P');
+
+                        $I = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('I');
+
+                        $X = DB::table('user_previledges')
+                            ->where('previledge_name', $head_of_procurement_previledge)
+                            ->value('X');
+
+                        if ($A == '✔' && $V == '✔' && $E == '✔' && $D == '✔') {
+
+                            $originator_status = 'display';
+
+                            return response()->json([
+                                'status' => true,
+                                'admin_role' => $admin_role,
+                                'originator_status' => $originator_status,
+                            ]);
+                        } else {
+                            $originator_status = 'hide';
+
+                            return response()->json([
+                                'status' => true,
+                                'admin_role' => $admin_role,
+                                'originator_status' => $originator_status,
+                            ]);
+                        }
+                }
+            }
+        }
+
+    }
+
+    //Loading procurement plan for requistioners
+
+    public function load_procurement_plan(Request $request)
+    {
+
+        $originator_name = $request->hidden_originator_name;
+
+        $procurement_unit = DB::table('assign_originator_roles')->where('orignator_name', $originator_name)->value('procurement_division');
+
+        $procurement_plan = DB::table('procurements')->where('requisition_division', $procurement_unit)->get();
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        return view('Requistion.loaded_procurement_plan', $data, compact(['procurement_plan']));
+
+    }
+
+    // Proceed with requistioining
+
+    public function proceed_requistioning($id)
+    {
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        $info = DB::table('procurements')->where('id', $id)->get();
+
+        return view('Requistion.purchase_requisition', $data, compact('info'));
     }
 
 }

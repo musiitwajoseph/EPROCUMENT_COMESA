@@ -42,7 +42,11 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="/assets/favicon.ico" />
 
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body class="full_width">
@@ -153,8 +157,7 @@
                         </li>
 
                         <li>
-                            <a href="javascript:void(0);">Purchase requistion</a4
-                        </li>
+                            <a href="javascript:void(0);">Purchase requistion</a4 </li>
 
                     </ul>
                 </div>
@@ -165,13 +168,13 @@
                         <div class="formSep">
                             <div class="row">
                                 <div class="col-sm-4 col-md-4">
-                                    <label style="color: black">Division/ Unit</label>
+                                    <label style="color: black">Description/Specification</label>
                                     <select name="division_unit" id="division_unit" class="form-control">
-                                    @foreach ($info as $item)
-                                     <option  value="{{$item->description_of_goods_Works_and_Services}}">{{$item->description_of_goods_Works_and_Services}}</option>
-                                 
-                                    @endforeach
-                                </select>
+                                        @foreach ($info as $item)
+                                            <option value="{{ $item->description_of_goods_Works_and_Services }}">
+                                                {{ $item->description_of_goods_Works_and_Services }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-sm-4 col-md-4">
                                     <label for="mask_phone" style="color: black">Date</label>
@@ -181,38 +184,42 @@
                                     <label for="mask_ssn" style="color: black">Reason for purchase</label>
                                     <input class="form-control" id="reason_for_purchase" type="text">
                                 </div>
-                              
+
                             </div>
+
+                            <input type="hidden" id="hidden_requistioning_id" value="{{ $item->id }}">
+                            <input type="hidden" id="hidden_admin_id" value="{{ $LoggedUserAdmin['id'] }}">
+
+
                         </div>
 
 
                         <div class="formSep">
                             <div class="row">
-                                <div class="col-sm-3 col-md-3">
+                                <div class="col-sm-3 col-md-4">
                                     <label for="mask_phone" style="color: black">QTY</label>
-                                    <input class="form-control" id="qty" name="qty" type="text">
+                                    <input class="form-control" id="qty" name="qty" type="text"
+                                        value="{{ $item->qty }}">
                                 </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="mask_phone" style="color: black">ITEM CODE</label>
-                                    <input class="form-control" id="item_code" name="item_code" type="text">
+                                <div class="col-sm-3 col-md-4">
+                                    <label for="mask_phone" style="color: black">End of requistion date</label>
+                                    <input class="form-control" id="item_code" name="item_code" type="text"
+                                        value="{{ $item->end_user_requisition_date }}">
                                 </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="mask_ssn" style="color: black">Description/Specification</label>
-                                    <input class="form-control" id="description" name="description" type="text">
-                                </div>
-                              
-                                
-                                <div class="col-sm-3 col-md-3">
+
+                                <div class="col-sm-3 col-md-4">
                                     <label for="mask_ssn" style="color: black">Attach other records</label>
-                                    <input class="form-control" id="attach_other" name="attach_other" type="file">
+                                    <input class="form-control" id="attach_other" name="attach_other"
+                                        type="file">
                                 </div>
-
-
                             </div>
+
+
                             <div class="col-sm-3 col-md-3">
-                                <label for="mask_ssn" ></label>
-                                <a class="btn btn-primary" style="margin-top: 1.3rem;" id="submit_btn">Submit</a>
+                                <label for="mask_ssn"></label>
+                                <a class="btn btn-primary" style="margin-top: 1.3rem;" id="submit_btn">Submit for Approval</a>
                             </div>
+
                         </div>
 
 
@@ -230,56 +237,74 @@
     @include('includes.side-bar')
 
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
-    $(document).ready(function(){
+        $(document).ready(function() {
 
-        $('#submit_btn').click(function(){
-            $('#submit_btn').html('Submiting...');
-				$('#submit_btn').attr('disabled', true);
+            // var hidden_admin_id = $('#hidden_admin_id').val();
+
+            $('#submit_btn').click(function() {
+                $('#submit_btn').html('Submiting...');
+                $('#submit_btn').attr('disabled', true);
 
                 var division_unit = $('#division_unit').val();
                 var date = $('#date').val();
                 var reason_for_purchase = $('#reason_for_purchase').val();
                 var qty = $('#qty').val();
                 var item_code = $('#item_code').val();
-                var description = $('#description').val();
                 var attach_other = $('#attach_other').val();
-							
-				var form_data = new FormData();
+                var hidden_admin_id = $('#hidden_admin_id').val();
 
-				form_data.append('division_unit', division_unit);
+
+                var hidden_requistioning_id = $('#hidden_requistioning_id').val();
+
+                var form_data = new FormData();
+
+                form_data.append('division_unit', division_unit);
                 form_data.append('date', date);
                 form_data.append('reason_for_purchase', reason_for_purchase);
                 form_data.append('qty', qty);
                 form_data.append('item_code', item_code);
-                form_data.append('description', description);
                 form_data.append('attach_other', attach_other);
+                form_data.append('hidden_requistioning_id', hidden_requistioning_id);
+                form_data.append('hidden_admin_id', hidden_admin_id);
 
-                         $.ajax({
-								type: "post",
-								processData: false,
-								contentType: false,
-								cache: false,
-								data		: form_data,								
-								headers		:{	'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+                $.ajax({
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: form_data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
 
-								url			:'/store-purchase-requistion',
-								success		:function(data){
-									if(data.status){
-										alert(data.message);
-                                        location.replace('/purchase-requistion');
-									}
-								},
-								error: function(data)
-								{
-                                    $('body').html(data.responseText);
-								}
-							});
-           
+                    url: '/store-purchase-requistion',
+                    success: function(data) {
+                        if (data.status) {
+                            alert(data.message);
+                            location.replace('/start-requistion');
+                        } 
+                        else
+                         {
+                            Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error',
+                        });
+
+                        // return false;
+                        location.replace('/start-requistion');
+
+                        }
+                    },
+                    error: function(data) {
+                        $('body').html(data.responseText);
+                    }
+                });
+
+            });
         });
-    });
-
     </script>
 
 
