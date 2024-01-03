@@ -75,18 +75,18 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     <li><a class="procurement_plan" id="procurement_upload"
                                             href=" {{ route('procurement') }}">Upload Procurement Plan</a></li>
-                                    <li><a class="procurement_plan"
+                                    <li><a class="procurement_plan" id="assign_approvale_officer"
                                             href="{{ route('procurement-assign-view') }}">Assign
                                             Approval Officer</a> </li>
                                     <li><a class="procurement_plan" id="procurement_approval_innner"
                                             href="{{ route('approve-procurement') }}">Procurement Approval</a> </li>
                                     <li><a class="procurement_plan" href="{{ route('procurement-records') }} ">View
                                             Procurement Records</a></li>
-                                    <li><a class="procurement_plan" href=" {{ route('timelines') }}">Timelines</a></li>
-                                    <li><a class="procurement_plan" href="{{ route('display-timelines') }}">View
+                                    <li><a class="procurement_plan" id="timelines" href=" {{ route('timelines') }}">Timelines</a></li>
+                                    <li><a class="procurement_plan" id="view_timelines" href="{{ route('display-timelines') }}">View
                                             Timelines</a></li>
 
-                                    <li><a class="procurement_plan" id="procurement_upload"
+                                    <li><a class="procurement_plan" id="disable_procurement_plan"
                                             href=" {{ route('disable-procurement') }}">Disable procurement Plan </a>
                                     </li>
                                 </ul>
@@ -111,9 +111,15 @@
                                 <li id="spv"><a href="{{ route('SPV') }} ">SPV</a></li>
                                 <li id="assign_requistion_role"><a href="{{ route('Assign-requistion-role') }} ">Assign requistion Unit </a></li>
                                 <li id="assign_head_unit"><a href="{{ route('Assign-head-unit') }} ">Assign Head of Unit </a></li>
-                                <li id="review_requistion"><a href="{{ url('review-requistion/'. $LoggedUserAdmin['id']) }} ">Review Requistion </a></li>
+                                <li id="review_requistion_planned"><a href="{{ url('review-requistion/'. $LoggedUserAdmin['id']) }} ">Review Planned Requistions </a></li>
+                                <li id="review_requistion_not_planned"><a href="{{ url('review-requistion-planned/'. $LoggedUserAdmin['id']) }} ">Not Planned Requistions </a></li>
                                 <li id="review_requistion_FA"><a href="{{ url('review-requistion-FA/'. $LoggedUserAdmin['id']) }} ">Review requistion FA </a></li>
-                                <li id="review_requistion_FA"><a href="{{ route('Assign-procurement-officer') }} ">Assign Procurement Officer </a></li>
+                                <li id="Assign_procurement_officer"><a href="{{ route('Assign-procurement-officer') }} ">Assign Procurement Officer </a></li>
+                                <li id="Assigned_requistions"><a href="{{ route('Procurement-officer-assigned-requsitions') }} ">Assigned requistions </a></li>
+                                <li id="recommended_requistions"><a href="{{ route('recommended-requistions') }} ">Recommended requistions </a></li>
+                                <li id="review_requistion_director_hr"><a href="{{ route('review-requistion-planned-director-hr') }} ">Review Requistion Director HR </a></li>
+                                <li id="asg_finance"><a href="{{ route('review-requistion-planned-asg-finance') }} ">Requistion ASG Finance</a></li>
+                                <li id="requistion_asg"><a href="{{ route('review-requistion-planned-sg') }} ">Requistion SG</a></li>
                             </div>
                         </div>
                     </div>

@@ -205,17 +205,17 @@
 
     @include('includes.side-bar')
 
+    <script src="/assets/js/cust.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
+
     <script type="text/javascript">
-        // Jquery entering here
+        
+        $(document).ready(function(){
+		app_approvals();
+        $('#mini_dashboard').hide();
+	});
+
     </script>
-
-
-
-
-
-
-
 
     <script src="/assets/js/jquery-migrate.min.js"></script>
     <script src="/assets/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>

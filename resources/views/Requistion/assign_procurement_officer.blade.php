@@ -106,7 +106,7 @@
 
                  @include('sweetalert::alert')
 
-                <form action="{{ route('assign-procurement-officer') }}" method="POST"> 
+                <form id="myForm" action="{{ route('store-assigning-procurement-officer') }}" method="POST"> 
 
                     @csrf
                      <div class="formSep">
@@ -115,11 +115,14 @@
 
                         <input type="hidden" name="user_id" id="user_id" value="{{$LoggedUserAdmin['id']}}" >
 
+                        <input type="hidden" name="requistion_item_id" value="{{$requistion_item_id}}">
+
+
                         <div class="col-sm-3 col-md-3">
                            <label for="">Procurement Officer</label>
-                           <select name="assigned" id="assigned" class="form-control" style="margin-top:1rem;">
+                           <select name="approval_officer_assigned" id="assigned" class="form-control" style="margin-top:1rem;">
                             @foreach ($approval_officer as $item)
-                            <option  value="{{$item->id}}">{{$item->username}}</option>
+                            <option  value="{{$item->firstname}} {{$item->lastname}}">{{$item->firstname}} {{$item->lastname}}</option>
                             @endforeach
                            </select>
                         </div>
@@ -134,8 +137,7 @@
                         <div class="clearfix"></div>
                         <br> 
                         <div class="col-sm-3 col-md-3">
-
-                            <button type="submit" class="btn btn-primary">Assign Procurement Officer</button>
+                            <button type="submit" class="btn btn-primary" onclick="disableButton()">Assign procurement Officer</button>
                         </div>
 
                 </form>
@@ -158,6 +160,12 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
         
+        function disableButton() {
+        
+        document.getElementById('myForm').submit();
+        document.querySelector('button[type="submit"]').disabled = true;
+
+    }
 
             $(document).ready(function(){
 				

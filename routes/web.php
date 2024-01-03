@@ -233,6 +233,7 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
 // REQUISITION 
 
+// 1.planned requsition
 Route::get('start-requistion',[Requistioning::class,'start_requistion'])->name('start-requistion');
    
 Route::get('SPV',[Requistioning::class,'SPV'])->name('SPV');
@@ -264,7 +265,62 @@ Route::get('approve-requistion-FA/{id}',[Requistioning::class,'approve_requistio
 Route::get('reject-requistion-FA/{id}',[Requistioning::class,'reject_requistion_FA']);
 
 
-Route::get('Assign-procurement-officer',[Requistioning::class,'assign_procurement_officer'])->name('Assign-procurement-officer');
+Route::get('Assign-procurement-officer',[Requistioning::class,'assign_procurement_officer_view'])->name('Assign-procurement-officer');
+Route::get('assign-procurement-link',[Requistioning::class,'assign_procurement_link'])->name('assign-procurement-link');
+
+Route::get('assigning-procurement-officer/{id}',[Requistioning::class,'assigning_procurement_officer_requistion']);
+
+Route::post('store-assigning-procurement-officer',[Requistioning::class,'store_assigning_procurement_officer_requistion'])->name('store-assigning-procurement-officer');
+
+Route::get('Procurement-officer-assigned-requsitions',[Requistioning::class,'Procurement_officer_assigned_requsitions'])->name('Procurement-officer-assigned-requsitions');
+Route::post('load-all-assigned-requsitions',[Requistioning::class,'load_all_assigned_requsitions'])->name('load-all-assigned-requsitions');
+Route::get('load-specific-assigned-requsition/{id}',[Requistioning::class,'load_specific_assigned_requsitions']);
+
+Route::post('assigned-procurement-officer-reject',[Requistioning::class,'assigned_procurement_officer_reject'])->name('assigned-procurement-officer-reject');
+Route::post('assigned-procurement-officer-approve',[Requistioning::class,'assigned_procurement_officer_approve'])->name('assigned-procurement-officer-approve');
+Route::post('assigned-procurement-officer-request-info',[Requistioning::class,'assigned_procurement_officer_request_info'])->name('assigned-procurement-officer-request-info');
+
+Route::get('recommended-requistions',[Requistioning::class,'recommended_requistions'])->name('recommended-requistions');
+Route::get('approve-recommended-requistions/{id}',[Requistioning::class,'approve_recommended_requistions']);
+Route::get('reject-recommended-requistions/{id}',[Requistioning::class,'reject_recommended_requistions']);
+
+// 2.planned requsition
+
+Route::post('load-item-not-planned',[Requistioning::class,'load_item_not_planned'])->name('load-item-not-planned');
+Route::post('store-load-item-not-planned',[Requistioning::class,'store_load_item_not_planned'])->name('store-load-item-not-planned');
+
+
+Route::get('review-requistion-planned/{id}',[Requistioning::class,'review_requistioning_planned']);
+Route::get('review-requistion-planned-director-hr',[Requistioning::class,'review_requistioning_planned_director_hr'])->name('review-requistion-planned-director-hr');
+// Route::get('review-requistion-FA/{id}',[Requistioning::class,'review_requistioning_FA']);
+
+
+Route::get('approve-requistion-not-planned/{id}',[Requistioning::class,'approve_requistion_not_planned']);
+Route::get('reject-requistion-not-planned/{id}',[Requistioning::class,'reject_requistion_not_planned']);
+
+Route::get('approve-requistion-not-planned-director-hr/{id}',[Requistioning::class,'approve_requistion_not_planned_director_hr']);
+Route::get('reject-requistion-not-planned-director-hr/{id}',[Requistioning::class,'reject_requistion_not_planned_director_hr']);
+
+// 3.asg finance
+
+Route::get('review-requistion-planned-asg-finance',[Requistioning::class,'review_requistioning_planned_asg_finance'])->name('review-requistion-planned-asg-finance');
+
+Route::get('approve-requistion-not-planned/{id}',[Requistioning::class,'approve_requistion_not_planned']);
+Route::get('reject-requistion-not-planned/{id}',[Requistioning::class,'reject_requistion_not_planned']);
+
+Route::get('approve-requistion-not-planned-asg-finance/{id}',[Requistioning::class,'approve_requistion_not_planned_asg_finance']);
+Route::get('reject-requistion-not-planned-asg-finance/{id}',[Requistioning::class,'reject_requistion_not_planned_asg_finance']);
+
+
+// 4.sg finance
+
+Route::get('review-requistion-planned-sg',[Requistioning::class,'review_requistioning_planned_sg'])->name('review-requistion-planned-sg');
+
+Route::get('approve-requistion-not-planned-sg/{id}',[Requistioning::class,'approve_requistion_not_planned_sg']);
+Route::get('reject-requistion-not-planned-sg/{id}',[Requistioning::class,'reject_requistion_not_planned_sg']);
+
+
+
 // PROCUREMENT WORK FLOW 
 
 Route::get('procurement-assign-view',[ProcurementPlan::class,'procurement_assign_view'])->name('procurement-assign-view');

@@ -169,12 +169,7 @@
                             <div class="row">
                                 <div class="col-sm-4 col-md-4">
                                     <label style="color: black">Description/Specification</label>
-                                    <select name="division_unit" id="division_unit" class="form-control">
-                                        @foreach ($info as $item)
-                                            <option value="{{ $item->description_of_goods_Works_and_Services }}">
-                                                {{ $item->description_of_goods_Works_and_Services }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input class="form-control" id="description"  type="text">
                                 </div>
                                 <div class="col-sm-4 col-md-4">
                                     <label for="mask_phone" style="color: black">Date</label>
@@ -187,10 +182,8 @@
 
                             </div>
 
-                            <input type="hidden" id="hidden_requistioning_id" value="{{ $item->id }}">
+                            <input type="hidden" id="hidden_requistioning_id" >
                             <input type="hidden" id="hidden_admin_id" value="{{ $LoggedUserAdmin['id'] }}">
-
-
                         </div>
 
 
@@ -198,18 +191,18 @@
                             <div class="row">
                                 <div class="col-sm-3 col-md-4">
                                     <label for="mask_phone" style="color: black">QTY</label>
-                                    <input class="form-control" id="qty" name="qty" type="text"
-                                        value="{{ $item->qty }}">
+                                    <input class="form-control" id="qty" type="text">
+                                       
                                 </div>
                                 <div class="col-sm-3 col-md-4">
-                                    <label for="mask_phone" style="color: black">End of requistion date</label>
-                                    <input class="form-control" id="item_code" name="item_code" type="text"
-                                        value="{{ $item->end_user_requisition_date }}">
+                                    <label for="mask_phone" style="color: black">Amount required (USD)</label>
+                                    <input class="form-control" id="amount_needed" type="number">
+                                        
                                 </div>
 
                                 <div class="col-sm-3 col-md-4">
                                     <label for="mask_ssn" style="color: black">Attach other records</label>
-                                    <input class="form-control" id="attach_other" name="attach_other"
+                                    <input class="form-control" id="Attached_records" name="Attached_records"
                                         type="file">
                                 </div>
                             </div>
@@ -239,34 +232,31 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
         $(document).ready(function() {
-
-            // var hidden_admin_id = $('#hidden_admin_id').val();
 
             $('#submit_btn').click(function() {
                 $('#submit_btn').html('Submiting...');
                 $('#submit_btn').attr('disabled', true);
 
-                var division_unit = $('#division_unit').val();
+                var description = $('#description').val();
                 var date = $('#date').val();
                 var reason_for_purchase = $('#reason_for_purchase').val();
                 var qty = $('#qty').val();
-                var item_code = $('#item_code').val();
-                var attach_other = $('#attach_other').val();
+                var amount_needed = $('#amount_needed').val();
+                var Attached_records = $('#Attached_records').val();
+
                 var hidden_admin_id = $('#hidden_admin_id').val();
-
-
                 var hidden_requistioning_id = $('#hidden_requistioning_id').val();
 
                 var form_data = new FormData();
 
-                form_data.append('division_unit', division_unit);
+                form_data.append('description', description);
                 form_data.append('date', date);
                 form_data.append('reason_for_purchase', reason_for_purchase);
                 form_data.append('qty', qty);
-                form_data.append('item_code', item_code);
-                form_data.append('attach_other', attach_other);
+                form_data.append('amount_needed',  amount_needed);
+                form_data.append('Attached_records', Attached_records);
+
                 form_data.append('hidden_requistioning_id', hidden_requistioning_id);
                 form_data.append('hidden_admin_id', hidden_admin_id);
 
@@ -280,7 +270,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
 
-                    url: '/store-purchase-requistion',
+                    url: '/store-load-item-not-planned',
                     success: function(data) {
                         if (data.status) {
                             alert(data.message);
@@ -293,10 +283,7 @@
                             text: data.message,
                             icon: 'error',
                         });
-
-                        // return false;
                         location.replace('/start-requistion');
-
                         }
                     },
                     error: function(data) {

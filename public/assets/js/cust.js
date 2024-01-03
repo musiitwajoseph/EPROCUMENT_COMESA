@@ -121,12 +121,20 @@ $(document).ready(function () {
                          // Procurement plan menu.
                         $('#procurement_menu').hide();
 
-                        // Requistioning menu.
+                        // Requistion menu
+                        $('#start_requistioning').show();
                         $('#spv').hide();
                         $('#assign_requistion_role').hide();
                         $('#assign_head_unit').hide();
-                        $('#review_requistion').hide();
                         $('#review_requistion_FA').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_planned').hide();
+                        $('#review_requistion_not_planned').hide();
+                        $('#review_requistion_director_hr').hide();
+                        $('#asg_finance').hide();
+                        $('#requistion_asg').hide();
 
                         // Master_data menu
                         $('#master_data_menu').hide();
@@ -158,6 +166,7 @@ $(document).ready(function () {
                         $('#assign_head_unit').hide();
                         $('#review_requistion').hide();
                         $('#review_requistion_FA').hide();
+                       
 
                         // Master_data menu
                         $('#master_data_menu').hide();
@@ -195,6 +204,12 @@ $(document).ready(function () {
                         $('#assign_head_unit').hide();
                         $('#start_requistioning').hide();
                         $('#review_requistion_FA').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_director_hr').hide();
+                        $('#asg_finance').hide();
+                        $('#requistion_asg').hide();
 
 
 
@@ -264,13 +279,277 @@ $(document).ready(function () {
                         $('#procurement_menu').hide();
 
                         // Requistioning menu.
+                        $('#spv').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+                        $('#start_requistioning').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_director_hr').hide();
+                        $('#asg_finance').hide();
+                        $('#requistion_asg').hide();
+                        $('#review_requistion_planned').hide();
+                        $('#review_requistion_not_planned').hide();
+
+
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+
+                    else {
+                         // Dashboard menu.
+                         $('#dashboard_menu').hide();
+                         
+                        // Supplier menu.
+                        $('#supplier_menu').hide();
+                        // Procurement Plan.
+                        $('#procurement_menu').hide();
+
+                        // Requistioning menu.
+                        $('#requistioning').hide();
+                        $('#requsition_menu').hide();
+                        $('#review_requistion').hide();
+
+                        $('#spv').hide();
+                        $('#start_requistioning').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+
+
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+                }
+                else if(data.admin_role == 'Director HR')
+                {
+                    if (data.originator_status == 'display') {
+                        // Dashboard menu.
+                        $('#dashboard_menu').hide();
+
+                         // Supplier menu.
+                        $('#supplier_menu').hide();
+
+                         // Procurement plan menu.
+                        $('#procurement_menu').show();
+                        $('#procurement_upload').hide();
+                        $('#disable_procurement_plan').hide();
+                        $('#view_timelines').hide();
+                        $('#timelines').hide();
+                        $('#assign_approvale_officer').hide();
+
+                        // Requistioning menu.
                         $('#requsition_menu').show();
                         $('#review_requistion').hide();
                         $('#spv').hide();
                         $('#assign_requistion_role').hide();
                         $('#assign_head_unit').hide();
                         $('#start_requistioning').hide();
+                        $('#review_requistion_FA').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_planned').hide();
+                        $('#review_requistion_not_planned').hide();
 
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+
+                    else {
+                         // Dashboard menu.
+                         $('#dashboard_menu').hide();
+                         
+                        // Supplier menu.
+                        $('#supplier_menu').hide();
+                        // Procurement Plan.
+                        $('#procurement_menu').hide();
+
+                        // Requistioning menu.
+                        $('#requistioning').hide();
+                        $('#requsition_menu').hide();
+                        $('#review_requistion').hide();
+
+                        $('#spv').hide();
+                        $('#start_requistioning').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+
+
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+                }
+                else if(data.admin_role == 'ASG Finance')
+                {
+                    if (data.originator_status == 'display') {
+                        // Dashboard menu.
+                        $('#dashboard_menu').hide();
+
+                         // Supplier menu.
+                        $('#supplier_menu').hide();
+
+                         // Procurement plan menu.
+                        $('#procurement_menu').show();
+                        $('#procurement_upload').hide();
+                        $('#disable_procurement_plan').hide();
+                        $('#view_timelines').hide();
+                        $('#timelines').hide();
+                        $('#assign_approvale_officer').hide();
+
+                        // Requistioning menu.
+                        $('#requsition_menu').show();
+                        $('#review_requistion').hide();
+                        $('#spv').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+                        $('#start_requistioning').hide();
+                        $('#review_requistion_FA').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_planned').hide();
+                        $('#review_requistion_not_planned').hide();
+                        $('#review_requistion_director_hr').hide();
+
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+
+                    else {
+                         // Dashboard menu.
+                         $('#dashboard_menu').hide();
+                         
+                        // Supplier menu.
+                        $('#supplier_menu').hide();
+                        // Procurement Plan.
+                        $('#procurement_menu').hide();
+
+                        // Requistioning menu.
+                        $('#requistioning').hide();
+                        $('#requsition_menu').hide();
+                        $('#review_requistion').hide();
+
+                        $('#spv').hide();
+                        $('#start_requistioning').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+
+
+                        // Master_data menu
+                        $('#master_data_menu').hide();
+                        $('#view_master_data').hide();
+                        $('#view_master_code').hide();
+                        // User data menu
+                        $('#user_data_menu').hide();
+                        $('#admin_register').hide();
+                        $('#add_user_role').hide();
+                        $('#view_user').hide();
+                        // User previledges menu
+                        $('#user_previledges_menu').hide();
+                        $('#user_rights_previledges').hide();
+                        $('#assign_user_previledges').hide();
+                        $('#add_new_user_rights').hide();
+
+                    }
+                }
+                else if(data.admin_role == 'SG')
+                {
+                    if (data.originator_status == 'display') {
+                        // Dashboard menu.
+                        $('#dashboard_menu').hide();
+
+                         // Supplier menu.
+                        $('#supplier_menu').hide();
+
+                         // Procurement plan menu.
+                        $('#procurement_menu').show();
+                        $('#procurement_upload').hide();
+                        $('#disable_procurement_plan').hide();
+                        $('#view_timelines').hide();
+                        $('#timelines').hide();
+                        $('#assign_approvale_officer').hide();
+
+                        // Requistioning menu.
+                        $('#requsition_menu').show();
+                        $('#review_requistion').hide();
+                        $('#spv').hide();
+                        $('#assign_requistion_role').hide();
+                        $('#assign_head_unit').hide();
+                        $('#start_requistioning').hide();
+                        $('#review_requistion_FA').hide();
+                        $('#Assign_procurement_officer').hide();
+                        $('#Assigned_requistions').hide();
+                        $('#recommended_requistions').hide();
+                        $('#review_requistion_planned').hide();
+                        $('#review_requistion_not_planned').hide();
+                        $('#review_requistion_director_hr').hide();
+                        $('#asg_finance').hide();
 
                         // Master_data menu
                         $('#master_data_menu').hide();

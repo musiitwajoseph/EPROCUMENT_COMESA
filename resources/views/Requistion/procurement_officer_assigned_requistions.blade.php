@@ -103,7 +103,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
-                        <h3 class="heading">Start requistioning : </h3>
+                        <h3 class="heading">Procurement Officer : </h3>
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
 
@@ -122,23 +122,21 @@
 
                                 @include('includes.user_info')
 
-                                <form action="{{ route('load-procurement-plan') }}" method="POST">
+                                <form action="{{ route('load-all-assigned-requsitions') }}" method="POST">
 
                                     @csrf
 
-                                <input type="hidden" name="hidden_originator_name" value="{{ $LoggedUserAdmin['firstname']}} {{ $LoggedUserAdmin['lastname'] }}">
+                                    <input type="hidden" name="hidden_id" value="{{ $LoggedUserAdmin['id'] }}">
 
-                                <button type="submit"  class="btn btn-primary">Item planned</button>
+
+                                    <input type="hidden" name="admin_id" value="{{ $LoggedUserAdmin['firstname']}}">
+                                {{-- <input type="hidden" name="hidden_originator_name" value="{{ $LoggedUserAdmin['firstname']}} {{ $LoggedUserAdmin['lastname'] }}"> --}}
+
+                                  <button type="submit"  class="btn btn-primary">Load assigned requistions</button>
 
                                 </form>
 
-                                <br>
-                                
-                                <form action="{{ route('load-item-not-planned')}}" method="post" id="myForm">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary" onclick="disableButton()" >Item not planned </button>
-                                </form>
-
+                                {{-- <a class="btn btn-primary" id="load_assigned_requistions">Load assigned requistions</a> --}}
 
                             </div>
                         </div>
@@ -162,18 +160,45 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-
         $(document).ready(function() {
             app_approvals();
         });
 
+        // $(document).ready(function() {
 
-        function disableButton() {
-        
-        document.getElementById('myForm').submit();
-        document.querySelector('button[type="submit"]').disabled = true;
-        
-    }
+        //     $('#load_assigned_requistions').click(function() {
+        //         $('#load_assigned_requistions').html('Loading assigned ...');
+        //              $('#load_assigned_requistions').attr('disabled', true);
+
+        //             var hidden_id = $('#hidden_id').val();
+
+        //             var form_data = new FormData();
+
+        //             form_data.append('hidden_id', hidden_id);
+
+        //         $.ajax({
+        //             type: "post",
+        //             processData: false,
+        //             contentType: false,
+        //             cache: false,
+        //             data: form_data,
+        //             url: '/load-all-assigned-requsitions',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             success: function(data) {
+        //                 if (data.status) {
+        //                     // alert(data.message);
+        //                     location.replace('/userdata/' + data.user_id);
+        //                 }
+        //             },
+        //             error: function(data) {
+        //                 $('body').html(data.responseText);
+        //             }
+        //         });
+
+        //     });
+        // });
 
 
     </script>

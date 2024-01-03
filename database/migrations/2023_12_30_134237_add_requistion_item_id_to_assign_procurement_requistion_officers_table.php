@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('assign_procurement_requistion_officers', function (Blueprint $table) {
-            $table->id();
-            $table->text('procurement_officer_name');
-            $table->text('requistion_id');
-            $table->text('status');
-            $table->timestamps();
+        Schema::table('assign_procurement_requistion_officers', function (Blueprint $table) {
+            $table->text('add_requistion_item_id')->default('null');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assign_procurement_requistion_officers');
+        Schema::table('assign_procurement_requistion_officers', function (Blueprint $table) {
+            //
+        });
     }
 };
