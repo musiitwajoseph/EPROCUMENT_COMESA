@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('amount_needed');
             $table->text('Attached_records');
             $table->text('status')->default('Pending');
+            $table->text('divison_unit');
             $table->timestamps();
         });
     }

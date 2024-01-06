@@ -564,7 +564,7 @@ class ProcurementPlan extends Controller
 
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
 
-        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+        $approval_officer = DB::table('admins')->where('user_id',10011)->get();
         $assigned_approval_officer = DB::table('admins')
                                 ->where('user_status','Assigned')
                                 ->where('procurement_approval_status','null')->get();
@@ -685,9 +685,10 @@ class ProcurementPlan extends Controller
 
         $procurement_officer_id = $request->hidden_id;
 
-        $user_role = "	Head of Procurement";
-        $user_email = DB::table('admins')->where('user_role',$user_role)->value('email');
-        $username = DB::table('admins')->where('user_role',$user_role)->value('username');
+        $user_id = 93616;
+
+        $user_email = DB::table('admins')->where('user_id',$user_id)->value('email');
+        $username = DB::table('admins')->where('user_id',$user_id)->value('username');
 
         $data = [
             'email'      => $user_email,
@@ -722,7 +723,7 @@ class ProcurementPlan extends Controller
     {
         
         $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
-        $approval_officer = DB::table('admins')->where('user_role',"Approval Officer")->get();
+        $approval_officer = DB::table('admins')->where('user_id',10011)->get();
 
         return view ('procurement.procurement_assign_officer',$data , compact('approval_officer'));
     }
@@ -833,19 +834,20 @@ class ProcurementPlan extends Controller
     {
 
         $user_role = $request->user_role;
-        $user_id  = $request->user_id;
-        $user_role = $request->user_role;
+        $user_id_id  = $request->user_id;
         $reason = $request->reason;
 
-
-        $firstname = DB::table('admins')->where('id',$user_id)->value('firstname');
-        $lastname = DB::table('admins')->where('id',$user_id)->value('lastname');
+        $firstname = DB::table('admins')->where('id',$user_id_id)->value('firstname');
+        $lastname = DB::table('admins')->where('id',$user_id_id)->value('lastname');
 
         $distinctValues = procurement_approval::distinct()->pluck('All_sections');
 
+        $user_role = DB::table('admins')->where('user_role',$user_role)->value('user_id');
+
+
         // Approving Logic
 
-        if($user_role == 'Head of Procurement')
+        if($user_role == 93616)
         {
             foreach ($distinctValues as $value) {
 
@@ -891,7 +893,7 @@ class ProcurementPlan extends Controller
         }
 
         
-        if($user_role == 'Director HR')
+        if($user_role == 50398)
         {
            
             foreach ($distinctValues as $value)
@@ -934,7 +936,7 @@ class ProcurementPlan extends Controller
         }
 
 
-        if($user_role == 'ASG Finance')
+        if($user_role == 80359)
         {
            
             foreach ($distinctValues as $value)
@@ -977,7 +979,7 @@ class ProcurementPlan extends Controller
         }
 
 
-        if($user_role == 'SG')
+        if($user_role == 96595)
         {
            
             foreach ($distinctValues as $value)
@@ -1025,8 +1027,9 @@ class ProcurementPlan extends Controller
         
         $distinctValues = procurement_approval::distinct()->pluck('All_sections');
           
+        $user_role = DB::table('admins')->where('user_role',$user_role)->value('user_id');
 
-        if($user_role == 'Head of Procurement')
+        if($user_role == 93616)
         {
             foreach ($distinctValues as $value) {
 
@@ -1069,7 +1072,7 @@ class ProcurementPlan extends Controller
         }
 
         
-        if($user_role == 'Director HR')
+        if($user_role == 50398)
         {
            
             foreach ($distinctValues as $value)
@@ -1132,7 +1135,7 @@ class ProcurementPlan extends Controller
     }
 
 
-        if($user_role == 'ASG Finance')
+        if($user_role == 80359)
         {
            
             foreach ($distinctValues as $value)
@@ -1214,7 +1217,7 @@ class ProcurementPlan extends Controller
         }
 
 
-        if($user_role == 'SG')
+        if($user_role == 96595)
         {
            
             foreach ($distinctValues as $value)
@@ -1322,8 +1325,12 @@ class ProcurementPlan extends Controller
     {
 
         $user_role = $request->user_role;
+        $user_role = DB::table('admins')->where('user_role',$user_role)->value('user_id');
 
-        if($user_role == 'Head of Procurement')
+
+
+
+        if($user_role == 93616)
         {
             $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('HOP');
 
@@ -1349,7 +1356,7 @@ class ProcurementPlan extends Controller
 
         }
 
-        else if($user_role == 'Director HR')
+        else if($user_role == 50398)
         {
             $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('director_hr');
             
@@ -1375,7 +1382,7 @@ class ProcurementPlan extends Controller
 
         }
 
-        else if($user_role == 'ASG Finance')
+        else if($user_role == 80359)
         {
            
             $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('ASG_Finance');
@@ -1402,7 +1409,7 @@ class ProcurementPlan extends Controller
 
         }
 
-        else if($user_role == 'SG')
+        else if($user_role == 96595)
         {
            
             $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('SG');
@@ -1433,9 +1440,9 @@ class ProcurementPlan extends Controller
 
     public function search_status(Request $request)
     {
-        $data = $request->user_role;
+        $data = $request->user_id;
                 
-        if($data == 'SG')
+        if($data == 96595)
         {
             $approval_status  = DB::table('procurement_approvals')->where('id', 1)->value('ASG_Finance');    
         

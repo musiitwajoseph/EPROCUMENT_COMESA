@@ -61,6 +61,28 @@
                     </div>
                 </div>
 
+                <div id="supplier_menu">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a href="#supplier_performance_evaluation" data-parent="#side_accordion" data-toggle="collapse"
+                                class="accordion-toggle">
+                                <i class="glyphicon glyphicon-th"></i> Supplier Perfomance Evaluation
+                            </a>
+                        </div>
+
+                        <div class="accordion-body collapse" id="supplier_performance_evaluation">
+                            <div class="panel-body">
+                                <ol class="nav nav-pills nav-stacked">
+                                            
+                                            <li><a class="procurement_plan" id="procurement_upload"
+                                                href=" {{ route('SPV') }}">SPV</a></li>
+
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div id="procurement_menu">
                     <div class="panel panel-default">
@@ -108,7 +130,6 @@
                             <div class="panel-body">
                                 {{-- <li><a href=" {{ route('purchase-requistion') }}">Make Requistion</a></li> --}}
                                 <li id="start_requistioning"><a href=" {{ route('start-requistion') }}">Start Requistion</a></li>
-                                <li id="spv"><a href="{{ route('SPV') }} ">SPV</a></li>
                                 <li id="assign_requistion_role"><a href="{{ route('Assign-requistion-role') }} ">Assign requistion Unit </a></li>
                                 <li id="assign_head_unit"><a href="{{ route('Assign-head-unit') }} ">Assign Head of Unit </a></li>
                                 <li id="review_requistion_planned"><a href="{{ url('review-requistion/'. $LoggedUserAdmin['id']) }} ">Review Planned Requistions </a></li>

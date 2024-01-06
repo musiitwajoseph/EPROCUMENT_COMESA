@@ -1383,7 +1383,9 @@ class COMESA_CONTROLLER extends Controller
     public function admin_register(){
 
         $user_roles = user_role::all();
-        return view('Login.AdminRegister',compact('user_roles'));
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('Login.AdminRegister',$data , compact('user_roles'));
     }
 
 
@@ -1826,10 +1828,10 @@ class COMESA_CONTROLLER extends Controller
     {
         $id = $request->user_admin_id;
 
-        $user_role = DB::table('admins')->where('id', $id)->value('user_role');
+        $user_role = DB::table('admins')->where('id', $id)->value('user_id');
 
 
-        if($user_role != 'Head of Procurement')
+        if($user_role != 93616)
         {
             return response()->json([
                 "status" => True,
@@ -2618,7 +2620,18 @@ class COMESA_CONTROLLER extends Controller
                 dd($data);
             }
 
+            // Testing new modules
+
+        public function admin_dashboard_new(){
+
+            $user_roles = user_role::all();
+            $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+            return view('Login.Admin_new_login',$data , compact(['user_roles']));
         }
 
+        }
+
+
+        
         
        

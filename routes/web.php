@@ -346,3 +346,8 @@ Route::post('role-user-auth',[COMESA_CONTROLLER::class,'role_user_auth']);
    // Advanced User rights , roles  and Previledges 
 
 Route::get('admin-rights-previledges',[Requistioning::class,'admin_rights_previledges'])->name('admin-rights-previledges');
+
+
+// Testing new system
+
+Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');

@@ -377,6 +377,8 @@ $(document).ready(function () {
                         $('#recommended_requistions').hide();
                         $('#review_requistion_planned').hide();
                         $('#review_requistion_not_planned').hide();
+                        $('#asg_finance').hide();
+                        $('#requistion_asg').hide();
 
                         // Master_data menu
                         $('#master_data_menu').hide();
@@ -463,6 +465,8 @@ $(document).ready(function () {
                         $('#review_requistion_planned').hide();
                         $('#review_requistion_not_planned').hide();
                         $('#review_requistion_director_hr').hide();
+                        $('#requistion_asg').hide();
+
 
                         // Master_data menu
                         $('#master_data_menu').hide();

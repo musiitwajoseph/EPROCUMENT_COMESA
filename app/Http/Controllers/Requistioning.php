@@ -120,7 +120,7 @@ class Requistioning extends Controller
 
         $orignator_name = DB::table('assign_originator_roles')->where('procurement_division', $procurement_data_division)->value('orignator_name');
 
-        $send_to = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('email');
+        $send_to = DB::table('admins')->where('user_id', 50241)->value('email');
 
         $data = [
             'email' => $send_to,
@@ -189,16 +189,19 @@ class Requistioning extends Controller
 
     public function assign_requistion_role()
     {
-        $role = 'Originator';
+        // $role = 'Originator';
 
-        $info = DB::table('master_datas')
+        $user_id = 57138;
+
+         $info = DB::table('master_datas')
             ->where('md_master_code_id', '=', 53)
             ->get();
 
-        $originators = Admin::where('user_role', $role)->get();
+        $originators = Admin::where('user_id', $user_id)->get();
 
         $distinctValues = procurement::distinct()->pluck('requisition_division');
 
+        // dd($distinctValues);
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
         return view('Requistion.assign_requistion', $data, compact(['originators', 'info', 'distinctValues']));
@@ -237,8 +240,9 @@ class Requistioning extends Controller
     public function assign_head_unit()
     {
 
-        $role = 'Head of project/unit/division';
-        $Head_of_unit = Admin::where('user_role', $role)->get();
+        // Head of project/unit/division
+
+        $Head_of_unit = Admin::where('user_id', 50241)->get();
 
         $info = DB::table('master_datas')->where('md_master_code_id', '=', 53)->get();
 
@@ -326,9 +330,9 @@ class Requistioning extends Controller
         $item_code = DB::table('purchase_requistions')->where('id', $id)->value('item_code');
         $reason_for_purchase = DB::table('purchase_requistions')->where('id', $id)->value('reason_for_purchase');
 
-        $finance_accountant_email = DB::table('admins')->where('user_role', 'Finance Accountant')->value('email');
-        $firstname = DB::table('admins')->where('user_role', 'Finance Accountant')->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', 'Finance Accountant')->value('lastname');
+        $finance_accountant_email = DB::table('admins')->where('user_id', 50241)->value('email');
+        $firstname = DB::table('admins')->where('user_id', 50241)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id', 50241)->value('lastname');
 
         $data = [
             'email' => $finance_accountant_email,
@@ -368,7 +372,7 @@ class Requistioning extends Controller
         $division_unit = DB::table('purchase_requistions')->where('id', $id)->value('division_unit');
 
         $Head_of_unit_email = DB::table('admins')
-            ->where('user_role', 'Head of project/unit/division')
+            ->where('user_id', 50241)
             ->value('email');
 
         $username = DB::table('assign_originator_roles')
@@ -410,9 +414,9 @@ class Requistioning extends Controller
         $item_code = DB::table('purchase_requistions')->where('id', $id)->value('item_code');
         $reason_for_purchase = DB::table('purchase_requistions')->where('id', $id)->value('reason_for_purchase');
 
-        $Head_of_procurement_email = DB::table('admins')->where('user_role', 'Head of Procurement')->value('email');
-        $firstname = DB::table('admins')->where('user_role', 'Head of Procurement')->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', 'Head of Procurement')->value('lastname');
+        $Head_of_procurement_email = DB::table('admins')->where('user_id',93616)->value('email');
+        $firstname = DB::table('admins')->where('user_id',93616)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id',93616)->value('lastname');
 
         $data = [
             'email' => $Head_of_procurement_email,
@@ -451,15 +455,15 @@ class Requistioning extends Controller
         $division_unit = DB::table('purchase_requistions')->where('id', $id)->value('division_unit');
 
         $Head_of_unit_email = DB::table('admins')
-            ->where('user_role', 'Head of project/unit/division')
+            ->where('user_id', 50241)
             ->value('email');
 
         $Head_of_unit_firstname = DB::table('admins')
-            ->where('user_role', 'Head of project/unit/division')
+            ->where('user_id', 50241)
             ->value('firstname');
 
         $Head_of_unit_lastname = DB::table('admins')
-            ->where('user_role', 'Head of project/unit/division')
+            ->where('user_id', 50241)
             ->value('lastname');
 
         $data = [
@@ -481,13 +485,12 @@ class Requistioning extends Controller
                 ->subject($data["title"]);
         });
 
-
-         $username_originator = DB::table('assign_originator_roles')
+        $username_originator = DB::table('assign_originator_roles')
             ->where('procurement_division', $division_unit)
             ->value('orignator_name');
 
         $originator_email = DB::table('admins')
-            ->where('user_role', "Originator")
+            ->where('user_id', 57138)
             ->value('email');
 
         $data = [
@@ -526,7 +529,7 @@ class Requistioning extends Controller
     public function assign_procurement_link()
     {
 
-        $approval_officer = DB::table('admins')->where('user_role', "Approval Officer")->get();
+        $approval_officer = DB::table('admins')->where('user_id', 10011)->get();
 
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
@@ -538,7 +541,7 @@ class Requistioning extends Controller
 
         $requistion_item_id = $id;
 
-        $approval_officer = DB::table('admins')->where('user_role', "Procurement officer")->get();
+        $approval_officer = DB::table('admins')->where('user_id', 22978)->get();
 
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
@@ -551,7 +554,7 @@ class Requistioning extends Controller
         $approver_officer_name = $request->approval_officer_assigned;
         $id = $request->requistion_item_id;
 
-        $assigned_procurement_officer_email = DB::table('admins')->where('user_role', 'Procurement officer')->value('email');
+        $assigned_procurement_officer_email = DB::table('admins')->where('user_id', 22978)->value('email');
 
         $division_unit = DB::table('purchase_requistions')->where('id', $id)->value('division_unit');
         $approval_status = DB::table('purchase_requistions')->where('id', $id)->value('approval_status');
@@ -580,14 +583,13 @@ class Requistioning extends Controller
 
                 'title' => 'COMESA:E-PROCUREMENT - Procurement Approval Assignment for Requistion.',
             ];
-    
+
             $pdf_data = PDF::loadView('emails.requistion_approvals.assigning_procurement_officer', $data);
-    
+
             Mail::send('emails.requistion_approvals.assigning_procurement_officer', $data, function ($message) use ($data, $pdf_data) {
                 $message->to($data["email"], $data["email"])
                     ->subject($data["title"]);
             });
-
 
             Alert::success('Success', 'Procurement officer has been assigned successfully');
 
@@ -648,9 +650,9 @@ class Requistioning extends Controller
     public function assigned_procurement_officer_approve(Request $request)
     {
 
-        $firstname = DB::table('admins')->where('user_role', "Head of Procurement")->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', "Head of Procurement")->value('lastname');
-        $project_unit_division_email = DB::table('admins')->where('user_role', "Head of Procurement")->value('email');
+        $firstname = DB::table('admins')->where('user_id', 93616)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id', 93616)->value('lastname');
+        $project_unit_division_email = DB::table('admins')->where('user_id', 93616)->value('email');
 
         $send_to = $project_unit_division_email;
         $firstname = $firstname;
@@ -699,9 +701,9 @@ class Requistioning extends Controller
     public function assigned_procurement_officer_reject(Request $request)
     {
 
-        $firstname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('lastname');
-        $project_unit_division_email = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('email');
+        $firstname = DB::table('admins')->where('user_id', 50241)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id', 50241)->value('lastname');
+        $project_unit_division_email = DB::table('admins')->where('user_id', 50241)->value('email');
 
         $send_to = $project_unit_division_email;
         $firstname = $firstname;
@@ -752,9 +754,9 @@ class Requistioning extends Controller
     public function assigned_procurement_officer_request_info(Request $request)
     {
 
-        $firstname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('lastname');
-        $project_unit_division_email = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('email');
+        $firstname = DB::table('admins')->where('user_id',50241)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id',50241)->value('lastname');
+        $project_unit_division_email = DB::table('admins')->where('user_id',50241)->value('email');
 
         $send_to = $project_unit_division_email;
         $firstname = $firstname;
@@ -806,9 +808,9 @@ class Requistioning extends Controller
     public function approve_recommended_requistions($id)
     {
 
-        $firstname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('lastname');
-        $project_unit_division_email = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('email');
+        $firstname = DB::table('admins')->where('user_id',50241)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id',50241)->value('lastname');
+        $project_unit_division_email = DB::table('admins')->where('user_id',50241)->value('email');
 
         $send_to = $project_unit_division_email;
         $firstname = $firstname;
@@ -850,9 +852,9 @@ class Requistioning extends Controller
     public function reject_recommended_requistions($id)
     {
 
-        $firstname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('firstname');
-        $lastname = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('lastname');
-        $project_unit_division_email = DB::table('admins')->where('user_role', "Head of project/unit/division")->value('email');
+        $firstname = DB::table('admins')->where('user_id',50241)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id',50241)->value('lastname');
+        $project_unit_division_email = DB::table('admins')->where('user_id',50241)->value('email');
 
         $send_to = $project_unit_division_email;
         $firstname = $firstname;
@@ -905,9 +907,15 @@ class Requistioning extends Controller
     public function store_load_item_not_planned(Request $request)
     {
 
-        $amount_check = $request->amount_needed;
+        $id = $request->hidden_admin_id;
 
-        dd($amount_check);
+        $firstname = DB::table('admins')->where('id', $id)->value('firstname');
+        $lastname = DB::table('admins')->where('id', $id)->value('lastname');
+        $fullname = $firstname .' '.$lastname;
+
+        $procurement_division = DB::table('assign_originator_roles')->where('orignator_name', $fullname)->value('procurement_division');
+
+        $amount_check = $request->amount_needed;
 
         $post = new items_not_planned;
 
@@ -917,6 +925,7 @@ class Requistioning extends Controller
         $post->qty = $request->qty;
         $post->amount_needed = $request->amount_needed;
         $post->Attached_records = $request->Attached_records;
+        $post->divison_unit = $procurement_division;
 
         $save = $post->save();
 
@@ -924,7 +933,7 @@ class Requistioning extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Approval has been submitted successfully',
+                'message' => 'Requistion has been subsmitted successfully',
             ]);
 
         }
@@ -961,9 +970,98 @@ class Requistioning extends Controller
     public function approve_requistion_not_planned($id)
     {
 
+        $description = DB::table('items_not_planneds')->where('id', $id)->value('description');
+        $reason_for_purchase = DB::table('items_not_planneds')->where('id', $id)->value('reason_for_purchase');
+        $qty = DB::table('items_not_planneds')->where('id', $id)->value('qty');
+        $amount_needed = DB::table('items_not_planneds')->where('id', $id)->value('amount_needed');
+
+        $amount_check = DB::table('items_not_planneds')
+            ->where('id', $id)
+            ->value('amount_needed');
+
         DB::table('items_not_planneds')
             ->where('id', $id)
             ->update(['status' => "Head of unit"]);
+
+        if ($amount_check < 7500) {
+
+            $Director_hr_email = DB::table('admins')->where('user_id', 50398)->value('email');
+            $firstname = DB::table('admins')->where('user_id', 50398)->value('firstname');
+            $lastname = DB::table('admins')->where('user_id', 50398)->value('lastname');
+
+            $fullname = $firstname . '' . $lastname;
+
+            $data = [
+                'email' => $Director_hr_email,
+                'username' => $fullname,
+                'description' => $description,
+                'qty' => $qty,
+                'amount_needed' => $amount_needed,
+                'reason_for_purchase' => $reason_for_purchase,
+
+                'title' => 'COMESA:E-PROCUREMENT - Director HR Not Planned Requistion Pending Review .',
+            ];
+
+            $pdf_data = PDF::loadView('emails.requistion_approvals.director_hr_item_not_planned', $data);
+
+            Mail::send('emails.requistion_approvals.director_hr_item_not_planned', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+            });
+
+        } else if ($amount_check >= 7501 || $amount_check < 20000) {
+
+            $asg_finance_email = DB::table('admins')->where('user_id', 80359)->value('email');
+            $firstname = DB::table('admins')->where('user_id', 80359)->value('firstname');
+            $lastname = DB::table('admins')->where('user_id', 80359)->value('lastname');
+
+            $fullname = $firstname . '' . $lastname;
+
+            $data = [
+                'email' => $asg_finance_email,
+                'username' => $fullname,
+                'description' => $description,
+                'qty' => $qty,
+                'amount_needed' => $amount_needed,
+                'reason_for_purchase' => $reason_for_purchase,
+
+                'title' => 'COMESA:E-PROCUREMENT - Secretary General Not Planned Requistion Pending Review .',
+            ];
+
+            $pdf_data = PDF::loadView('emails.requistion_approvals.director_hr_item_not_planned', $data);
+
+            Mail::send('emails.requistion_approvals.director_hr_item_not_planned', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+            });
+
+        } else if ($amount_check >= 20001 || $amount_check < 30000) {
+
+            $sg_email = DB::table('admins')->where('user_id', 96595)->value('email');
+            $firstname = DB::table('admins')->where('user_id',96595)->value('firstname');
+            $lastname = DB::table('admins')->where('user_id', 96595)->value('lastname');
+
+            $fullname = $firstname . '' . $lastname;
+
+            $data = [
+                'email' => $sg_email,
+                'username' => $fullname,
+                'description' => $description,
+                'qty' => $qty,
+                'amount_needed' => $amount_needed,
+                'reason_for_purchase' => $reason_for_purchase,
+
+                'title' => 'COMESA:E-PROCUREMENT - Secretary General Not Planned Requistion Pending Review .',
+            ];
+
+            $pdf_data = PDF::loadView('emails.requistion_approvals.director_hr_item_not_planned', $data);
+
+            Mail::send('emails.requistion_approvals.director_hr_item_not_planned', $data, function ($message) use ($data, $pdf_data) {
+                $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+            });
+
+        }
 
         return back()->with('success', 'requistioin has been approved');
 
@@ -971,10 +1069,38 @@ class Requistioning extends Controller
 
     public function reject_requistion_not_planned($id)
     {
+        $description = DB::table('items_not_planneds')->where('id', $id)->value('description');
+        $reason_for_purchase = DB::table('items_not_planneds')->where('id', $id)->value('reason_for_purchase');
+        $qty = DB::table('items_not_planneds')->where('id', $id)->value('qty');
+        $amount_needed = DB::table('items_not_planneds')->where('id', $id)->value('amount_needed');
 
         DB::table('items_not_planneds')
             ->where('id', $id)
             ->update(['status' => "Rejected"]);
+
+        $sg_email = DB::table('admins')->where('user_id',57138)->value('email');
+        $firstname = DB::table('admins')->where('user_id',57138)->value('firstname');
+        $lastname = DB::table('admins')->where('user_id', 57138)->value('lastname');
+
+        $fullname = $firstname . '' . $lastname;
+
+        $data = [
+            'email' => $sg_email,
+            'username' => $fullname,
+            'description' => $description,
+            'qty' => $qty,
+            'amount_needed' => $amount_needed,
+            'reason_for_purchase' => $reason_for_purchase,
+
+            'title' => 'COMESA:E-PROCUREMENT - Originator Rejecting of the raised Requistion  .',
+        ];
+
+        $pdf_data = PDF::loadView('emails.requistion_approvals.director_hr_item_not_planned', $data);
+
+        Mail::send('emails.requistion_approvals.director_hr_item_not_planned', $data, function ($message) use ($data, $pdf_data) {
+            $message->to($data["email"], $data["email"])
+                ->subject($data["title"]);
+        });
 
         return back()->with('error', 'requistioin has been rejected successfully');
 
@@ -992,6 +1118,7 @@ class Requistioning extends Controller
                 ['status', '=', 'Head of unit'],
             ])->get();
 
+        // dd($values);
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
         return view('Requistion.review_requistion_director_hr', $data, compact(['values']));
@@ -1002,7 +1129,52 @@ class Requistioning extends Controller
 
         DB::table('items_not_planneds')
             ->where('id', $id)
-            ->update(['status' => "Director HR"]);
+            ->update(['status' => "Approved"]);
+
+        $description = DB::table('items_not_planneds')->where('id', $id)->value('description');
+        $reason_for_purchase = DB::table('items_not_planneds')->where('id', $id)->value('reason_for_purchase');
+        $qty = DB::table('items_not_planneds')->where('id', $id)->value('qty');
+        $amount_needed = DB::table('items_not_planneds')->where('id', $id)->value('amount_needed');
+        $date = DB::table('items_not_planneds')->where('id', $id)->value('date');
+        $Attached_records = DB::table('items_not_planneds')->where('id', $id)->value('Attached_records');
+        $divison_unit = DB::table('items_not_planneds')->where('id', $id)->value('divison_unit');
+
+        // dd($divison_unit);
+
+        DB::table('purchase_requistions')->insert(
+            array(
+            'divison' =>$description,
+            'date' => $date,
+            'reason_for_purchase' => $reason_for_purchase,
+            'qty' => $qty,
+            'item_code' => '-',
+            'description' => '-',
+            'Attached_records' => $Attached_records,
+            'approval_status'=>'Pending',
+            'division_unit' => $divison_unit,
+            )
+        );
+
+
+        // $fullname = $firstname . '' . $lastname;
+
+        // $data = [
+        //     'email' => $Director_hr_email,
+        //     'username' => $fullname,
+        //     'description' => $description,
+        //     'qty' => $qty,
+        //     'amount_needed' => $amount_needed,
+        //     'reason_for_purchase' => $reason_for_purchase,
+
+        //     'title' => 'COMESA:E-PROCUREMENT - Director HR Not Planned Requistion Pending Review .',
+        // ];
+
+        // $pdf_data = PDF::loadView('emails.requistion_approvals.director_hr_item_not_planned', $data);
+
+        // Mail::send('emails.requistion_approvals.director_hr_item_not_planned', $data, function ($message) use ($data, $pdf_data) {
+        //     $message->to($data["email"], $data["email"])
+        //         ->subject($data["title"]);
+        // });
 
         return back()->with('success', 'requistioin has been approved');
 
@@ -1041,7 +1213,31 @@ class Requistioning extends Controller
 
         DB::table('items_not_planneds')
             ->where('id', $id)
-            ->update(['status' => "ASG Finance"]);
+            ->update(['status' => "Approved"]);
+
+            $description = DB::table('items_not_planneds')->where('id', $id)->value('description');
+            $reason_for_purchase = DB::table('items_not_planneds')->where('id', $id)->value('reason_for_purchase');
+            $qty = DB::table('items_not_planneds')->where('id', $id)->value('qty');
+            $amount_needed = DB::table('items_not_planneds')->where('id', $id)->value('amount_needed');
+            $date = DB::table('items_not_planneds')->where('id', $id)->value('date');
+            $Attached_records = DB::table('items_not_planneds')->where('id', $id)->value('Attached_records');
+            $divison_unit = DB::table('items_not_planneds')->where('id', $id)->value('divison_unit');
+    
+            // dd($divison_unit);
+    
+            DB::table('purchase_requistions')->insert(
+                array(
+                'divison' =>$description,
+                'date' => $date,
+                'reason_for_purchase' => $reason_for_purchase,
+                'qty' => $qty,
+                'item_code' => '-',
+                'description' => '-',
+                'Attached_records' => $Attached_records,
+                'approval_status'=>'Pending',
+                'division_unit' => $divison_unit,
+                )
+            );
 
         return back()->with('success', 'requistioin has been approved');
 
@@ -1070,6 +1266,8 @@ class Requistioning extends Controller
                 ['status', '=', 'Head of unit'],
             ])->get();
 
+
+            // dd($values);
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
         return view('Requistion.review_requistion_sg', $data, compact(['values']));
@@ -1081,6 +1279,30 @@ class Requistioning extends Controller
         DB::table('items_not_planneds')
             ->where('id', $id)
             ->update(['status' => "Approved"]);
+
+            $description = DB::table('items_not_planneds')->where('id', $id)->value('description');
+            $reason_for_purchase = DB::table('items_not_planneds')->where('id', $id)->value('reason_for_purchase');
+            $qty = DB::table('items_not_planneds')->where('id', $id)->value('qty');
+            $amount_needed = DB::table('items_not_planneds')->where('id', $id)->value('amount_needed');
+            $date = DB::table('items_not_planneds')->where('id', $id)->value('date');
+            $Attached_records = DB::table('items_not_planneds')->where('id', $id)->value('Attached_records');
+            $divison_unit = DB::table('items_not_planneds')->where('id', $id)->value('divison_unit');
+    
+            // dd($divison_unit);
+    
+            DB::table('purchase_requistions')->insert(
+                array(
+                'divison' =>$description,
+                'date' => $date,
+                'reason_for_purchase' => $reason_for_purchase,
+                'qty' => $qty,
+                'item_code' => '-',
+                'description' => '-',
+                'Attached_records' => $Attached_records,
+                'approval_status'=>'Pending',
+                'division_unit' => $divison_unit,
+                )
+            );
 
         return back()->with('success', 'requistioin has been approved');
 
