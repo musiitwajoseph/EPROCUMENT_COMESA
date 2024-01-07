@@ -241,7 +241,7 @@
 	gebo_external_links = {
 		init: function() {
 			$("a[href^='http']").not('.thumbnail>a,.ext_disabled,.btn').each(function() {
-				$(this).attr('target','_blank').addClass('external_link');
+				//$(this).attr('target','_blank').addClass('external_link');
 			})
 		}
 	};

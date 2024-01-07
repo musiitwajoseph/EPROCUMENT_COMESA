@@ -1950,21 +1950,29 @@ class COMESA_CONTROLLER extends Controller
         public function add_user_role(Request $request){
 
             $number = rand(10000, 99999);
+            $user_role_given = $request->user_role;
 
-            $post = new user_role;
 
-            $post->user_id = $number;
-            $post->user_name = $request->user_role;
-            $post->ur_added_by = $request->user_id;
-           
-            $save = $post->save();
+            $user_role_existance = DB::table('user_roles')->where('user_name', $user_role_given)->value('user_name');
 
-            if($save){
-                
-                return back()->with('success','New user has been created');
+            if($user_role_given == $user_role_existance)
+            {
+                    return back()->with('fail','User Role already in Existance');
             }
-            else{
-                return back()->with('fail','Something wrong with the input');
+            else
+            {
+                $post = new user_role;
+
+                $post->user_id = $number;
+                $post->user_name = $request->user_role;
+                $post->ur_added_by = $request->user_id;
+               
+                $save = $post->save();
+    
+                if($save){
+                    
+                    return back()->with('success','New user has been created');
+                }
             }
         }
         

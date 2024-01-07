@@ -144,8 +144,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    // Time lines
 
    Route::get('display-timelines',[ProcurementPlan::class,'display_timeline'])->name('display-timelines');
-   Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
-   Route::post('store-timeline',[ProcurementPlan::class,'store_timelines'])->name('store-timeline');
+Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
+Route::post('store-timeline',[ProcurementPlan::class,'store_timelines'])->name('store-timeline');
 
 
    Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
@@ -204,6 +204,9 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    //  Admin Middleware Routes Continuation
 
     Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('admin-login');
+    Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('/');
+
+
     Route::get('admin-logout',[COMESA_CONTROLLER::class,'admin_logout'])->name('admin-logout');
     Route::post('admin.save',[COMESA_CONTROLLER::class,'admin_save'])->name('admin.save');
     Route::post('admin.check',[COMESA_CONTROLLER::class,'admin_check'])->name('admin.check');
@@ -350,4 +353,8 @@ Route::get('admin-rights-previledges',[Requistioning::class,'admin_rights_previl
 
 // Testing new system
 
-Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');
+// Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');
+
+// Outside the Admin middleware
+
+

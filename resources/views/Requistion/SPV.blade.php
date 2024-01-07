@@ -186,6 +186,18 @@
                                                         <th>Partner 2*</th>
                                                         <td><input class="form-control" type="text" name="Partner" id="Partner" placeholder="....."></td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>contract Title*</th>
+                                                        <td><input class="form-control" type="text" name="contract_title" id="contract_title" placeholder="....."></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Contract Reference*</th>
+                                                        <td><input class="form-control" type="text" name="contract_reference" id="contract_reference" placeholder="....."></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Location*</th>
+                                                        <td><input class="form-control" type="text" name="location" id="location" placeholder="....."></td>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
                                                     

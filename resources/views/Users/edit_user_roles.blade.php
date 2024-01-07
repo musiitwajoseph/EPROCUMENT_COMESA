@@ -121,7 +121,7 @@
 
                         <div class="col-sm-3 col-md-3">
                             <label for="">Edit user role :</label>
-                            <input class="form-control" type="text" name="user_role" id="user_role" required>            
+                            <input class="form-control" type="text" name="user_role" id="user_role" value="{{$information->user_name}}" required>            
                         </div>
 
 

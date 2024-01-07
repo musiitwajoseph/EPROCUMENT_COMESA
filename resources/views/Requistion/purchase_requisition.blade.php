@@ -51,6 +51,7 @@
 
 <body class="full_width">
     <div class="style_switcher">
+
         <div class="sepH_c">
             <p>Colors:</p>
             <div class="clearfix">
@@ -65,6 +66,7 @@
                     title="tamarillo">tamarillo</a>
             </div>
         </div>
+
         <div class="sepH_c">
             <p>Backgrounds:</p>
             <div class="clearfix">
@@ -76,6 +78,7 @@
                 <span class="ssw_ptrn_e style_item jQptrn" title="ptrn_e"></span>
             </div>
         </div>
+
         <div class="sepH_c">
             <p>Layout:</p>
             <div class="clearfix">
@@ -85,6 +88,7 @@
                         type="radio"> Fixed</label>
             </div>
         </div>
+
         <div class="sepH_c">
             <p>Sidebar position:</p>
             <div class="clearfix">
@@ -94,6 +98,7 @@
                         type="radio"> Right</label>
             </div>
         </div>
+
         <div class="sepH_c">
             <p>Show top menu on:</p>
             <div class="clearfix">
@@ -108,6 +113,7 @@
             <a href="/assets/#" id="showCss" class="btn btn-primary btn-sm">Show CSS</a>
             <a href="/assets/#" id="resetDefault" class="btn btn-default btn-sm">Reset</a>
         </div>
+
         <div class="hide">
             <ul id="ssw_styles">
                 <li class="small ssw_mbColor sepH_a" style="display:none">body {<span class="ssw_mColor sepH_a"
@@ -116,6 +122,7 @@
                 <li class="small ssw_lColor sepH_a" style="display:none">a { color: #<span></span> }</li>
             </ul>
         </div>
+        
     </div>
     <div id="maincontainer" class="clearfix">
 
@@ -176,10 +183,12 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-4 col-md-4">
+                                
+                                <div class="col-sm-4 col-md-4" style="display: hidden">
                                     <label for="mask_phone" style="color: black">Date</label>
                                     <input class="form-control" id="date" name="date" type="date">
                                 </div>
+
                                 <div class="col-sm-4 col-md-4">
                                     <label for="mask_ssn" style="color: black">Reason for purchase</label>
                                     <input class="form-control" id="reason_for_purchase" type="text">
@@ -240,7 +249,7 @@
     <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
     
-        $(document).ready(function() {
+        $(document).ready(function(){
 
             // var hidden_admin_id = $('#hidden_admin_id').val();
 
@@ -249,7 +258,7 @@
                 $('#submit_btn').attr('disabled', true);
 
                 var division_unit = $('#division_unit').val();
-                var date = $('#date').val();
+                // var date = $('#date').val();
                 var reason_for_purchase = $('#reason_for_purchase').val();
                 var qty = $('#qty').val();
                 var item_code = $('#item_code').val();
@@ -262,7 +271,7 @@
                 var form_data = new FormData();
 
                 form_data.append('division_unit', division_unit);
-                form_data.append('date', date);
+                // form_data.append('date', date);
                 form_data.append('reason_for_purchase', reason_for_purchase);
                 form_data.append('qty', qty);
                 form_data.append('item_code', item_code);
