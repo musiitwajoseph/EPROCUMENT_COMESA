@@ -1256,6 +1256,12 @@ class Requistioning extends Controller
 
     // SG Requistion
 
+    public function testing()
+    {
+
+        return "This is just testing";
+    }
+
     public function review_requistioning_planned_sg()
     {
 
