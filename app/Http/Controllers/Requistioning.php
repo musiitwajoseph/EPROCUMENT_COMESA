@@ -210,7 +210,7 @@ class Requistioning extends Controller
     {
         // $role = 'Originator';
 
-        $user_id = 57138;
+        $user_id = '57138';
 
         $info = DB::table('master_datas')
             ->where('md_master_code_id', '=', 53)
