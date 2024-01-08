@@ -1388,6 +1388,95 @@ class COMESA_CONTROLLER extends Controller
         return view('Login.AdminRegister',$data , compact('user_roles'));
     }
 
+    public function view_system_user()
+    {
+
+        $info = admin::all();
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+     
+        return view('Users.view_system_users',$data, compact(['info']));
+    }
+
+    public function edit_system_user($id)
+    {
+
+        $info = admin::find($id);
+        $user_roles = user_role::all();
+
+        $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
+
+        return view('Login.edit_admin_information',$data, compact(['info','user_roles']));
+
+    }
+
+    public function store_edit_system_user(Request $request)
+    {
+
+        $id  = $request->hidden_id;
+        
+        $request->validate([
+            
+            'email'=>'required',
+            'firstname'=>'required',
+            'lastname'=>'required',
+            'username'=>'required',
+            'gender'=>'required',
+            'user_role'=>'required',
+            'phonenumber'=>'required',
+
+        ]);
+
+        $email = $request->email;
+        $firstname = $request->firstname;
+        $lastname = $request->lastname;
+        $username = $request->username;
+        $gender = $request->gender;
+        $user_role = $request->user_role;
+        $phonenumber = $request->phonenumber;
+
+        $password = $request->password;
+
+        if($password == null)
+        {
+            $info = DB::table('admins')->where('id', $id)
+                    ->update(['email' => $email,
+                              'firstname'=>$firstname,
+                              'lastname'=>$lastname,
+                              'username'=>$username,
+                              'gender'=>$gender,
+                              'user_role'=>$user_role,
+                              'phonenumber'=>$phonenumber,
+                            ]);
+
+                            return back()->with('success','User Information has been updated successfully');
+        }
+        else
+        {
+         
+            $info = DB::table('admins')->where('id', $id)
+            ->update(['email' => $email,
+                      'firstname'=>$firstname,
+                      'lastname'=>$lastname,
+                      'username'=>$username,
+                      'gender'=>$gender,
+                      'user_role'=>$user_role,
+                      'phonenumber'=>$phonenumber,
+                      'password'=> Hash::make($password),
+
+                    ]);
+
+                    return back()->with('success','User Information has been updated successfully');
+        }
+    }
+
+    public function delete_system_user($id)
+    {
+
+        $data = admin::find($id);
+        $data->delete();
+
+        return back()->with('success','user has been deleted successfully');
+    }
 
     public function admin_save(Request $request){
 
@@ -1402,6 +1491,8 @@ class COMESA_CONTROLLER extends Controller
         ]);
 
         
+        $user_role = $request->user_role;
+        $user_role_id = DB::table('user_roles')->where('user_name', $user_role)->value('id');
 
         $admindb =  new Admin;
 
@@ -1413,6 +1504,7 @@ class COMESA_CONTROLLER extends Controller
         $admindb->username = $request->username;
         $admindb->user_role = $request->user_role;
         $admindb->password = Hash::make($request->password);
+        $admindb->user_id = $user_role_id;
 
         $save = $admindb->save();
 
@@ -1950,21 +2042,29 @@ class COMESA_CONTROLLER extends Controller
         public function add_user_role(Request $request){
 
             $number = rand(10000, 99999);
+            $user_role_given = $request->user_role;
 
-            $post = new user_role;
 
-            $post->user_id = $number;
-            $post->user_name = $request->user_role;
-            $post->ur_added_by = $request->user_id;
-           
-            $save = $post->save();
+            $user_role_existance = DB::table('user_roles')->where('user_name', $user_role_given)->value('user_name');
 
-            if($save){
-                
-                return back()->with('success','New user has been created');
+            if($user_role_given == $user_role_existance)
+            {
+                    return back()->with('fail','User Role already in Existance');
             }
-            else{
-                return back()->with('fail','Something wrong with the input');
+            else
+            {
+                $post = new user_role;
+
+                $post->user_id = $number;
+                $post->user_name = $request->user_role;
+                $post->ur_added_by = $request->user_id;
+               
+                $save = $post->save();
+    
+                if($save){
+                    
+                    return back()->with('success','New user has been created');
+                }
             }
         }
         
@@ -2627,6 +2727,11 @@ class COMESA_CONTROLLER extends Controller
             $user_roles = user_role::all();
             $data = ['LoggedUserAdmin'=>Admin::where('id','=', session('LoggedAdmin'))->first()];
             return view('Login.Admin_new_login',$data , compact(['user_roles']));
+        }
+
+        public function testing_word()
+        {
+            // This is a testing module for committing the system.
         }
 
         }

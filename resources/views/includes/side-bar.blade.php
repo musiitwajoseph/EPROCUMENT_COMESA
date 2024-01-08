@@ -64,7 +64,7 @@
                 <div id="supplier_menu">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="#supplier_performance_evaluation" data-parent="#side_accordion" data-toggle="collapse"
+                            <a id="supplier_performance_evaluation" data-parent="#side_accordion" data-toggle="collapse"
                                 class="accordion-toggle">
                                 <i class="glyphicon glyphicon-th"></i> Supplier Perfomance Evaluation
                             </a>
@@ -177,6 +177,7 @@
                         <div class="accordion-body collapse" id="collapseuser">
                             <div class="panel-body">
                                 <li id="admin_register"><a href="{{ route('admin-register') }}">Create new User</a></li>
+                                <li id="admin_register"><a href="{{ route('view-system-user') }}">View User information</a></li>
                                 <li id="add_user_role"><a href=" {{ route('add-user') }}">Add User Role</a></li>
                                 <li id="view_user"><a href=" {{ route('view-user') }}">View User Role</a></li>
                             </div>
