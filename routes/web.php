@@ -366,3 +366,4 @@ Route::get('admin-rights-previledges',[Requistioning::class,'admin_rights_previl
 // Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');
 
 // Outside the Admin middleware
+

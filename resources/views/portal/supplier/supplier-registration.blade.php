@@ -638,14 +638,13 @@
 
 
 
-                                                    <h2 class="heading padMarg" style="font-weight: bold">3.Technical
+                                                    <h2 class="heading" style="font-weight: bold">3.Technical
                                                         capacity</h2>
 
                                                     <div class="formSep form-group">
-                                                        <div class="mt-4 pt-4 padMarg">
-                                                            <div class="col-md-6">
-                                                                <label for="" class="boldTitle padMarg"
-                                                                    style="margin-top: 7rem !important">a) Relevant
+                                                        <div class="">
+                                                            <div class="col-md-12">
+                                                                <label for="" class="boldTitle">a) Relevant
                                                                     specialisation (state a maximum of 3) :</label>
                                                                 {{-- <textarea name="Relevant_specialisation " id="Relevant_specialisation" class="input-sm form-control" cols="30" rows="10" required></textarea> --}}
                                                                 <table class="table">
@@ -679,17 +678,49 @@
                                                                 </table>
                                                             </div>
 
-                                                            <div class="col-md-6">
-                                                                <label for="" class="boldTitle padMarg">b) A
+                                                            <div class="col-md-12">
+                                                                <label for="" class="boldTitle">b) A
                                                                     maximum of 10 Projects/contracts (For each, state:
                                                                     Country projects executed, Overall contract value
                                                                     (US$); Proportion carried out by legal entity;
                                                                     Number of personnel provided; Name of client; and
                                                                     Origin of funding)</label>
                                                                 {{-- <input type="number" > --}}
-                                                                <textarea name="maximum_of_10_Projects_contracts" id="maximum_of_10_Projects_contracts" class="input-sm form-control"
-                                                                    cols="30" rows="10" required></textarea>
+                                                                
+                                                                <div class="row" style="background-color:#f4f0f0; border:1px solid black; border-radius:10px; padding:10px;margin:5px;">
+                                                                    <label style="font-weight:bold;">Project 1</label>
+                                                                    <div class="col-md-3">
+                                                                        <label>State: Country</label>
+                                                                        <input type="text" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Project Executed</label>
+                                                                        <input type="text" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Overall Contract Value (USD)</label>
+                                                                        <input min="0" type="number" step="any" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Proportion carriedout by legal entity</label>
+                                                                        <input type="text" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Number of personnel provided</label>
+                                                                        <input type="number" min="0" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Name of Client</label>
+                                                                        <input type="text" value="" class="form-control"/>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <label>Origin of funding</label>
+                                                                        <input type="text" value="" class="form-control"/>
+                                                                    </div>
+                                                                </div>
+                                                                
                                                             </div>
+                                                            <button class="pull-right">Add Another Project</button>
                                                         </div>
                                                         <div class="formSep form-group">
                                                         </div>

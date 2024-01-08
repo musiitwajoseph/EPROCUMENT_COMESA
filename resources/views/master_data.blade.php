@@ -149,9 +149,8 @@
                                             <td>{{ $item->md_date_added }}</td>
                                             <td>{{ $item->md_added_by }}</td>
                                             <td style="text-align:center;width:100px">
-                                                <a href="{{'edit-record/'.$item->md_id}}" class="btn btn-xs btn-primary"></i>Edit</a>
-                                                <a href="{{'delete-record/'.$item->md_id}}" class="btn btn-xs btn-danger"></i>Delete</a>
-                                                {{-- <button class="btn btn-danger btn-xs" id="delete_btn" value="{{$item->md_id}}">Delete</button> --}}
+                                                <a onclick="return confirm('Are you sure you want to edit this item ?')" href="{{'edit-record/'.$item->md_id}}" class="btn btn-xs btn-primary"></i>Edit</a>
+                                                <a onclick="return confirm('Are you sure you want to delete this item ?')" href="{{'delete-record/'.$item->md_id}}" class="btn btn-xs btn-danger"></i>Delete</a>
                                                 
                                             </td>
                                         </tr>

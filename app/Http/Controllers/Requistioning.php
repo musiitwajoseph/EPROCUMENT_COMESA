@@ -1424,6 +1424,7 @@ class Requistioning extends Controller
             'division_unit' => $divison_unit,
         ]);
 
+
         return back()->with('success', 'requistioin has been approved');
     }
 
@@ -1438,8 +1439,11 @@ class Requistioning extends Controller
 
     // SG Requistion
 
+  
+
     public function review_requistioning_planned_sg()
     {
+
         $values = DB::table('items_not_planneds')
             ->where([['amount_needed', '>=', 20001], ['amount_needed', '<=', 30000], ['status', '=', 'Head of unit']])
             ->get();

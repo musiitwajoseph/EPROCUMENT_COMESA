@@ -106,6 +106,12 @@
                  @endif
 
 
+                 @if (Session::get('fail'))
+                <div class="alert alert-danger">
+                 {{Session::get('fail')}}
+                </div>
+                 @endif
+
                 <form action="{{ route('add-user-role') }}" method="POST"> 
 
                     @csrf

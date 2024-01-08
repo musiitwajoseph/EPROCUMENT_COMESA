@@ -133,8 +133,8 @@
                                             <td>{{$key+1}}</td>
                                             <td>{{ $item->user_name}}</td>
                                             <td>
-                                                <a href="{{'edit-user-role/'.$item->id}}" class="btn  btn-primary"></i>Edit</a>
-                                                <a href="{{'delete-user-role/'.$item->id}}" class="btn  btn-danger"></i>Delete</a>                                                
+                                                <a onclick="return confirm('Are you sure you want to edit this user_role ?')" href="{{'edit-user-role/'.$item->id}}" class="btn  btn-primary"></i>Edit</a>
+                                                <a onclick="return confirm('Are you sure you want to delete this user role ?')" href="{{'delete-user-role/'.$item->id}}" class="btn  btn-danger"></i>Delete</a>                                                
                                             </td>
                                         </tr>                                
                                     @endforeach                                   
