@@ -133,8 +133,8 @@
                                             <td>{{ $item->mc_name}}</td>
                                             <td>{{ $item->mc_description}}</td>
                                             <td style="text-align: center">
-                                                <a href="{{'edit-code/'.$item->mc_id}}" class="btn btn-sm btn-primary"></i>Edit</a>
-                                                <a href="{{'delete-code/'.$item->mc_id}}" class="btn btn-sm btn-danger"></i>Delete</a>
+                                                <a onclick="return confirm('Are you sure you want to edit this item ?')" href="{{'edit-code/'.$item->mc_id}}" class="btn btn-sm btn-primary"></i>Edit</a>
+                                                <a onclick="return confirm('Are you sure you want to delete this item ?')" href="{{'delete-code/'.$item->mc_id}}" class="btn btn-sm btn-danger"></i>Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach

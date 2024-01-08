@@ -51,7 +51,6 @@
 
 <body class="full_width">
     <div class="style_switcher">
-
         <div class="sepH_c">
             <p>Colors:</p>
             <div class="clearfix">
@@ -66,7 +65,6 @@
                     title="tamarillo">tamarillo</a>
             </div>
         </div>
-
         <div class="sepH_c">
             <p>Backgrounds:</p>
             <div class="clearfix">
@@ -78,7 +76,6 @@
                 <span class="ssw_ptrn_e style_item jQptrn" title="ptrn_e"></span>
             </div>
         </div>
-
         <div class="sepH_c">
             <p>Layout:</p>
             <div class="clearfix">
@@ -88,24 +85,22 @@
                         type="radio"> Fixed</label>
             </div>
         </div>
-
         <div class="sepH_c">
             <p>Sidebar position:</p>
             <div class="clearfix">
-                <label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_left" value=""
-                        checked="" type="radio"> Left</label>
+                <label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_left" value="" checked=""
+                        type="radio"> Left</label>
                 <label class="radio-inline"><input name="ssw_sidebar" id="ssw_sidebar_right" value="sidebar_right"
                         type="radio"> Right</label>
             </div>
         </div>
-
         <div class="sepH_c">
             <p>Show top menu on:</p>
             <div class="clearfix">
-                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_click" value=""
-                        checked="" type="radio"> Click</label>
-                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_hover" value="menu_hover"
-                        type="radio"> Hover</label>
+                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_click" value="" checked="" type="radio">
+                    Click</label>
+                <label class="radio-inline"><input name="ssw_menu" id="ssw_menu_hover" value="menu_hover" type="radio">
+                    Hover</label>
             </div>
         </div>
 
@@ -113,7 +108,6 @@
             <a href="/assets/#" id="showCss" class="btn btn-primary btn-sm">Show CSS</a>
             <a href="/assets/#" id="resetDefault" class="btn btn-default btn-sm">Reset</a>
         </div>
-
         <div class="hide">
             <ul id="ssw_styles">
                 <li class="small ssw_mbColor sepH_a" style="display:none">body {<span class="ssw_mColor sepH_a"
@@ -122,7 +116,6 @@
                 <li class="small ssw_lColor sepH_a" style="display:none">a { color: #<span></span> }</li>
             </ul>
         </div>
-        
     </div>
     <div id="maincontainer" class="clearfix">
 
@@ -131,7 +124,8 @@
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="navbar-inner">
                     <div class="container-fluid">
-                        <a class="brand pull-left" href="{{ route('supplier-dashboard') }}">SUPPLIER DASHBOARD</a>
+                        <a class="brand pull-left" href="{{ route('supplier-dashboard') }}">SUPPLIER
+                            DASHBOARD</a>
 
                         <ul class="nav navbar-nav user_menu pull-right">
 
@@ -140,8 +134,8 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                         src="img/user_avatar.png" alt=""
-                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }} <b
-                                        class="caret"></b></a>
+                                        class="user_avatar">{{ $LoggedUserAdmin['username'] }}
+                                    <b class="caret"></b></a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="javascript:void();">My Profile</a></li>
                                     <li class="divider"></li>
@@ -177,17 +171,23 @@
                                 <div class="col-sm-4 col-md-4">
                                     <label style="color: black">Description/Specification</label>
                                     <select name="division_unit" id="division_unit" class="form-control">
-                                        @foreach ($info as $item)
+                                        @foreach($info as $item)
                                             <option value="{{ $item->description_of_goods_Works_and_Services }}">
                                                 {{ $item->description_of_goods_Works_and_Services }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                
-                                <div class="col-sm-4 col-md-4" style="display: hidden">
-                                    <label for="mask_phone" style="color: black">Date</label>
-                                    <input class="form-control" id="date" name="date" type="date">
+
+                                <div class="col-sm-3 col-md-4">
+                                    <label for="mask_phone" style="color: black">QTY</label>
+                                    <input class="form-control" id="qty" min=0 max="{{$item->qty}}" name="qty" type="number"
+                                        value="{{ $item->qty }}">
                                 </div>
+
+                                <!-- <div class="col-sm-4 col-md-4" style="display: hidden">
+                                    <label for="mask_phone" style="color: black">Date</label>
+                                    <input class="form-control" id="date" name="date" type="date"> -->
+                                <!-- </div> -->
 
                                 <div class="col-sm-4 col-md-4">
                                     <label for="mask_ssn" style="color: black">Reason for purchase</label>
@@ -197,7 +197,8 @@
                             </div>
 
                             <input type="hidden" id="hidden_requistioning_id" value="{{ $item->id }}">
-                            <input type="hidden" id="hidden_admin_id" value="{{ $LoggedUserAdmin['id'] }}">
+                            <input type="hidden" id="hidden_admin_id"
+                                value="{{ $LoggedUserAdmin['id'] }}">
 
 
                         </div>
@@ -205,28 +206,24 @@
 
                         <div class="formSep">
                             <div class="row">
-                                <div class="col-sm-3 col-md-4">
-                                    <label for="mask_phone" style="color: black">QTY</label>
-                                    <input class="form-control" id="qty" name="qty" type="text"
-                                        value="{{ $item->qty }}">
-                                </div>
+
                                 <div class="col-sm-3 col-md-4">
                                     <label for="mask_phone" style="color: black">End of requistion date</label>
                                     <input class="form-control" id="item_code" name="item_code" type="text"
-                                        value="{{ $item->end_user_requisition_date }}">
+                                        value="{{ $item->end_user_requisition_date }}" readonly>
                                 </div>
 
                                 <div class="col-sm-3 col-md-4">
                                     <label for="mask_ssn" style="color: black">Attach other records</label>
-                                    <input class="form-control" id="attach_other" name="attach_other"
-                                        type="file">
+                                    <input class="form-control" id="attach_other" name="attach_other" type="file">
                                 </div>
                             </div>
 
 
                             <div class="col-sm-3 col-md-3">
                                 <label for="mask_ssn"></label>
-                                <a class="btn btn-primary" style="margin-top: 1.3rem;" id="submit_btn">Submit for Approval</a>
+                                <a class="btn btn-primary" style="margin-top: 1.3rem;" id="submit_btn">Submit for
+                                    Approval</a>
                             </div>
 
                         </div>
@@ -248,73 +245,110 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
-        $(document).ready(function(){
+        $(document).ready(function () {
 
-            // var hidden_admin_id = $('#hidden_admin_id').val();
-
-            $('#submit_btn').click(function() {
-                $('#submit_btn').html('Submiting...');
-                $('#submit_btn').attr('disabled', true);
+            $('#submit_btn').click(function () {
 
                 var division_unit = $('#division_unit').val();
-                // var date = $('#date').val();
                 var reason_for_purchase = $('#reason_for_purchase').val();
                 var qty = $('#qty').val();
                 var item_code = $('#item_code').val();
                 var attach_other = $('#attach_other').val();
                 var hidden_admin_id = $('#hidden_admin_id').val();
 
-
                 var hidden_requistioning_id = $('#hidden_requistioning_id').val();
 
-                var form_data = new FormData();
+                var errors = validateForm();
 
-                form_data.append('division_unit', division_unit);
-                // form_data.append('date', date);
-                form_data.append('reason_for_purchase', reason_for_purchase);
-                form_data.append('qty', qty);
-                form_data.append('item_code', item_code);
-                form_data.append('attach_other', attach_other);
-                form_data.append('hidden_requistioning_id', hidden_requistioning_id);
-                form_data.append('hidden_admin_id', hidden_admin_id);
+                if (errors.length > 0) {
+                    showErrors(errors);
+                    return;
+                } else {
 
-                $.ajax({
-                    type: "post",
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    data: form_data,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
 
-                    url: '/store-purchase-requistion',
-                    success: function(data) {
-                        if (data.status) {
-                            alert(data.message);
-                            location.replace('/start-requistion');
-                        } 
-                        else
-                         {
-                            Swal.fire({
-                            title: 'Error',
-                            text: data.message,
-                            icon: 'error',
-                        });
+                    var form_data = new FormData();
 
-                        // return false;
-                        location.replace('/start-requistion');
+                    $('#submit_btn').html('Submiting...');
+                    $('#submit_btn').attr('disabled', true);
 
+                    form_data.append('division_unit', division_unit);
+                    form_data.append('reason_for_purchase', reason_for_purchase);
+                    form_data.append('qty', qty);
+                    form_data.append('item_code', item_code);
+
+
+                    form_data.append('attach_other', attach_other);
+                    form_data.append('hidden_requistioning_id', hidden_requistioning_id);
+                    form_data.append('hidden_admin_id', hidden_admin_id);
+
+                    $.ajax({
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        data: form_data,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+
+                        url: '/store-purchase-requistion',
+                        success: function (data) {
+                            if (data.status) {
+                                alert(data.message);
+                                location.replace('/start-requistion');
+                            } else {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: data.message,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.replace('/proceed/' +
+                                            hidden_requistioning_id);
+                                    }
+                                });
+
+                            }
+                        },
+                        error: function (data) {
+                            $('body').html(data.responseText);
                         }
-                    },
-                    error: function(data) {
-                        $('body').html(data.responseText);
+                    });
+                }
+
+                function validateForm() {
+
+                    var errors = [];
+
+                    if (!reason_for_purchase) {
+                        errors.push("Reason for purchase is required.");
                     }
-                });
+
+                    return errors;
+                }
+
+                function showErrors(errors) {
+
+                    var errorMessage = "<ol>";
+                    for (var i = 0; i < errors.length; i++) {
+                        errorMessage += "<li>" + errors[i] + "</li>";
+                    }
+                    errorMessage += "</ol>";
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Validation Error",
+                        html: errorMessage,
+                    });
+
+                    // return;
+                }
+
 
             });
         });
+
     </script>
 
 

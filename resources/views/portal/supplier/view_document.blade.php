@@ -132,8 +132,8 @@
                                         <tr>
                                             <td>{{ $item->md_name }}</td>
                                             <td>
-                                                <a href="{{'edit-supplier-document/'.$item->md_id}}" class="btn  btn-primary"></i>Edit</a>
-                                                <a href="{{'delete-supplier-document/'.$item->md_id}}" class="btn  btn-danger"></i>Delete</a>                                                
+                                                <a onclick="return confirm('Are you sure you want to edit this document ?')" href="{{'edit-supplier-document/'.$item->md_id}}" class="btn  btn-primary"></i>Edit</a>
+                                                <a onclick="return confirm('Are you sure you want to delete this document ?')" href="{{'delete-supplier-document/'.$item->md_id}}" class="btn  btn-danger"></i>Delete</a>                                                
                                             </td>
                                         </tr>
                                     @endforeach
