@@ -218,13 +218,58 @@ class Requistioning extends Controller
 
         $originators = Admin::where('user_id', $user_id)->get();
 
+        $assigned_originators = assign_originator_role::all();
+
         $distinctValues = procurement::distinct()->pluck('requisition_division');
 
-        // dd($distinctValues);
         $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
 
-        return view('Requistion.assign_requistion', $data, compact(['originators', 'info', 'distinctValues']));
+        return view('Requistion.assign_requistion', $data, compact(['originators', 'info', 'distinctValues','assigned_originators']));
     }
+
+    public function edit_assigned_originator($id)
+    {
+
+        $assigned_originator  = assign_originator_role::where('id', '=', $id)->get();
+
+        $info = DB::table('master_datas')
+        ->where('md_master_code_id', '=', 53)
+        ->get();
+
+        $info = DB::table('master_datas')
+            ->where('md_master_code_id', '=', 53)
+            ->get();
+
+        $distinctValues = procurement::distinct()->pluck('requisition_division');
+
+        $data = ['LoggedUserAdmin' => Admin::where('id', '=', session('LoggedAdmin'))->first()];
+
+        return view('Requistion.edit_assigned_originator',$data,compact(['assigned_originator','info','distinctValues']));
+
+    }
+
+    public function store_edit_assigned_originator(Request $request){
+
+        $new_name =  $request->requistioner_name;
+        $id =  $request->hidden_id;
+
+        DB::table('assign_originator_roles')
+            ->where('id', $id)
+            ->update(['orignator_name' => $new_name]);
+
+        return back()->with('success','User has been updated successfully');
+    }
+
+    public function delete_assigned_originator($id)
+    {
+
+        $data = assign_originator_role::find($id);
+        $data->delete();
+
+        return back()->with('success','assigned originator has been deleted successfully');
+
+    }
+
 
     public function assign_procurement_division(Request $request)
     {
@@ -1379,6 +1424,7 @@ class Requistioning extends Controller
             'division_unit' => $divison_unit,
         ]);
 
+
         return back()->with('success', 'requistioin has been approved');
     }
 
@@ -1393,14 +1439,11 @@ class Requistioning extends Controller
 
     // SG Requistion
 
-    public function testing()
-    {
-
-        return "This is just testing";
-    }
+  
 
     public function review_requistioning_planned_sg()
     {
+
         $values = DB::table('items_not_planneds')
             ->where([['amount_needed', '>=', 20001], ['amount_needed', '<=', 30000], ['status', '=', 'Head of unit']])
             ->get();
