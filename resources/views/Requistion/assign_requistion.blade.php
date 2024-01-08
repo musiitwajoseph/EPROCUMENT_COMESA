@@ -57,7 +57,8 @@
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-inner">
                 <div class="container-fluid">
-                    <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA :: EPROCUREMENT</a>
+                    <a class="brand pull-left" href="{{ route('admin-dashboard') }}">COMESA ::
+                        EPROCUREMENT</a>
 
                     <ul class="nav navbar-nav user_menu pull-right">
 
@@ -67,7 +68,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                     src="/assets/img/user_avatar.png" alt=""
-                                    class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b class="caret"></b></a>
+                                    class="user_avatar">{{ $LoggedUserAdmin['username'] }}<b
+                                    class="caret"></b></a>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="javascript:void(0);">My Profile</a></li>
                                 <li class="divider"></li>
@@ -107,14 +109,14 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
 
-                                @if (Session::get('success'))
+                                @if(Session::get('success'))
                                     <div class="alert alert-success">
                                         {{ Session::get('success') }}
                                     </div>
                                 @endif
 
 
-                                @if (Session::get('fail'))
+                                @if(Session::get('fail'))
                                     <div class="alert alert-danger">
                                         {{ Session::get('fail') }}
                                     </div>
@@ -139,8 +141,9 @@
                                             <label>Name: </label>
                                             <select class="input-sm form-control">
                                                 <option value="">Select Requistioner</option>
-                                                @foreach ($originators as $item)
-                                                    <option value="{{ $item->firstname . ' ' . $item->lastname }}"
+                                                @foreach($originators as $item)
+                                                    <option
+                                                        value="{{ $item->firstname . ' ' . $item->lastname }}"
                                                         id="requistioner_name">{{ $item->firstname }}
                                                         {{ $item->lastname }}</option>
                                                 @endforeach
@@ -152,10 +155,10 @@
                                             <select class="input-sm form-control">
                                                 <option value="">--- Select Procurement Division ---</option>
 
-                                                @foreach ($distinctValues as $data)
-                                                    @foreach ($info as $item)
+                                                @foreach($distinctValues as $data)
+                                                    @foreach($info as $item)
 
-                                                        @if ($data == $item->md_id)
+                                                        @if($data == $item->md_id)
                                                             <option id="procurement_division"
                                                                 value="{{ $item->md_id }}"> {{ $item->md_name }}
                                                             </option>
@@ -176,6 +179,46 @@
 
                                     <button id="assign_unit" class="btn btn-primary">Submit</button>
 
+                            </div>
+
+                            <div>
+                                welcome
+                            </div>
+
+
+                            <div class="col-sm-6 col-md-6">
+                                <br> <br>
+                                <h3 style="color: blue;">Assigned Originators</h3>
+                                <br>
+                                <table class="table table-bordered table-striped" id="smpl_tbl">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Assigned Procurement Division</th>
+                                            <th colspan="2" style="text-align: center;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach($assigned_originators as $item)
+                                            <tr>
+                                                <td>{{ $item->orignator_name }}</td>
+
+                                                <td>{{ $item->procurement_division }}</td>
+                                                
+                                                
+                                            <td style="text-align: center;"><a  href="{{'edit-assigned-originator/'.$item->id}}" class="btn btn-primary">Edit</a></td>
+                                            <td style="text-align: center;"><a onclick="return confirm('Are you sure you want to delete this user from system ?')" href="{{'delete-assigned-originator/'.$item->id}}" class="btn btn-danger">Delete</a></td>
+
+
+                                                <!-- @foreach($info as $data)
+                                                    @if($data == $item->procurement_division)
+                                                        <td>{{ $data->md_name }}</td>
+                                                    @endif
+                                                @endforeach -->
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                             </div>
 
 
@@ -201,15 +244,14 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/cust.js"></script>
     <script type="text/javascript">
-    
-        $(document).ready(function() {
+        $(document).ready(function () {
             app_approvals();
         });
 
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            $('#assign_unit').click(function() {
+            $('#assign_unit').click(function () {
 
                 var requistioner_name = $('#requistioner_name').val();
                 var procurement_division = $('#procurement_division').val();
@@ -234,7 +276,7 @@
                     },
 
                     url: '/assign-procurement-division',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status) {
                             Swal.fire({
                                 icon: 'success',
@@ -244,13 +286,14 @@
                             location.replace('/Assign-requistion-role');
                         }
                     },
-                    error: function(data) {
+                    error: function (data) {
                         $('body').html(data.responseText);
                     }
                 });
 
             });
         });
+
     </script>
 
 
