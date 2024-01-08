@@ -123,7 +123,7 @@
                                     <tr>
                                             <td>{{$key+1}}</td>
                                             <td style="width: 500px;">{{$item->md_name}}</td>
-                                            <td style="width: 500px"><input type="number" name="{{$key+1}}" id="{{$key+1}}" style="width: 100%"></td>
+                                            <td style="width: 500px"><input type="number" min="0"  name="{{$key+1}}" id="{{$key+1}}" style="width: 100%"></td>
                                         </tr>
                                     @endforeach
                                 

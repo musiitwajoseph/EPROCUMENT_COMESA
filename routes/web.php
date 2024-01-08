@@ -97,7 +97,17 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
 
  Route::group(['middleware'=>['AdminAuth']], function(){
 
-   Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
+    Route::get('admin-register',[COMESA_CONTROLLER::class,'admin_register'])->name('admin-register');
+    Route::get('view-system-user',[COMESA_CONTROLLER::class,'view_system_user'])->name('view-system-user');
+    Route::get('edit-system-user/{id}',[COMESA_CONTROLLER::class,'edit_system_user']);
+    Route::post('store-edit-system-user',[COMESA_CONTROLLER::class,'store_edit_system_user'])->name('store-edit-system-user');
+    Route::get('delete-system-user/{id}',[COMESA_CONTROLLER::class,'delete_system_user']);
+
+    Route::get('edit-assigned-originator/{id}',[Requistioning::class,'edit_assigned_originator']);
+    Route::post('store-edit-assigned-originator',[Requistioning::class,'store_edit_assigned_originator'])->name('store-edit-assigned-originator');
+    Route::get('delete-assigned-originator/{id}',[Requistioning::class,'delete_assigned_originator']);
+
+
 
     Route::get('show_tb',[COMESA_CONTROLLER::class,'show_table']);
     Route::get('pending-record/{id}',[COMESA_CONTROLLER::class,'pending_record']);
@@ -144,8 +154,8 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    // Time lines
 
    Route::get('display-timelines',[ProcurementPlan::class,'display_timeline'])->name('display-timelines');
-   Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
-   Route::post('store-timeline',[ProcurementPlan::class,'store_timelines'])->name('store-timeline');
+Route::get('timelines',[ProcurementPlan::class,'timelines'])->name('timelines');
+Route::post('store-timeline',[ProcurementPlan::class,'store_timelines'])->name('store-timeline');
 
 
    Route::post('send-master-code',[ProcurementPlan::class,'send_master_code'])->name('send-master-code');
@@ -204,6 +214,9 @@ Route::post('supplier-verify-otp',[COMESA_CONTROLLER::class,'supplier_verify_otp
    //  Admin Middleware Routes Continuation
 
     Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('admin-login');
+    Route::get('admin-login',[COMESA_CONTROLLER::class,'admin_login'])->name('/');
+
+
     Route::get('admin-logout',[COMESA_CONTROLLER::class,'admin_logout'])->name('admin-logout');
     Route::post('admin.save',[COMESA_CONTROLLER::class,'admin_save'])->name('admin.save');
     Route::post('admin.check',[COMESA_CONTROLLER::class,'admin_check'])->name('admin.check');
@@ -350,4 +363,7 @@ Route::get('admin-rights-previledges',[Requistioning::class,'admin_rights_previl
 
 // Testing new system
 
-Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');
+// Route::get('admin-new-login',[COMESA_CONTROLLER::class,'admin_dashboard_new'])->name('admin-new-login');
+
+// Outside the Admin middleware
+

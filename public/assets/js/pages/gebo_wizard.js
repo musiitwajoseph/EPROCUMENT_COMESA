@@ -8,7 +8,7 @@
 
 
 		// $('form').stepy('step',2);	
-		$('form').stepy('step',1);	
+		$('form').stepy('step',2);	
 		
 		//* add step numbers to titles
 		gebo_wizard.steps_nb();
